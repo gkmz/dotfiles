@@ -1,0 +1,27 @@
+[includeIf "gitdir:/"]
+    path = ~/.git_me
+[includeIf "gitdir:~/workspace/.ws/"]
+    path = ~/.git_work
+[includeIf "gitdir:~/workspace/mine"]
+    path = ~/.git_me
+[includeIf "gitdir:~/workspace/opensource/"]
+    path = ~/.git_os
+[init]
+	defaultBranch = main
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[color]
+	ui = true
+[alias]
+	lg = log --color --graph --pretty=format:'%C(red)%h %C(yellow)%ai -%C(green)%d %s %C(green)%cr %C(white)<%an, %C(yellow)%ar>' --abbrev-commit
+	st = status
+	ci = commit
+	co = checkout
+	br = branch
+[core]
+	quotepath = false
+[pull]
+	rebase = true
