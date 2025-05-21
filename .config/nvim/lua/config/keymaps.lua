@@ -60,6 +60,10 @@ function M.setup_common_keymaps()
     desc = "NeoTree Hie Number",
     silent = true,
   })
+
+  -- IDEA convilent key mapping
+  vim.keymap.set({ "n" }, "<M-d>", "yyp", { remap = true, desc = "Delete Current Line" })
+  vim.keymap.set({ "n" }, "<M-x>", "dd", { remap = true, desc = "Duplicate Current Line" })
 end
 
 function M.setup_dashboard_keymaps()
