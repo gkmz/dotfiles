@@ -2,7 +2,6 @@
   // ============================================
   // 文件浏览器相关
   // ============================================
-  
   // Cmd + 1: 切换 Explorer 并定位当前文件
   {
     "key": "cmd+1",
@@ -14,17 +13,111 @@
     "command": "workbench.action.toggleSidebarVisibility",
     "when": "sideBarFocus && activeViewlet == 'workbench.view.explorer'"
   },
-  
   // 移除 Cmd + 1 的默认绑定（切换到第一个编辑器组）
   {
     "key": "cmd+1",
     "command": "-workbench.action.focusFirstEditorGroup"
   },
-  
   // ============================================
-  // 其他自定义快捷键
+  // 面板切换快捷键
   // ============================================
-  
-  // 在这里添加你的其他快捷键配置
-  
+  // Cmd + 2: 切换 Source Control（源代码管理）
+  {
+    "key": "cmd+2",
+    "command": "workbench.view.scm",
+    "when": "!sideBarVisible || activeViewlet != 'workbench.view.scm'"
+  },
+  {
+    "key": "cmd+2",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "sideBarVisible && activeViewlet == 'workbench.view.scm'"
+  },
+  {
+    "key": "cmd+2",
+    "command": "-workbench.action.focusSecondEditorGroup"
+  },
+  // Cmd + 3: 切换 Debug Console（调试控制台）
+  {
+    "key": "cmd+3",
+    "command": "workbench.debug.action.toggleRepl",
+    "when": "!panelVisible || activePanel != 'workbench.panel.repl'"
+  },
+  {
+    "key": "cmd+3",
+    "command": "workbench.action.togglePanel",
+    "when": "panelVisible && activePanel == 'workbench.panel.repl'"
+  },
+  {
+    "key": "cmd+3",
+    "command": "-workbench.action.focusThirdEditorGroup"
+  },
+  // Cmd + 4: 切换 Terminal（终端）
+  {
+    "key": "cmd+4",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "cmd+4",
+    "command": "-workbench.action.focusFourthEditorGroup"
+  },
+  // Cmd + 5: 智能切换 Chat（聊天窗口）
+  // 如果有选中内容 → 发送到聊天并打开
+  {
+    "key": "alt+c",
+    "command": "kiroAgent.focusContinueInputWithoutClear",
+    "when": "editorHasSelection"
+  },
+  // 如果没有选中内容 → 切换聊天窗口显示/隐藏
+  {
+    "key": "alt+c",
+    "command": "workbench.action.toggleAuxiliaryBar",
+    "when": "!editorHasSelection"
+  },
+  {
+    "key": "alt+c",
+    "command": "-workbench.action.focusFifthEditorGroup"
+  },
+  {
+    "key": "alt+shift+c",
+    "command": "kiroAgent.focusContinueInput"
+  },
+  {
+    "key": "alt+shift+c",
+    "command": "workbench.action.toggleAuxiliaryBar",
+    "when": "!editorHasSelection"
+  },
+  {
+    "key": "alt+shift+c",
+    "command": "-workbench.action.focusFifthEditorGroup"
+  }
+  // // Cursor: 切换 Cursor AI Chat
+  // {
+  //   "key": "cmd+5",
+  //   "command": "aichat.newSession"
+  // },
+  // // GitHub Copilot: 切换 Copilot Chat
+  // {
+  //   "key": "cmd+5",
+  //   "command": "workbench.panel.chat.view.copilot.focus"
+  // },
+  // // Windsurf: 切换 Windsurf Chat
+  // {
+  //   "key": "cmd+5",
+  //   "command": "windsurf.chat.toggle"
+  // },
+  // // Codeium: 切换 Codeium Chat
+  // {
+  //   "key": "cmd+5",
+  //   "command": "codeium.chat.toggle"
+  // },
+  // // 通用：如果上面的命令都不存在，尝试切换面板
+  // {
+  //   "key": "cmd+5",
+  //   "command": "workbench.action.togglePanel"
+  // },
+  // // 移除默认的 Cmd + 5 绑定
+  // {
+  //   "key": "cmd+5",
+  //   "command": "-workbench.action.focusFifthEditorGroup"
+  // }
 ]

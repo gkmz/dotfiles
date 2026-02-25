@@ -2,7 +2,6 @@
   // ============================================
   // 编辑器基础设置
   // ============================================
-  
   "editor.fontSize": 14,
   "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
   "editor.lineHeight": 1.6,
@@ -11,11 +10,9 @@
   "editor.wordWrap": "on",
   "editor.minimap.enabled": true,
   "editor.formatOnSave": true,
-  
   // ============================================
   // 文件和工作区
   // ============================================
-  
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
   "files.exclude": {
@@ -24,29 +21,25 @@
     "**/node_modules": true,
     "**/__pycache__": true
   },
-  
   // ============================================
   // 终端设置
   // ============================================
-  
   "terminal.integrated.fontSize": 13,
   "terminal.integrated.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
-  
   // ============================================
   // Git 设置
   // ============================================
-  
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-  
   // ============================================
   // 其他设置
   // ============================================
-  
   "workbench.startupEditor": "none",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
   // 在这里添加你的其他设置
 }
