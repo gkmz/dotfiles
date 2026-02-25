@@ -168,3 +168,6 @@ export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 export PATH=/Users/hank/.opencode/bin:$PATH
 # Added by Comate
 export PATH="/Users/hank/.comate/bin:$PATH"
+
+# 加载local文件，存储敏感信息，不提交到仓库
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
