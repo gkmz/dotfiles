@@ -1,6 +1,74 @@
-.config/nvim/.DS_Store
+# 敏感信息
+*.local
+*_local
+*.secret
+*.key
+*.pem
+*.crt
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 临时文件
+*.swp
+*.swo
+*~
 .DS_Store
-.config/raycast/extensions
-.config/github-copilot
-.config/wezterm/wallpapers
-.config/wezterm/wallpaper.tar.gz
+*.tmp
+
+# 备份文件
+*.backup
+*.backup.*
+*.bak
+
+# 日志文件
+*.log
+
+# 缓存目录
+cache/
+.cache/
+
+# 编辑器临时文件
+.vscode/
+.idea/
+
+# 导出的插件列表
+vscode/exported-extensions/
+
+# 特定工具的敏感配置
+git/.gitconfig.local
+terminal/.zshrc.local
+terminal/.bashrc.local
+
+# 自动生成的补全脚本
+terminal/.bash_completion
+terminal/.zsh_completion
+
+# 工具自动生成的文件
+**/completions/
+**/.completion
+
+# 忽略备份文件
+*.backup.*
+
+# 忽略临时文件
+*.tmp
+*.log
+
+# 保留配置文件
+!keybindings.json
+!settings.json
+
+lazygit/state.yml
+node_modules
+raycast/extensions
+wireshark/recent
+wireshark/recent_common
+zed/prompts/
+zed/embeddings/
