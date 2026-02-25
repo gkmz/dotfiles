@@ -79,11 +79,16 @@ echo -e "${YELLOW}=== 删除 VSCode 系列 IDE 的软链接 ===${NC}\n"
 
 # VSCode 系列 IDE
 VSCODE_IDES=(
-  "Kiro"
-  "Cursor"
-  "Trae"
-  "Antigravity"
-  "Code"
+    "Kiro"
+    "Cursor"
+    "Trae CN"
+    "Trae"
+    "Antigravity"
+    "Comate"
+    "Code"
+    "CodeBuddy"
+    "Lingma"
+    "Windsurf"
 )
 
 for ide in "${VSCODE_IDES[@]}"; do

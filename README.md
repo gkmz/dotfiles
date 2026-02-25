@@ -30,6 +30,34 @@ cd ~/dotfiles
 ./install.sh
 ```
 
+### 增量安装（推荐）
+
+支持模块化安装，只安装需要的配置：
+
+```bash
+# 查看所有可用模块
+./install.sh -l
+
+# 只安装 VSCode 系列 IDE 配置
+./install.sh vscode
+
+# 只安装终端配置
+./install.sh terminal
+
+# 安装多个模块
+./install.sh terminal git vim
+
+# 查看帮助
+./install.sh -h
+```
+
+**可用模块：**
+- `config` - ~/.config 下的配置（nvim, wezterm, lazygit 等）
+- `terminal` - 终端配置（.zshrc, .bashrc 等）
+- `git` - Git 配置（.gitconfig 等）
+- `vim` - Vim 配置（.vimrc）
+- `vscode` - VSCode 系列 IDE 配置（支持交互式选择）
+
 ### 验证安装
 
 ```bash
@@ -77,6 +105,20 @@ cd ~/dotfiles
 ./install.sh
 
 # 配置自动生效
+```
+
+### 增量更新配置
+
+如果只修改了某个模块的配置，可以只重新安装该模块：
+
+```bash
+# 更新了 .zshrc
+./install.sh terminal
+# 脚本会智能检测，如果软链接已存在且正确，会跳过
+
+# 新装了一个 VSCode 系列 IDE
+./install.sh vscode
+# 会交互式询问要安装哪些 IDE 的配置
 ```
 
 ## 🔧 工作原理
