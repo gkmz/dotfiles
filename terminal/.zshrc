@@ -1,0 +1,170 @@
+# If you come from bash you might have to change your $PATH.
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME=""
+# ZSH_THEME="robbyrussell"
+# ZSH_THEME="af-magic"
+ZSH_THEME="alanpeabody"
+# ZSH_THEME="jonathan"
+# ZSH_THEME="linuxonly"
+# ZSH_THEME="afowler"
+# ZSH_THEME="agnoster"
+# ZSH_THEME="apple"
+# ZSH_THEME="clean"
+# ZSH_THEME="gallifrey"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+#CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting python golang rust poetry)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
+
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
+
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export NVM_DIR="$HOME/.nvm"
+source ~/.bash_profile
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[[ -s "/Users/hank/.gvm/scripts/gvm" ]] && source "/Users/hank/.gvm/scripts/gvm"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  autoload -Uz compinit
+  compinit
+fi
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+
+[[ -s "/Users/hank/.gvm/scripts/gvm" ]] && source "/Users/hank/.gvm/scripts/gvm"
+
+export M2_HOME=$HOME/software/apache-maven-3.9.6
+export GRADLE_HOME=$HOME/software/gradle-7.1
+export GRADLE_USER_HOME=$HOME/.m2/repository/
+export GOROOT=$HOME/.gvm/gos/go1.24.0
+export GOPATH=$HOME/go
+export GOLAND_VM_OPTIONS=$HOME/software/install/jetbrains/ja-netfilter2023.1/vmoptions/goland.vmoptions
+export GOPROXY=https://goproxy.io,direct
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export ANDROID_USER_HOME=$HOME/.android/
+export PYTHON_HOME=$HOME/.venvs/python3
+export CHROME_DRIVER=$HOME/software/chrome/chromedriver-mac-x64
+export NODE_HOME=$HOME/.nvm/versions/node/v20.17.0
+export PYENV_ROOT="$HOME/.pyenv"
+export ENV_FOR_DYNACONF=dev
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+export JAVA_HOME=$HOME/.jenv/versions/openjdk64-21.0.6
+# lazygit 的配置文件目录
+export XDG_CONFIG_HOME="$HOME/.config"
+export HF_ENDPOINT=https://hf-mirror.com
+export MY_SHELL=~/shell/
+
+alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/docs/hank'
+alias ws="cd ~/workspace/.ws"
+alias mws="cd ~/workspace/mine/"
+alias ows="cd ~/workspace/opensource/"
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$NODE_HOME/bin:$ANDROID_HOME:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_HOME/build-tools/34.0.0/:$ANDROID_HOME/emulator/:$ANDROID_HOME/emulator/bin64:$ANDROID_HOME/platform-tools:$PYTHON_HOME/bin:$CHROME_DRIVER:$(brew --prefix)/Cellar/imagemagick/7.1.1-44/bin:$M2_HOME/bin:$JAVA_HOME/bin:$HOME/.local/share/nvim/mason/packages/google-java-format:$MY_SHELL
+# Added by Antigravity
+export PATH="/Users/hank/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+# opencode
+export PATH=/Users/hank/.opencode/bin:$PATH
+# Added by Comate
+export PATH="/Users/hank/.comate/bin:$PATH"

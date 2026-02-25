@@ -1,0 +1,30 @@
+[
+  // ============================================
+  // 文件浏览器相关
+  // ============================================
+  
+  // Cmd + 1: 切换 Explorer 并定位当前文件
+  {
+    "key": "cmd+1",
+    "command": "workbench.files.action.showActiveFileInExplorer",
+    "when": "editorFocus"
+  },
+  {
+    "key": "cmd+1",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+  },
+  
+  // 移除 Cmd + 1 的默认绑定（切换到第一个编辑器组）
+  {
+    "key": "cmd+1",
+    "command": "-workbench.action.focusFirstEditorGroup"
+  },
+  
+  // ============================================
+  // 其他自定义快捷键
+  // ============================================
+  
+  // 在这里添加你的其他快捷键配置
+  
+]

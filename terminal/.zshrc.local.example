@@ -1,0 +1,45 @@
+# .zshrc.local 示例文件
+# 这个文件用于存放敏感信息（API Keys、Tokens 等）
+# 复制此文件为 .zshrc.local 并填入你的真实密钥
+
+# ============================================
+# API Keys
+# ============================================
+
+# OpenAI API Key
+export OPENAI_API_KEY="your-openai-api-key-here"
+
+# Gemini API Key
+export GEMINI_API_KEY="your-gemini-api-key-here"
+export GOOGLE_GENERATIVE_AI_API_KEY="your-google-api-key-here"
+
+# DeepSeek API Key
+export DEEPSEEK_API_KEY="your-deepseek-api-key-here"
+
+# ============================================
+# 其他服务 Tokens
+# ============================================
+
+# Hashnode Token
+export HASHNODE_TOKEN="your-hashnode-token-here"
+
+# Medium Token
+export MEDIUM_TOKEN="your-medium-token-here"
+
+# Luma API Key
+export LUMA_API_KEY="your-luma-api-key-here"
+
+# Stability API Key
+export STABILITY_API_KEY="your-stability-api-key-here"
+
+# Ark API Key
+export ARK_API_KEY="your-ark-api-key-here"
+
+# Volc Access Key
+export VOLC_ACCESS_KEY="your-volc-access-key-here"
+
+# ============================================
+# 其他敏感配置
+# ============================================
+
+# 在这里添加其他敏感信息

@@ -1,0 +1,5 @@
+{
+  "autoupdate:channel": "latest",
+  "telemetry:enabled": false,
+  "web:defaulturl": "https://developer.x.com/en/docs/x-api/tweets/timelines/api-reference/get-users-id-tweets"
+}

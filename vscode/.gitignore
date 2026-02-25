@@ -1,0 +1,10 @@
+# 忽略备份文件
+*.backup.*
+
+# 忽略临时文件
+*.tmp
+*.log
+
+# 保留配置文件
+!keybindings.json
+!settings.json
