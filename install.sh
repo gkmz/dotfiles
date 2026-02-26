@@ -29,11 +29,13 @@ show_help() {
   echo -e "  git            Git 配置（.gitconfig 等）"
   echo -e "  vim            Vim 配置（.vimrc）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
+  echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
   echo ""
   echo -e "${BLUE}示例：${NC}"
   echo -e "  ./install.sh                    # 安装所有模块"
   echo -e "  ./install.sh terminal git       # 只安装 terminal 和 git"
   echo -e "  ./install.sh vscode             # 只安装 VSCode 系列 IDE"
+  echo -e "  ./install.sh ai-ide             # 只安装 AI IDE 配置"
   echo -e "  ./install.sh -l                 # 列出所有模块"
   echo ""
 }
@@ -46,6 +48,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} git       - Git 配置"
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
+  echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
   echo ""
 }
 
@@ -224,6 +227,28 @@ install_vscode() {
   fi
 }
 
+# 模块：安装 AI IDE 配置
+install_ai_ide() {
+  echo -e "${BLUE}=== 安装 AI IDE 配置 ===${NC}\n"
+  
+  # 检查是否在项目目录中
+  if [ "$PWD" = "$DOTFILES_DIR" ]; then
+    echo -e "${YELLOW}请在项目目录中运行 AI IDE 安装${NC}"
+    echo -e "${YELLOW}示例：${NC}"
+    echo -e "  cd /path/to/your/project"
+    echo -e "  $DOTFILES_DIR/ai-ide/install-ai-ide.sh"
+    echo ""
+    return
+  fi
+  
+  # 调用 AI IDE 安装脚本
+  if [ -f "$DOTFILES_DIR/ai-ide/install-ai-ide.sh" ]; then
+    bash "$DOTFILES_DIR/ai-ide/install-ai-ide.sh"
+  else
+    echo -e "${RED}错误：找不到 AI IDE 安装脚本${NC}\n"
+  fi
+}
+
 # 主程序
 main() {
   echo -e "${GREEN}"
@@ -240,6 +265,7 @@ main() {
     install_git
     install_vim
     install_vscode
+    echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
   else
     case "$1" in
       -h|--help)
@@ -256,6 +282,7 @@ main() {
         install_git
         install_vim
         install_vscode
+        echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
         ;;
       *)
         # 安装指定的模块
@@ -275,6 +302,9 @@ main() {
               ;;
             vscode)
               install_vscode
+              ;;
+            ai-ide)
+              install_ai_ide
               ;;
             *)
               echo -e "${RED}错误：未知模块 '$module'${NC}"
