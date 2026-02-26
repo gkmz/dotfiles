@@ -2,47 +2,77 @@
   // ============================================
   // 编辑器基础设置
   // ============================================
-  "editor.fontSize": 14,
-  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
-  "editor.lineHeight": 1.6,
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.wordWrap": "on",
-  "editor.minimap.enabled": true,
-  "editor.formatOnSave": true,
+  "editor.fontSize": 14, // 编辑器字体大小
+  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace", // 编辑器字体
+  "editor.lineHeight": 1.6, // 行高，1.6 倍行距更舒适
+  "editor.tabSize": 2, // Tab 键缩进空格数
+  "editor.insertSpaces": true, // 按 Tab 键时插入空格而不是制表符
+  "editor.wordWrap": "on", // 自动换行，避免横向滚动
+  "editor.minimap.enabled": true, // 显示代码缩略图（右侧小地图）
+  "editor.formatOnSave": true, // 保存文件时自动格式化代码
   // ============================================
   // 文件和工作区
   // ============================================
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000,
+  "files.autoSave": "afterDelay", // 延迟自动保存文件
+  "files.autoSaveDelay": 1000, // 自动保存延迟时间（毫秒），1秒后保存
   "files.exclude": {
-    "**/.git": true,
-    "**/.DS_Store": true,
-    "**/node_modules": true,
-    "**/__pycache__": true
+    // 在文件浏览器中隐藏这些文件/文件夹
+    "**/.git": true, // 隐藏 Git 目录
+    "**/.DS_Store": true, // 隐藏 macOS 系统文件
+    "**/node_modules": true, // 隐藏 Node.js 依赖目录
+    "**/__pycache__": true // 隐藏 Python 缓存目录
   },
   // ============================================
   // 终端设置
   // ============================================
-  "terminal.integrated.fontSize": 13,
-  "terminal.integrated.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+  "terminal.integrated.fontSize": 13, // 终端字体大小
+  "terminal.integrated.fontFamily": "Menlo, Monaco, 'Courier New', monospace", // 终端字体
   // ============================================
   // Git 设置
   // ============================================
-  "git.autofetch": true,
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
+  "git.autofetch": true, // 自动从远程仓库获取更新
+  "git.confirmSync": false, // 同步时不显示确认对话框
+  "git.enableSmartCommit": true, // 启用智能提交（没有暂存文件时提交所有更改）
   // ============================================
-  // 其他设置
+  // 工作区和界面设置
   // ============================================
-  "workbench.startupEditor": "none",
-  "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false,
+  "workbench.startupEditor": "none", // 启动时不打开欢迎页面
+  "explorer.confirmDelete": false, // 删除文件时不显示确认对话框
+  "explorer.confirmDragAndDrop": false, // 拖放文件时不显示确认对话框
+  // ============================================
+  // 扩展特定设置
+  // ============================================
   "extensions.experimental.affinity": {
+    // VSCode Neovim 扩展使用独立进程，提高性能
     "asvetliakov.vscode-neovim": 1
   },
-  "editor.formatOnSaveMode": "modifications",
-  "javascript.format.enable": false,
-  "kiroAgent.agentAutonomy": "Autopilot",
+  "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
+  "javascript.format.enable": false, // 禁用 VSCode 内置的 JavaScript 格式化（使用 Prettier 等外部工具）
+  "kiroAgent.agentAutonomy": "Autopilot", // Kiro AI 助手自动模式
+  // ============================================
+  // Multi-command 扩展配置
+  // ============================================
+  // 需要安装扩展: ryuta46.multi-command
+  // 用于创建自定义命令，执行多个 VSCode 命令序列
+  "multiCommand.commands": [
+    {
+      // 自定义命令：隐藏所有面板
+      "command": "multiCommand.hideAllPanels",
+      "sequence": [
+        "workbench.action.closeSidebar", // 关闭左侧边栏
+        "workbench.action.closePanel", // 关闭底部面板
+        "workbench.action.closeAuxiliaryBar" // 关闭右侧辅助栏
+      ]
+    },
+    {
+      // 自定义命令：显示所有面板
+      "command": "multiCommand.showAllPanels",
+      "sequence": [
+        "workbench.action.toggleSidebarVisibility", // 切换左侧边栏
+        "workbench.action.togglePanel", // 切换底部面板
+        "workbench.action.toggleAuxiliaryBar" // 切换右侧辅助栏
+      ]
+    }
+  ]
   // 在这里添加你的其他设置
 }

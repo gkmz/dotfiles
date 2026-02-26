@@ -60,7 +60,27 @@
 - **用途**: 代码格式化
 - **必装**: ✅
 
+## ⌨️ 编辑器增强
+
+### VSCode Neovim
+- **插件名称**: VSCode Neovim
+- **插件 ID**: `asvetliakov.vscode-neovim`
+- **用途**: 在 VSCode 中集成 Neovim，使用 Vim 键位和命令
+- **必装**: ⭐ (Vim 用户必备)
+
+### IntelliJ IDEA Keybindings
+- **插件名称**: IntelliJ IDEA Keybindings
+- **插件 ID**: `k--kato.intellij-idea-keybindings`
+- **用途**: 使用 IntelliJ IDEA 的快捷键
+- **必装**: ⭐ (IDEA 用户)
+
 ## 🔨 工具增强
+
+### LazyGit
+- **插件名称**: LazyGit
+- **插件 ID**: `ChaitanyaShahare.lazygit`
+- **用途**: 在 VSCode 中集成 LazyGit，提供更好的 Git 操作体验
+- **必装**: ⭐
 
 ### GitLens
 - **插件名称**: GitLens
@@ -138,6 +158,7 @@ kiro --install-extension ms-python.python
 
 ## 📝 维护日志
 
+- 2026-02-26: 添加 VSCode Neovim、IntelliJ IDEA Keybindings、LazyGit 插件
 - 2026-02-25: 初始化插件列表
 - (在这里记录插件的添加、删除、更新)
 
