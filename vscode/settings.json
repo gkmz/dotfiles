@@ -41,5 +41,8 @@
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
+  "editor.formatOnSaveMode": "modifications",
+  "javascript.format.enable": false,
+  "kiroAgent.agentAutonomy": "Autopilot",
   // 在这里添加你的其他设置
 }

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # AI IDE 配置安装脚本
 # 支持 Kiro, Cursor, Windsurf 等主流 AI IDE
@@ -11,36 +11,37 @@ BLUE='\033[0;34m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CURRENT_DIR="$(pwd)"
+DOTFILES_DIR="$( cd "$( dirname "${(%):-%x}" )" && pwd )"
+TARGET_DIR=""
 
 # AI IDE 配置目录映射
-declare -A IDE_CONFIG_DIRS=(
-  ["kiro"]=".kiro"
-  ["cursor"]=".cursor"
-  ["windsurf"]=".windsurf"
-  ["trae"]=".trae"
-  ["trae-cn"]=".trae"
-  ["antigravity"]=".antigravity"
-  ["comate"]=".comate"
-  ["codebuddy"]=".codebuddy"
-  ["lingma"]=".lingma"
+typeset -A IDE_CONFIG_DIRS=(
+  kiro .kiro
+  cursor .cursor
+  windsurf .windsurf
+  trae .trae
+  trae-cn .trae
+  antigravity .antigravity
+  comate .comate
+  codebuddy .codebuddy
+  lingma .lingma
 )
 
 # 显示帮助信息
 show_help() {
   echo -e "${BLUE}用法:${NC}"
-  echo -e "  ./install-ai-ide.sh [IDE...]"
+  echo -e "  ./install-ai-ide.sh [目标目录] [IDE...]"
   echo ""
   echo -e "${BLUE}支持的 IDE:${NC}"
-  for ide in "${!IDE_CONFIG_DIRS[@]}"; do
+  for ide in ${(k)IDE_CONFIG_DIRS}; do
     echo -e "  - $ide"
   done | sort
   echo ""
   echo -e "${BLUE}示例:${NC}"
-  echo -e "  ./install-ai-ide.sh              # 自动检测并安装"
-  echo -e "  ./install-ai-ide.sh kiro         # 安装到 Kiro"
-  echo -e "  ./install-ai-ide.sh kiro cursor  # 安装到多个 IDE"
+  echo -e "  ./install-ai-ide.sh ~/workspace/myproject              # 自动检测并安装到指定项目"
+  echo -e "  ./install-ai-ide.sh ~/workspace/myproject kiro         # 安装到指定项目的 Kiro"
+  echo -e "  ./install-ai-ide.sh ~/workspace/myproject kiro cursor  # 安装到多个 IDE"
+  echo -e "  ./install-ai-ide.sh .                                  # 安装到当前目录"
   echo ""
 }
 
@@ -83,7 +84,7 @@ install_to_ide() {
     return 1
   fi
   
-  local target_dir="$CURRENT_DIR/$config_dir"
+  local target_dir="$TARGET_DIR/$config_dir"
   
   echo -e "${BLUE}=== 安装到 $ide ===${NC}"
   
@@ -122,9 +123,9 @@ install_to_ide() {
 detect_ide() {
   local detected=()
   
-  for ide in "${!IDE_CONFIG_DIRS[@]}"; do
+  for ide in ${(k)IDE_CONFIG_DIRS}; do
     config_dir="${IDE_CONFIG_DIRS[$ide]}"
-    if [ -d "$CURRENT_DIR/$config_dir" ]; then
+    if [ -d "$TARGET_DIR/$config_dir" ]; then
       detected+=("$ide")
     fi
   done
@@ -140,13 +141,37 @@ main() {
   echo "╚════════════════════════════════════════╝"
   echo -e "${NC}\n"
   
-  # 检查是否在项目目录中
-  if [ "$CURRENT_DIR" = "$HOME" ]; then
-    echo -e "${RED}错误: 请在项目目录中运行此脚本,而不是在 HOME 目录${NC}\n"
+  # 解析参数
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    show_help
+    exit 0
+  fi
+  
+  # 第一个参数是目标目录
+  if [ $# -eq 0 ]; then
+    echo -e "${RED}错误: 请指定目标项目目录${NC}\n"
+    show_help
     exit 1
   fi
   
-  # 解析参数
+  TARGET_DIR="$(cd "$1" 2>/dev/null && pwd || echo "$1")"
+  
+  # 验证目标目录
+  if [ ! -d "$TARGET_DIR" ]; then
+    echo -e "${RED}错误: 目标目录不存在: $TARGET_DIR${NC}\n"
+    exit 1
+  fi
+  
+  if [ "$TARGET_DIR" = "$HOME" ]; then
+    echo -e "${RED}错误: 不能安装到 HOME 目录，请指定具体的项目目录${NC}\n"
+    exit 1
+  fi
+  
+  echo -e "${BLUE}目标目录: ${NC}$TARGET_DIR\n"
+  
+  shift  # 移除第一个参数（目标目录）
+  
+  # 解析 IDE 参数
   if [ $# -eq 0 ]; then
     # 自动检测
     echo -e "${YELLOW}自动检测项目使用的 IDE...${NC}\n"
@@ -169,9 +194,6 @@ main() {
     for ide in "${detected_ides[@]}"; do
       install_to_ide "$ide"
     done
-  elif [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-    show_help
-    exit 0
   else
     # 安装到指定的 IDE
     for ide in "$@"; do
@@ -187,7 +209,7 @@ main() {
   
   echo -e "${YELLOW}提示:${NC}"
   echo -e "  1. 重启 IDE 使配置生效"
-  echo -e "  2. 验证软链接: ${BLUE}ls -la .kiro/steering${NC}"
+  echo -e "  2. 验证软链接: ${BLUE}ls -la $TARGET_DIR/.kiro/steering${NC}"
   echo -e "  3. 使用 skill: ${BLUE}run skill geekmo${NC}\n"
 }
 

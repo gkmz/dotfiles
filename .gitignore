@@ -37,6 +37,8 @@ cache/
 # 编辑器临时文件
 .vscode/
 .idea/
+.kiro
+.cursor
 
 # 导出的插件列表
 vscode/exported-extensions/
