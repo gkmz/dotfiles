@@ -39,6 +39,7 @@ cache/
 .idea/
 .kiro
 .cursor
+.antigravity
 
 # 导出的插件列表
 vscode/exported-extensions/
