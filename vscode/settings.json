@@ -46,9 +46,171 @@
     // VSCode Neovim 扩展使用独立进程，提高性能
     "asvetliakov.vscode-neovim": 1
   },
+  // ============================================
+  // VSCode Neovim 设置（修复中文渲染问题）
+  // ============================================
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.vim", // macOS 上的 Neovim 配置文件路径
+  "vscode-neovim.useWSL": false, // 不使用 WSL
+  "vscode-neovim.textDecorations.enable": false, // 禁用 Neovim 的文本装饰，避免渲染冲突
+  "vscode-neovim.compositeKeys": {
+    // 组合键配置：jk 快速退出插入模式
+    "jk": {
+      "command": "vscode-neovim.escape"
+    }
+  },
   "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
   "javascript.format.enable": false, // 禁用 VSCode 内置的 JavaScript 格式化（使用 Prettier 等外部工具）
   "kiroAgent.agentAutonomy": "Autopilot", // Kiro AI 助手自动模式
+  // ============================================
+  // 光标设置（配合 Neovim 使用）
+  // ============================================
+  "editor.cursorBlinking": "solid", // 光标不闪烁，避免与 Neovim 冲突
+  "editor.cursorSmoothCaretAnimation": "off", // 关闭光标平滑动画
+  // ============================================
+  // Go 语言特定设置
+  // ============================================
+  "[go]": {
+    "editor.insertSpaces": false, // Go 官方推荐使用 Tab 字符而不是空格
+    "editor.tabSize": 4, // Tab 显示为 4 个空格宽度
+    "editor.formatOnSave": true, // 保存时自动格式化
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit" // 保存时自动整理 import
+    }
+  },
+  "[go.mod]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
+  },
+  "[go.sum]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4
+  },
+  // ============================================
+  // Python 语言特定设置
+  // ============================================
+  "[python]": {
+    "editor.insertSpaces": true, // Python 使用空格（PEP 8 标准）
+    "editor.tabSize": 4, // 4 个空格缩进
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  // ============================================
+  // Java 语言特定设置
+  // ============================================
+  "[java]": {
+    "editor.insertSpaces": true, // Java 使用空格
+    "editor.tabSize": 4, // 4 个空格缩进（Java 标准）
+    "editor.formatOnSave": true
+  },
+  // ============================================
+  // Rust 语言特定设置
+  // ============================================
+  "[rust]": {
+    "editor.insertSpaces": true, // Rust 使用空格
+    "editor.tabSize": 4, // 4 个空格缩进（rustfmt 默认）
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  // ============================================
+  // JavaScript/TypeScript 语言特定设置
+  // ============================================
+  "[javascript]": {
+    "editor.insertSpaces": true, // 使用空格
+    "editor.tabSize": 2, // 2 个空格缩进（社区主流）
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // 使用 Prettier
+  },
+  "[javascriptreact]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2, // 2 个空格缩进
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  // ============================================
+  // Lua 语言特定设置
+  // ============================================
+  "[lua]": {
+    "editor.insertSpaces": true, // Lua 使用空格
+    "editor.tabSize": 2, // 2 个空格缩进（社区主流）
+    "editor.formatOnSave": true
+  },
+  // ============================================
+  // HTML/CSS/SCSS 设置
+  // ============================================
+  "[html]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[scss]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  // ============================================
+  // Markdown 设置
+  // ============================================
+  "[markdown]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true, // 启用保存时格式化
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // 使用 Prettier 格式化
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  // ============================================
+  // YAML 设置
+  // ============================================
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2, // YAML 必须使用空格，通常 2 个
+    "editor.formatOnSave": true
+  },
+  // ============================================
+  // Shell 脚本设置
+  // ============================================
+  "[shellscript]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2, // Shell 脚本通常使用 2 个空格
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "foxundermoon.shell-format" // 使用 shell-format 扩展
+  },
+  // Shell-format 扩展配置
+  "shellformat.flag": "-i 2 -ci", // -i 2: 缩进2个空格, -ci: case 语句缩进
   // ============================================
   // Multi-command 扩展配置
   // ============================================
@@ -73,6 +235,9 @@
         "workbench.action.toggleAuxiliaryBar" // 切换右侧辅助栏
       ]
     }
-  ]
+  ],
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  }
   // 在这里添加你的其他设置
 }

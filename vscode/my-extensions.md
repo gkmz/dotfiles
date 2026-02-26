@@ -48,17 +48,26 @@
 
 ## 🎨 代码质量和格式化
 
+### Prettier
+- **插件名称**: Prettier - Code formatter
+- **插件 ID**: `esbenp.prettier-vscode`
+- **用途**: 代码格式化，支持 JavaScript、TypeScript、Markdown、JSON、YAML 等多种语言
+- **必装**: ✅
+- **配置说明**: 已在 settings.json 中配置为 JS/TS/Markdown 的默认格式化工具
+
+### shell-format
+- **插件名称**: shell-format
+- **插件 ID**: `foxundermoon.shell-format`
+- **用途**: Shell 脚本格式化
+- **必装**: ✅ (如果写 Shell 脚本)
+- **依赖**: 需要安装 `shfmt` 工具（`brew install shfmt`）
+- **配置说明**: 已配置为 2 个空格缩进
+
 ### ESLint
 - **插件名称**: ESLint
 - **插件 ID**: `dbaeumer.vscode-eslint`
 - **用途**: JavaScript/TypeScript 代码检查
 - **必装**: ✅ (前端项目)
-
-### Prettier
-- **插件名称**: Prettier - Code formatter
-- **插件 ID**: `esbenp.prettier-vscode`
-- **用途**: 代码格式化
-- **必装**: ✅
 
 ## ⌨️ 编辑器增强
 
@@ -145,19 +154,46 @@
 ### 方式一：手动安装
 在 IDE 的扩展市场搜索插件 ID 并安装。
 
-### 方式二：命令行安装（如果支持）
+### 方式二：命令行安装（Kiro IDE）
 ```bash
-# 示例（需要根据实际 IDE 调整命令）
+# 必装插件
 kiro --install-extension golang.go
 kiro --install-extension ms-python.python
-# ... 其他插件
+kiro --install-extension rust-lang.rust-analyzer
+kiro --install-extension yzhang.markdown-all-in-one
+kiro --install-extension esbenp.prettier-vscode
+kiro --install-extension foxundermoon.shell-format
+kiro --install-extension christian-kohler.path-intellisense
+kiro --install-extension gruntfuggly.todo-tree
+
+# 推荐插件
+kiro --install-extension asvetliakov.vscode-neovim
+kiro --install-extension ChaitanyaShahare.lazygit
+kiro --install-extension eamodio.gitlens
+kiro --install-extension usernamehw.errorlens
+kiro --install-extension continue.continue
+
+# 前端开发
+kiro --install-extension dbaeumer.vscode-eslint
+kiro --install-extension ritwickdey.liveserver
+
+# Docker 相关
+kiro --install-extension ms-azuretools.vscode-docker
 ```
 
-### 方式三：批量安装脚本
-创建 `install-my-extensions.sh` 脚本，批量安装所有插件。
+### 方式三：安装 shfmt（shell-format 依赖）
+```bash
+# macOS
+brew install shfmt
+
+# Linux
+# 下载二进制文件
+curl -sS https://webinstall.dev/shfmt | bash
+```
 
 ## 📝 维护日志
 
+- 2026-02-26: 添加 shell-format 插件，更新 Prettier 配置说明
 - 2026-02-26: 添加 VSCode Neovim、IntelliJ IDEA Keybindings、LazyGit 插件
 - 2026-02-25: 初始化插件列表
 - (在这里记录插件的添加、删除、更新)
@@ -172,4 +208,4 @@ kiro --install-extension ms-python.python
 ## 🔗 相关资源
 
 - [VSCode 插件市场](https://marketplace.visualstudio.com/)
-- [我的配置仓库](https://github.com/yourusername/dotfiles)
+- [我的配置仓库](https://github.com/hankmor/dotfiles)
