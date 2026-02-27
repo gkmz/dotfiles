@@ -43,6 +43,8 @@ function M.setup_common_keymaps()
   -- vim.keymap.set("n", "<S-Tab>", "<Cmd><<CR>")
   -- vim.keymap.set("n", "<Tab>", "<Cmd>><CR>")
   -- go to head/tail of a line
+  vim.keymap.set({ "n", "v" }, "gj", "j", { remap = true })
+  vim.keymap.set({ "n", "v" }, "gk", "k", { remap = true })
   vim.keymap.set({ "n", "v" }, "gh", "^", { remap = true })
   vim.keymap.set({ "n", "v" }, "gl", "$", { remap = true })
   -- fast comment
