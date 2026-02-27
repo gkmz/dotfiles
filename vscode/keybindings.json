@@ -71,6 +71,78 @@
     "command": "-workbench.action.focusFourthEditorGroup"
   },
   // ============================================
+  // Vim 风格滚动快捷键
+  // ============================================
+  // Ctrl + Shift + D: 向下滚动 10 行（屏幕滚动，光标不动）
+  {
+    "key": "ctrl+shift+d",
+    "command": "editorScroll",
+    "args": {
+      "to": "down",
+      "by": "line",
+      "value": 10
+    },
+    "when": "editorTextFocus"
+  },
+  // Ctrl + Shift + U: 向上滚动 10 行（屏幕滚动，光标不动）
+  {
+    "key": "ctrl+shift+u",
+    "command": "editorScroll",
+    "args": {
+      "to": "up",
+      "by": "line",
+      "value": 10
+    },
+    "when": "editorTextFocus"
+  },
+  // Ctrl + D: 光标向下移动 10 行（Vim 风格）
+  {
+    "key": "ctrl+d",
+    "command": "cursorMove",
+    "args": {
+      "to": "down",
+      "by": "line",
+      "value": 10
+    },
+    "when": "editorTextFocus"
+  },
+  // Ctrl + U: 光标向上移动 10 行（Vim 风格）
+  {
+    "key": "ctrl+u",
+    "command": "cursorMove",
+    "args": {
+      "to": "up",
+      "by": "line",
+      "value": 10
+    },
+    "when": "editorTextFocus"
+  },
+  // ============================================
+  // Alt + J/K 移动行（类似 IntelliJ IDEA）
+  // ============================================
+  // 禁用 Alt + J 的默认行为（shrink selection）
+  {
+    "key": "alt+j",
+    "command": "-editor.action.smartSelect.shrink"
+  },
+  // 禁用 Alt + K 的默认行为（expand selection）
+  {
+    "key": "alt+k",
+    "command": "-editor.action.smartSelect.expand"
+  },
+  // Alt + J: 向下移动当前行
+  {
+    "key": "alt+j",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // Alt + K: 向上移动当前行
+  {
+    "key": "alt+k",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  // ============================================
   // AI 聊天窗口快捷键
   // ============================================
   // Alt + C: 智能切换 AI 聊天窗口
@@ -113,7 +185,7 @@
   // ============================================
   // Cmd + 0: 智能切换所有面板的显示状态
   // 需要安装 multi-command 扩展: code --install-extension ryuta46.multi-command
-  // 
+  //
   // 如果有任何面板可见（左侧栏/底部面板/右侧栏）→ 隐藏所有面板
   {
     "key": "cmd+0",

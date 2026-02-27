@@ -49,7 +49,7 @@
   // ============================================
   // VSCode Neovim 设置（修复中文渲染问题）
   // ============================================
-  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.vim", // macOS 上的 Neovim 配置文件路径
+  "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.lua", // macOS 上的 Neovim 配置文件路径
   "vscode-neovim.useWSL": false, // 不使用 WSL
   "vscode-neovim.textDecorations.enable": false, // 禁用 Neovim 的文本装饰，避免渲染冲突
   "vscode-neovim.compositeKeys": {
@@ -58,6 +58,29 @@
       "command": "vscode-neovim.escape"
     }
   },
+  // ============================================
+  // Neovim 键位映射（gj/gk 用于换行显示的行间移动）
+  // ============================================
+  "vscode-neovim.normalModeKeyBindings": [
+    {
+      "before": ["j"],
+      "after": ["g", "j"]
+    },
+    {
+      "before": ["k"],
+      "after": ["g", "k"]
+    }
+  ],
+  "vscode-neovim.visualModeKeyBindings": [
+    {
+      "before": ["j"],
+      "after": ["g", "j"]
+    },
+    {
+      "before": ["k"],
+      "after": ["g", "k"]
+    }
+  ],
   "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
   "javascript.format.enable": false, // 禁用 VSCode 内置的 JavaScript 格式化（使用 Prettier 等外部工具）
   "kiroAgent.agentAutonomy": "Autopilot", // Kiro AI 助手自动模式
@@ -149,7 +172,8 @@
   "[jsonc]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   // ============================================
   // Lua 语言特定设置
