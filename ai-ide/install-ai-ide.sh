@@ -209,8 +209,13 @@ main() {
   
   echo -e "${YELLOW}提示:${NC}"
   echo -e "  1. 重启 IDE 使配置生效"
-  echo -e "  2. 验证软链接: ${BLUE}ls -la $TARGET_DIR/.kiro/steering${NC}"
-  echo -e "  3. 使用 skill: ${BLUE}run skill geekmo${NC}\n"
+  echo -e "  2. 验证软链接: ${BLUE}ls -la $TARGET_DIR/.kiro/skills${NC}"
+  echo -e "  3. 可用的 skills:"
+  echo -e "     - ${BLUE}geekmo-practice${NC}: 实战文章风格（问题解决、经验分享）"
+  echo -e "     - ${BLUE}geekmo-course${NC}: 教程文章风格（系统化知识讲解）"
+  echo -e "  4. 使用方法:"
+  echo -e "     - 实战文章: ${BLUE}用 geekmo-practice 风格写一篇...${NC}"
+  echo -e "     - 教程文章: ${BLUE}用 geekmo-course 风格写一篇 Go 函数教程${NC}\n"
 }
 
 main "$@"

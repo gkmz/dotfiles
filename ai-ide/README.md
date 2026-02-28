@@ -1,87 +1,174 @@
 # AI IDE 配置
 
-这个目录包含了适用于各种 AI IDE 的共享配置,包括 skills 和 steering 规则。
+这个目录包含了用于各种 AI IDE 的配置文件，包括 Skills 和 Steering 规则。
 
 ## 目录结构
 
 ```
 ai-ide/
-├── steering/           # Steering 规则(适用于 Kiro 等)
-│   └── git-commit-chinese.md
-├── skills/            # Skills 定义(适用于 Kiro 等)
-│   └── geekmo/
-│       ├── SKILL.md
-│       └── README.md
-└── install-ai-ide.sh  # 安装脚本
+├── skills/              # AI Agent Skills
+│   ├── geekmo/         # 实战文章风格
+│   ├── geekmo-course/  # 教程文章风格
+│   └── README.md       # Skills 使用说明
+├── steering/           # Steering 规则
+│   └── *.md           # 各种规则文件
+├── install-ai-ide.sh  # 安装脚本
+└── README.md          # 本文件
 ```
 
-## 支持的 AI IDE
+## 快速开始
 
-- Kiro
-- Cursor
-- Windsurf
-- Trae / Trae CN
-- Antigravity
-- Comate
-- CodeBuddy
-- Lingma
-
-## 使用方法
-
-### 方式一：自动检测安装（推荐）
+### 1. 安装到项目
 
 ```bash
-cd /path/to/your/project
-~/dotfiles/ai-ide/install-ai-ide.sh
-```
+# 自动检测项目使用的 IDE 并安装
+./install-ai-ide.sh ~/workspace/myproject
 
-脚本会自动检测项目中已有的 IDE 配置目录（如 `.kiro`, `.cursor` 等）并安装相应配置。
-
-### 方式二：手动指定 IDE
-
-```bash
-# 安装到单个 IDE
-cd /path/to/your/project
-~/dotfiles/ai-ide/install-ai-ide.sh kiro
+# 安装到指定 IDE
+./install-ai-ide.sh ~/workspace/myproject kiro
 
 # 安装到多个 IDE
-~/dotfiles/ai-ide/install-ai-ide.sh kiro cursor windsurf
+./install-ai-ide.sh ~/workspace/myproject kiro cursor windsurf
+
+# 安装到当前目录
+./install-ai-ide.sh .
 ```
 
-### 方式三：通过主安装脚本
+### 2. 验证安装
 
 ```bash
-# 在 dotfiles 目录中
-./install.sh ai-ide
+# 查看已安装的 skills
+ls -la ~/workspace/myproject/.kiro/skills
+
+# 应该看到软链接指向 dotfiles
 ```
 
-注意：ai-ide 模块需要在项目目录中运行，主安装脚本会提示你如何使用。
+### 3. 使用 Skills
 
-## 配置说明
+在 AI IDE 中，使用以下提示词：
 
-### Steering 规则
+**实战文章**（问题解决、经验分享）：
+```
+用 geekmo-practice 风格写一篇关于 Docker 部署的文章
+```
 
-- `git-commit-chinese.md`: 强制使用中文 Git 提交信息
+**教程文章**（系统化知识讲解）：
+```
+用 geekmo-course 风格写一篇 Go 函数的教程
+用 geekmo-course 风格写一篇 Rust 所有权的教程
+用 geekmo-course 风格写一篇 Python 装饰器的教程
+```
 
-### Skills
+## 支持的 IDE
 
-- `geekmo`: 极客老墨写作风格,用于撰写技术文章
+- Kiro (`.kiro`)
+- Cursor (`.cursor`)
+- Windsurf (`.windsurf`)
+- Trae (`.trae`)
+- Antigravity (`.antigravity`)
+- Comate (`.comate`)
+- CodeBuddy (`.codebuddy`)
+- Lingma (`.lingma`)
 
-## 验证安装
+## Skills 说明
+
+### geekmo-practice - 实战文章风格
+
+**适用场景**：
+- 问题解决类文章
+- 工具使用经验分享
+- 踩坑记录
+- 技术选型分析
+
+**特点**：
+- 从具体问题出发
+- 讲解决方案和实现过程
+- 口语化更多，有故事性
+- 总结侧重经验和踩坑记录
+
+### geekmo-course - 教程文章风格
+
+**适用场景**：
+- 编程语言系统化教程（Go/Rust/Python/JavaScript 等）
+- 知识点讲解
+- 概念说明
+- 语法特性介绍
+
+**特点**：
+- 系统化讲解知识点
+- 知识点拆解 + 小代码片段
+- 口语化适度（开头/结尾）
+- 包含完整示例和练习题
+
+详细对比请查看 [skills/README.md](skills/README.md)
+
+## 工作原理
+
+安装脚本会在目标项目的 IDE 配置目录中创建软链接，指向 dotfiles 中的配置文件。这样：
+
+1. **集中管理**：所有配置在 dotfiles 中统一维护
+2. **自动同步**：修改 dotfiles 后，所有项目自动生效
+3. **版本控制**：配置文件可以通过 git 管理
+4. **多项目共享**：一次配置，多个项目使用
+
+## 更新配置
+
+如果修改了 skills 或 steering 内容：
+
+1. 编辑 `dotfiles/ai-ide/skills/*/SKILL.md` 或 `steering/*.md`
+2. 不需要重新运行安装脚本（软链接自动生效）
+3. 重启 IDE 使配置生效
+
+## 添加新的 Skill
+
+1. 在 `skills/` 目录下创建新的 skill 目录
+2. 添加 `SKILL.md` 和 `README.md`
+3. 重新运行安装脚本
+
+## 卸载
+
+删除项目中的软链接：
 
 ```bash
-# 查看软链接
-ls -la .kiro/steering/
-ls -la .kiro/skills/
-
-# 应该看到类似输出：
-# lrwxr-xr-x  git-commit-chinese.md -> ~/dotfiles/ai-ide/steering/git-commit-chinese.md
-# lrwxr-xr-x  geekmo -> ~/dotfiles/ai-ide/skills/geekmo
+rm -rf ~/workspace/myproject/.kiro/skills/geekmo
+rm -rf ~/workspace/myproject/.kiro/skills/geekmo-course
+rm -rf ~/workspace/myproject/.kiro/steering/*
 ```
 
-## 注意事项
+或者删除整个配置目录：
 
-- 安装脚本会创建软链接,不会复制文件
-- 如果项目已有配置,会自动备份（添加 `.backup.日期时间` 后缀）
-- 不同 IDE 的配置目录结构可能不同,脚本会自动适配
-- 修改 dotfiles 中的配置会立即影响所有已安装的项目
+```bash
+rm -rf ~/workspace/myproject/.kiro
+```
+
+## 故障排除
+
+### 软链接失效
+
+如果移动了 dotfiles 目录，软链接会失效。重新运行安装脚本即可：
+
+```bash
+./install-ai-ide.sh ~/workspace/myproject
+```
+
+### IDE 无法识别 Skill
+
+1. 检查软链接是否正确：`ls -la ~/.kiro/skills`
+2. 重启 IDE
+3. 确认 IDE 版本支持 Skills 功能
+
+### 权限问题
+
+确保安装脚本有执行权限：
+
+```bash
+chmod +x install-ai-ide.sh
+```
+
+## 贡献
+
+欢迎提 PR 改进配置和脚本！
+
+## 许可
+
+MIT
