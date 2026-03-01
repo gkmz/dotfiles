@@ -262,6 +262,8 @@
   ],
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
-  }
+  },
+  "kiroAgent.trustedCommands": [],
+  "kiroAgent.modelSelection": "auto"
   // 在这里添加你的其他设置
 }
