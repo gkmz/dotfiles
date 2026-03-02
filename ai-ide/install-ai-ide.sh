@@ -21,10 +21,17 @@ typeset -A IDE_CONFIG_DIRS=(
   windsurf .windsurf
   trae .trae
   trae-cn .trae
-  antigravity .antigravity
+  antigravity_rules .antigravity
+  antigravity_skills .agent
   comate .comate
   codebuddy .codebuddy
   lingma .lingma
+)
+
+# Antigravity 特殊处理：rules 和 skills 分开
+typeset -A ANTIGRAVITY_SUBDIRS=(
+  rules rules
+  skills skills
 )
 
 # 显示帮助信息
@@ -94,26 +101,64 @@ install_to_ide() {
     mkdir -p "$target_dir"
   fi
   
-  # 安装 steering 规则
-  if [ -d "$DOTFILES_DIR/steering" ]; then
-    echo -e "${YELLOW}安装 Steering 规则...${NC}"
-    for steering_file in "$DOTFILES_DIR/steering"/*.md; do
-      if [ -f "$steering_file" ]; then
-        filename=$(basename "$steering_file")
-        create_symlink "$steering_file" "$target_dir/steering/$filename" "steering/$filename"
-      fi
-    done
-  fi
-  
-  # 安装 skills
-  if [ -d "$DOTFILES_DIR/skills" ]; then
-    echo -e "${YELLOW}安装 Skills...${NC}"
-    for skill_dir in "$DOTFILES_DIR/skills"/*; do
-      if [ -d "$skill_dir" ]; then
-        skill_name=$(basename "$skill_dir")
-        create_symlink "$skill_dir" "$target_dir/skills/$skill_name" "skills/$skill_name"
-      fi
-    done
+  # Antigravity 特殊处理：rules 和 skills 分开
+  if [[ "$ide" == "antigravity_rules" ]]; then
+    # Antigravity rules: 合并所有 steering 文件到 rules.md
+    if [ -d "$DOTFILES_DIR/steering" ]; then
+      echo -e "${YELLOW}安装 Steering 规则到 rules.md...${NC}"
+      local rules_file="$target_dir/rules.md"
+      {
+        echo "# AI IDE 配置规则"
+        echo "Generated: $(date)"
+        echo ""
+        for steering_file in "$DOTFILES_DIR/steering"/*.md; do
+          if [ -f "$steering_file" ]; then
+            echo "## $(basename "$steering_file" .md)"
+            cat "$steering_file"
+            echo ""
+            echo "---"
+            echo ""
+          fi
+        done
+      } > "$rules_file"
+      echo -e "${GREEN}  ✓ rules.md${NC}"
+    fi
+  elif [[ "$ide" == "antigravity_skills" ]]; then
+    # Antigravity skills: 安装到 .agent/skills/
+    if [ -d "$DOTFILES_DIR/skills" ]; then
+      echo -e "${YELLOW}安装 Skills 到 .agent/skills/...${NC}"
+      local skills_target="$target_dir/skills"
+      mkdir -p "$skills_target"
+      for skill_dir in "$DOTFILES_DIR/skills"/*; do
+        if [ -d "$skill_dir" ]; then
+          skill_name=$(basename "$skill_dir")
+          create_symlink "$skill_dir" "$skills_target/$skill_name" "skills/$skill_name"
+        fi
+      done
+    fi
+  else
+    # 普通 IDE: steering 和 skills 分开
+    # 安装 steering 规则
+    if [ -d "$DOTFILES_DIR/steering" ]; then
+      echo -e "${YELLOW}安装 Steering 规则...${NC}"
+      for steering_file in "$DOTFILES_DIR/steering"/*.md; do
+        if [ -f "$steering_file" ]; then
+          filename=$(basename "$steering_file")
+          create_symlink "$steering_file" "$target_dir/steering/$filename" "steering/$filename"
+        fi
+      done
+    fi
+    
+    # 安装 skills
+    if [ -d "$DOTFILES_DIR/skills" ]; then
+      echo -e "${YELLOW}安装 Skills...${NC}"
+      for skill_dir in "$DOTFILES_DIR/skills"/*; do
+        if [ -d "$skill_dir" ]; then
+          skill_name=$(basename "$skill_dir")
+          create_symlink "$skill_dir" "$target_dir/skills/$skill_name" "skills/$skill_name"
+        fi
+      done
+    fi
   fi
   
   echo -e "${GREEN}✓ $ide 安装完成${NC}\n"
@@ -123,12 +168,21 @@ install_to_ide() {
 detect_ide() {
   local detected=()
   
-  for ide in ${(k)IDE_CONFIG_DIRS}; do
+  # 检测普通 IDE
+  for ide in kiro cursor windsurf trae trae-cn comate codebuddy lingma; do
     config_dir="${IDE_CONFIG_DIRS[$ide]}"
     if [ -d "$TARGET_DIR/$config_dir" ]; then
       detected+=("$ide")
     fi
   done
+  
+  # 特殊检测 Antigravity
+  if [ -d "$TARGET_DIR/.antigravity" ]; then
+    detected+=("antigravity_rules")
+  fi
+  if [ -d "$TARGET_DIR/.agent" ]; then
+    detected+=("antigravity_skills")
+  fi
   
   echo "${detected[@]}"
 }
