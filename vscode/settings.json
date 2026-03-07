@@ -2,7 +2,7 @@
   // ============================================
   // 编辑器基础设置
   // ============================================
-  "editor.fontSize": 14, // 编辑器字体大小
+  "editor.fontSize": 16, // 编辑器字体大小
   "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace", // 编辑器字体
   "editor.lineHeight": 1.6, // 行高，1.6 倍行距更舒适
   "editor.tabSize": 2, // Tab 键缩进空格数
@@ -81,9 +81,21 @@
       "after": ["g", "k"]
     }
   ],
+  // ============================================
+  // Neovim 快捷键：方法跳转（使用 outline 导航）
+  // ============================================
+  "vscode-neovim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["[", "f"],
+      "commands": ["outline.focusPreviousOutline"]
+    },
+    {
+      "before": ["]", "f"],
+      "commands": ["outline.focusNextOutline"]
+    }
+  ],
   "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
-  "javascript.format.enable": false, // 禁用 VSCode 内置的 JavaScript 格式化（使用 Prettier 等外部工具）
-  "kiroAgent.agentAutonomy": "Autopilot", // Kiro AI 助手自动模式
+  "javascript.format.enable": false, // Kiro AI 助手自动模式
   // ============================================
   // 光标设置（配合 Neovim 使用）
   // ============================================
@@ -116,6 +128,7 @@
     "editor.insertSpaces": true, // Python 使用空格（PEP 8 标准）
     "editor.tabSize": 4, // 4 个空格缩进
     "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff", // 使用 Black 格式化（需安装扩展）
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
     }
@@ -264,6 +277,34 @@
     "editor.defaultFormatter": "Vue.volar"
   },
   "kiroAgent.trustedCommands": [],
-  "kiroAgent.modelSelection": "auto"
+  "kiroAgent.modelSelection": "auto",
+  "app": {
+    "configGeneralDisplayLanguage": "zh-cn",
+    "configGeneralAiResponseLanguage": "zh-cn",
+    "configGeneralImprovementPlan": "agree",
+    "configGeneralImportSettings": "VS Code",
+    "configCompletionEnableNES": true,
+    "configCompletionDisabledLanguages": [],
+    "configCompletionTriggerInComment": true,
+    "configCompletionAutoImport": true,
+    "configChatWebToolsMode": "Ask every time",
+    "configChatAskModeUseTools": true,
+    "configChatEditFileTool": false,
+    "configChatTerminalRunMode": "askEveryTime",
+    "configChatCommandDenyList": "rm,mv,sudo,wget,curl,chown",
+    "configChatCommandAllowlist": "",
+    "configChatAutoRunMcpTools": true,
+    "configChatMethodQuickOperation": false,
+    "configChatShowSelectionToolbar": true,
+    "configQuestDefaultLayout": false,
+    "configMemoryAutoGenerate": true,
+    "configIntegrationsBrowserRunMode": "Ask every time",
+    "configIntegrationsBrowserToolsRunMode": "Auto-run",
+    "configIntegrationsPlanModeRunConfig": "Ask every time",
+    "configAdvancedAutoUpdate": true,
+    "configAdvancedProxyMode": "system",
+    "configAdvancedProxyURL": ""
+  },
+  "git.openRepositoryInParentFolders": "never"
   // 在这里添加你的其他设置
 }

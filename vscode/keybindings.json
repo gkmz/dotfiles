@@ -210,6 +210,11 @@
   {
     "key": "alt+g",
     "command": "lazygit.openLazygit"
+  },
+  {
+    "key": "alt+cmd+s",
+    "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+    "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
   }
   // ============================================
   // 其他 AI 工具快捷键（已注释，按需启用）

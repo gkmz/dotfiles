@@ -55,6 +55,13 @@
 - **必装**: ✅
 - **配置说明**: 已在 settings.json 中配置为 JS/TS/Markdown 的默认格式化工具
 
+### Black Formatter
+- **插件名称**: Black Formatter
+- **插件 ID**: `ms-python.black-formatter`
+- **用途**: Python 代码格式化，零配置，遵循 PEP 8 标准
+- **必装**: ✅ (Python 开发)
+- **配置说明**: 已在 settings.json 中配置为 Python 的默认格式化工具
+
 ### shell-format
 - **插件名称**: shell-format
 - **插件 ID**: `foxundermoon.shell-format`
@@ -159,6 +166,7 @@
 # 必装插件
 kiro --install-extension golang.go
 kiro --install-extension ms-python.python
+kiro --install-extension ms-python.black-formatter
 kiro --install-extension rust-lang.rust-analyzer
 kiro --install-extension yzhang.markdown-all-in-one
 kiro --install-extension esbenp.prettier-vscode
@@ -193,6 +201,7 @@ curl -sS https://webinstall.dev/shfmt | bash
 
 ## 📝 维护日志
 
+- 2026-03-03: 添加 Black Formatter 插件（Python 代码格式化）
 - 2026-02-26: 添加 shell-format 插件，更新 Prettier 配置说明
 - 2026-02-26: 添加 VSCode Neovim、IntelliJ IDEA Keybindings、LazyGit 插件
 - 2026-02-25: 初始化插件列表
