@@ -2,8 +2,8 @@
   // ============================================
   // 编辑器基础设置
   // ============================================
-  "editor.fontSize": 16, // 编辑器字体大小
-  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace", // 编辑器字体
+  "editor.fontSize": 14, // 编辑器字体大小
+  "editor.fontFamily": "Monaco, 'Courier New', monospace", // 编辑器字体
   "editor.lineHeight": 1.6, // 行高，1.6 倍行距更舒适
   "editor.tabSize": 2, // Tab 键缩进空格数
   "editor.insertSpaces": true, // 按 Tab 键时插入空格而不是制表符
@@ -207,7 +207,8 @@
   "[css]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[scss]": {
     "editor.insertSpaces": true,
@@ -305,6 +306,8 @@
     "configAdvancedProxyMode": "system",
     "configAdvancedProxyURL": ""
   },
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "editor.mouseWheelZoom": true,
+  "makefile.configureOnOpen": false
   // 在这里添加你的其他设置
 }

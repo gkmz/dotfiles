@@ -160,6 +160,13 @@ alias mws="cd ~/workspace/mine/"
 alias ows="cd ~/workspace/opensource/"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+alias ls='eza'
+alias ll='eza -lh'
+alias lt='eza -T -L 2'
+alias lg='eza -lh --git'
+
+alias cat='bat'
+
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$NODE_HOME/bin:$ANDROID_HOME:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_HOME/build-tools/34.0.0/:$ANDROID_HOME/emulator/:$ANDROID_HOME/emulator/bin64:$ANDROID_HOME/platform-tools:$PYTHON_HOME/bin:$CHROME_DRIVER:$(brew --prefix)/Cellar/imagemagick/7.1.1-44/bin:$M2_HOME/bin:$JAVA_HOME/bin:$HOME/.local/share/nvim/mason/packages/google-java-format:$MY_SHELL
 # Added by Antigravity
 export PATH="/Users/hank/.antigravity/antigravity/bin:$PATH"
