@@ -8,3 +8,5 @@
 # 保留配置文件
 !keybindings.json
 !settings.json
+*/keybindings.json
+*/settings.json

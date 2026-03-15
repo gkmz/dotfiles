@@ -85,7 +85,7 @@
     }
   ],
   "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
-  "javascript.format.enable": false, // Kiro AI 助手自动模式
+  "javascript.format.enable": false, // AI 助手自动模式
   // ============================================
   // 光标设置（配合 Neovim 使用）
   // ============================================
@@ -170,7 +170,8 @@
   "[json]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
     "editor.insertSpaces": true,
@@ -267,8 +268,6 @@
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
   },
-  "kiroAgent.trustedCommands": [],
-  "kiroAgent.modelSelection": "auto",
   "app": {
     "configGeneralDisplayLanguage": "zh-cn",
     "configGeneralAiResponseLanguage": "zh-cn",

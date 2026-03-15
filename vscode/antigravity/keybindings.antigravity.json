@@ -1,0 +1,10 @@
+[
+  // Antigravity IDE 专用快捷键增量配置
+  // 示例：当你确认 Antigravity Chat / 接受建议等命令 ID 后，在这里追加：
+  // {
+  //   "key": "alt+a",
+  //   "command": "antigravity.acceptCompletion",
+  //   "when": "editorTextFocus"
+  // }
+]
+

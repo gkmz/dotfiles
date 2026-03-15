@@ -1,0 +1,10 @@
+[
+  // Cursor 专用快捷键增量配置
+  // 示例：当你知道 Cursor Chat 的命令 ID 后，可以这样写：
+  // {
+  //   "key": "alt+c",
+  //   "command": "cursor.chat.toggle",
+  //   "when": "editorTextFocus"
+  // }
+]
+

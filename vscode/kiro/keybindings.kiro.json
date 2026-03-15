@@ -1,0 +1,18 @@
+[
+  // Kiro IDE 专用快捷键增量配置
+  // 示例：当你确定 Kiro Chat 的命令 ID 后，在这里追加
+
+  // Alt + C: 智能切换聊天窗口，将选中内容发送到聊天窗口（不清空之前的内容）
+  // 如果有选中的代码 → 将选中内容发送到聊天窗口（不清空之前的内容）
+  {
+    "key": "alt+c",
+    "command": "kiroAgent.focusContinueInputWithoutClear",
+    "when": "editorHasSelection"
+  },
+  // Alt + Shift + C: 打开 AI 聊天窗口并清空输入框
+  // 如果有选中的代码 → 将选中内容发送到聊天窗口（清空之前的内容）
+  {
+    "key": "alt+shift+c",
+    "command": "kiroAgent.focusContinueInput"
+  }
+]

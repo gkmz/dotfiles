@@ -158,72 +158,21 @@ install_vim() {
 # 模块：安装 VSCode 系列 IDE 配置
 install_vscode() {
   echo -e "${BLUE}=== 安装 VSCode 系列 IDE 配置 ===${NC}\n"
-  
-  VSCODE_IDES=(
-    "Kiro"
-    "Cursor"
-    "Trae CN"
-    "Trae"
-    "Antigravity"
-    "Comate"
-    "Code"
-    "CodeBuddy"
-    "Lingma"
-    "Windsurf"
-  )
-  
-  # 检测已安装的 IDE
-  INSTALLED_IDES=()
-  for ide in "${VSCODE_IDES[@]}"; do
-    IDE_DIR="$HOME/Library/Application Support/$ide/User"
-    if [ -d "$IDE_DIR" ]; then
-      INSTALLED_IDES+=("$ide")
-    fi
-  done
-  
-  if [ ${#INSTALLED_IDES[@]} -eq 0 ]; then
-    echo -e "${YELLOW}未检测到已安装的 VSCode 系列 IDE，跳过${NC}\n"
-    return
+  if [ ! -d "$DOTFILES_DIR/vscode" ]; then
+    echo -e "${RED}错误：未找到 vscode 目录${NC}\n"
+    return 1
   fi
-  
-  echo -e "${YELLOW}检测到以下已安装的 IDE：${NC}"
-  for i in "${!INSTALLED_IDES[@]}"; do
-    echo -e "  $((i+1)). ${INSTALLED_IDES[$i]}"
-  done
-  echo ""
-  
-  echo -e "${YELLOW}请选择要安装配置的 IDE（多选用空格分隔，如：1 3 5，输入 'all' 安装全部，直接回车跳过）：${NC}"
-  read -r selection
-  
-  if [ -z "$selection" ]; then
-    echo -e "${YELLOW}跳过 VSCode 系列 IDE 配置安装${NC}\n"
-    return
-  fi
-  
-  if [ "$selection" = "all" ]; then
-    # 安装所有已检测到的 IDE
-    for ide in "${INSTALLED_IDES[@]}"; do
-      IDE_DIR="$HOME/Library/Application Support/$ide/User"
-      [ -f "$DOTFILES_DIR/vscode/keybindings.json" ] && \
-        create_symlink "$DOTFILES_DIR/vscode/keybindings.json" "$IDE_DIR/keybindings.json" "$ide keybindings"
-      
-      [ -f "$DOTFILES_DIR/vscode/settings.json" ] && \
-        create_symlink "$DOTFILES_DIR/vscode/settings.json" "$IDE_DIR/settings.json" "$ide settings"
-    done
+
+  # 先生成各 IDE 的合并配置
+  echo -e "${YELLOW}生成各 IDE 合并配置（settings/keybindings）...${NC}"
+  (cd "$DOTFILES_DIR/vscode" && python generate_ide_configs.py)
+
+  # 再调用 vscode/install.sh，将生成的配置软链接到各 IDE
+  if [ -f "$DOTFILES_DIR/vscode/install.sh" ]; then
+    echo -e "${YELLOW}应用配置到已安装的 VSCode 系列 IDE...${NC}"
+    bash "$DOTFILES_DIR/vscode/install.sh"
   else
-    # 安装选中的 IDE
-    for num in $selection; do
-      if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le "${#INSTALLED_IDES[@]}" ]; then
-        ide="${INSTALLED_IDES[$((num-1))]}"
-        IDE_DIR="$HOME/Library/Application Support/$ide/User"
-        
-        [ -f "$DOTFILES_DIR/vscode/keybindings.json" ] && \
-          create_symlink "$DOTFILES_DIR/vscode/keybindings.json" "$IDE_DIR/keybindings.json" "$ide keybindings"
-        
-        [ -f "$DOTFILES_DIR/vscode/settings.json" ] && \
-          create_symlink "$DOTFILES_DIR/vscode/settings.json" "$IDE_DIR/settings.json" "$ide settings"
-      fi
-    done
+    echo -e "${RED}错误：未找到 $DOTFILES_DIR/vscode/install.sh${NC}\n"
   fi
 }
 

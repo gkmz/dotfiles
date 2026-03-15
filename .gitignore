@@ -75,3 +75,5 @@ wireshark/recent
 wireshark/recent_common
 zed/prompts/
 zed/embeddings/
+vscode/*/settings.json
+vscode/*/keybindings.json

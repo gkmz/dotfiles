@@ -211,16 +211,10 @@
     "when": "editorTextFocus && !editorReadonly"
   },
   // ============================================
-  // AI 聊天窗口快捷键
-  // ============================================
-  // Alt + C: 智能切换 AI 聊天窗口
-  // 如果有选中的代码 → 将选中内容发送到聊天窗口（不清空之前的内容）
-  {
-    "key": "alt+c",
-    "command": "kiroAgent.focusContinueInputWithoutClear",
-    "when": "editorHasSelection"
-  },
-  // 如果没有选中内容 → 切换右侧辅助栏（聊天窗口）的显示/隐藏
+  // AI 聊天窗口快捷键（通用：切换右侧辅助栏）
+  // 说明：
+  // - 这里只保留 VSCode 原生命令，适用于所有基于 VSCode 的 IDE
+  // - 各 IDE 自己的 AI Chat 命令，请放到对应 IDE 的专用配置文件中（如 keybindings.vscode.json / keybindings.cursor.json 等）
   {
     "key": "alt+c",
     "command": "workbench.action.toggleAuxiliaryBar",
@@ -230,12 +224,6 @@
   {
     "key": "alt+c",
     "command": "-workbench.action.focusFifthEditorGroup"
-  },
-  // Alt + Shift + C: 打开 AI 聊天窗口并清空输入框
-  // 如果有选中的代码 → 将选中内容发送到聊天窗口（清空之前的内容）
-  {
-    "key": "alt+shift+c",
-    "command": "kiroAgent.focusContinueInput"
   },
   // 如果没有选中内容 → 切换右侧辅助栏（聊天窗口）的显示/隐藏
   {
@@ -287,38 +275,40 @@
   {
     "key": "cmd+f10",
     "command": "workbench.action.debug.selectDebugSession"
+  },
+  // ============================================
+  // 统一 AI Chat 快捷键（Cmd + 5）
+  // 安装了哪个 AI Chat，就用同一套按键唤起
+  // 未安装的扩展，其对应命令会被 VSCode 忽略
+  // ============================================
+  // Cursor AI Chat
+  {
+    "key": "cmd+5",
+    "command": "aichat.newSession"
+  },
+  // GitHub Copilot Chat
+  {
+    "key": "cmd+5",
+    "command": "workbench.panel.chat.view.copilot.focus"
+  },
+  // Windsurf Chat
+  {
+    "key": "cmd+5",
+    "command": "windsurf.chat.toggle"
+  },
+  // Codeium Chat
+  {
+    "key": "cmd+5",
+    "command": "codeium.chat.toggle"
+  },
+  // 通用面板切换（如果上面的命令都不存在或无效）
+  {
+    "key": "cmd+5",
+    "command": "workbench.action.togglePanel"
+  },
+  // 禁用 Cmd + 5 的默认“切换第 5 编辑器组”行为
+  {
+    "key": "cmd+5",
+    "command": "-workbench.action.focusFifthEditorGroup"
   }
-  // ============================================
-  // 其他 AI 工具快捷键（已注释，按需启用）
-  // ============================================
-  // // Cursor AI Chat
-  // {
-  //   "key": "cmd+5",
-  //   "command": "aichat.newSession"
-  // },
-  // // GitHub Copilot Chat
-  // {
-  //   "key": "cmd+5",
-  //   "command": "workbench.panel.chat.view.copilot.focus"
-  // },
-  // // Windsurf Chat
-  // {
-  //   "key": "cmd+5",
-  //   "command": "windsurf.chat.toggle"
-  // },
-  // // Codeium Chat
-  // {
-  //   "key": "cmd+5",
-  //   "command": "codeium.chat.toggle"
-  // },
-  // // 通用面板切换（如果上面的命令都不存在）
-  // {
-  //   "key": "cmd+5",
-  //   "command": "workbench.action.togglePanel"
-  // },
-  // // 禁用 Cmd + 5 的默认行为
-  // {
-  //   "key": "cmd+5",
-  //   "command": "-workbench.action.focusFifthEditorGroup"
-  // }
 ]

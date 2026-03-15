@@ -1,0 +1,4 @@
+[
+  // 这里放“只在原生 VSCode 中生效”的、与具体 IDE 相关但不属于某个扩展的快捷键增量配置。
+  // 扩展级别的快捷键（例如 Kiro / Antigravity）放在单独的 keybindings.vscode.<ext>.json 中。
+]

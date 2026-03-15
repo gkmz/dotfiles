@@ -1,0 +1,5 @@
+{
+  // Kiro IDE 专用增量配置
+  "kiroAgent.trustedCommands": [],
+  "kiroAgent.modelSelection": "auto"
+}
