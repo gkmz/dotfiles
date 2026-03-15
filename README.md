@@ -56,7 +56,7 @@ cd ~/dotfiles
 - `terminal` - 终端配置（.zshrc, .bashrc 等）
 - `git` - Git 配置（.gitconfig 等）
 - `vim` - Vim 配置（.vimrc）
-- `vscode` - VSCode 系列 IDE 配置（支持交互式选择）
+- `vscode` - VSCode 系列 IDE 配置（包含 Kiro、Cursor、Trae、Antigravity 等衍生 IDE）
 
 ### 验证安装
 
@@ -116,9 +116,11 @@ cd ~/dotfiles
 ./install.sh terminal
 # 脚本会智能检测，如果软链接已存在且正确，会跳过
 
-# 新装了一个 VSCode 系列 IDE
+# 修改了 VSCode 系列 IDE（包括 Cursor/Kiro 等）的 keybindings/settings
+cd vscode
+python generate_ide_configs.py
+cd ..
 ./install.sh vscode
-# 会交互式询问要安装哪些 IDE 的配置
 ```
 
 ## 🔧 工作原理
@@ -171,11 +173,17 @@ dotfiles/
 ├── uninstall.sh           # 卸载脚本
 ├── .gitignore             # Git 忽略规则
 │
-├── vscode/                # VSCode 系列 IDE
-│   ├── keybindings.json
-│   ├── settings.json
-│   ├── my-extensions.md
-│   └── install.sh
+├── vscode/                # VSCode 系列 IDE 统一配置
+│   ├── settings.json      # VSCode 系列通用 settings 基础配置
+│   ├── keybindings.json   # VSCode 系列通用 keybindings 基础配置
+│   ├── generate_ide_configs.py  # 生成各 IDE 最终配置的脚本
+│   ├── install.sh         # 将各 IDE 配置软链接到系统目录
+│   ├── vscode/            # 原生 VSCode 专用配置（合并结果）
+│   ├── cursor/            # Cursor 专用配置（合并结果）
+│   ├── kiro/              # Kiro IDE 专用配置（合并结果）
+│   ├── antigravity/       # Antigravity IDE 专用配置（合并结果）
+│   ├── winds* / trae/ ... # 其它 VSCode 衍生 IDE 专用配置（合并结果）
+│   └── my-extensions.md
 │
 ├── nvim/                  # Neovim 配置
 │   └── install.sh
