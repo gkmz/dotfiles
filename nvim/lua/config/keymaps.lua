@@ -42,9 +42,10 @@ function M.setup_common_keymaps()
   -- intend or unintend fastly
   -- vim.keymap.set("n", "<S-Tab>", "<Cmd><<CR>")
   -- vim.keymap.set("n", "<Tab>", "<Cmd>><CR>")
-  -- go to head/tail of a line
-  vim.keymap.set({ "n", "v" }, "gj", "j", { remap = true })
-  vim.keymap.set({ "n", "v" }, "gk", "k", { remap = true })
+    -- go to head/tail of a line
+  -- vim.keymap.set({ "n", "v" }, "gj", "j", { remap = true })
+  -- vim.keymap.set({ "n", "v" }, "gk", "k", { remap = true })
+  -- go to head/tail of a line（保留 Neovim 原生 gj/gk 行为，方便 VSCode 侧用 j/k → gj/gk）
   vim.keymap.set({ "n", "v" }, "gh", "^", { remap = true })
   vim.keymap.set({ "n", "v" }, "gl", "$", { remap = true })
   -- fast comment
