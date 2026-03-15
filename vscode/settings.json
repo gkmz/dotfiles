@@ -59,7 +59,10 @@
     }
   },
   // ============================================
-  // Neovim 键位映射（gj/gk 用于换行显示的行间移动）
+  // Neovim 键位映射（VSCode 中按 j/k 以“换行显示”为单位移动）
+  // 说明：这里仅在 VSCode 中生效，不会改变终端 Neovim 的行为
+  //
+  // 注意：这里配置其实是生效的，但是因为neovim与vscode的换行不同，neovim无法感知vscode的换行，所以无法实现按照显示行移动，这里的配置无效，改为使用VsCode自己的光标移动。见 keybindings.json 中的"VSCode 中 Neovim 模式下按“显示行”移动 j/k"配置。
   // ============================================
   "vscode-neovim.normalModeKeyBindings": [
     {
@@ -79,19 +82,6 @@
     {
       "before": ["k"],
       "after": ["g", "k"]
-    }
-  ],
-  // ============================================
-  // Neovim 快捷键：方法跳转（使用 outline 导航）
-  // ============================================
-  "vscode-neovim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["[", "f"],
-      "commands": ["outline.focusPreviousOutline"]
-    },
-    {
-      "before": ["]", "f"],
-      "commands": ["outline.focusNextOutline"]
     }
   ],
   "editor.formatOnSaveMode": "modifications", // 仅格式化修改过的代码
@@ -308,6 +298,7 @@
   },
   "git.openRepositoryInParentFolders": "never",
   "editor.mouseWheelZoom": true,
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "redhat.telemetry.enabled": false
   // 在这里添加你的其他设置
 }

@@ -1,6 +1,5 @@
 [
-  // ============================================
-  // 文件浏览器相关快捷键
+  // ============================================ // 文件浏览器相关快捷键
   // ============================================
   // Cmd + 1: 智能切换文件浏览器
   // 当编辑器获得焦点时 → 打开文件浏览器并定位到当前文件
@@ -71,6 +70,33 @@
     "command": "-workbench.action.focusFourthEditorGroup"
   },
   // ============================================
+  // Neovim DAP F 键直通（保持 Neovim 配置不变）
+  // ============================================
+  {
+    "key": "f7",
+    "command": "vscode-neovim.send",
+    "args": "<F7>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "f8",
+    "command": "vscode-neovim.send",
+    "args": "<F8>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "f9",
+    "command": "vscode-neovim.send",
+    "args": "<F9>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "f10",
+    "command": "vscode-neovim.send",
+    "args": "<F10>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  // ============================================
   // Vim 风格滚动快捷键
   // ============================================
   // Ctrl + Shift + D: 向下滚动 10 行（屏幕滚动，光标不动）
@@ -116,6 +142,48 @@
       "value": 10
     },
     "when": "editorTextFocus"
+  },
+  // ============================================
+  // VSCode 中 Neovim 模式下按“显示行”移动 j/k
+  // 说明：
+  // - 仅在 vscode-neovim 的 normal / visual 模式下生效
+  // - 使用 VSCode 自己的 wrappedLine 概念，实现软换行上的上下移动
+  // ============================================
+  {
+    "key": "j",
+    "command": "cursorMove",
+    "args": {
+      "to": "down",
+      "by": "wrappedLine"
+    },
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "k",
+    "command": "cursorMove",
+    "args": {
+      "to": "up",
+      "by": "wrappedLine"
+    },
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "j",
+    "command": "cursorMove",
+    "args": {
+      "to": "down",
+      "by": "wrappedLine"
+    },
+    "when": "editorTextFocus && neovim.mode == 'visual'"
+  },
+  {
+    "key": "k",
+    "command": "cursorMove",
+    "args": {
+      "to": "up",
+      "by": "wrappedLine"
+    },
+    "when": "editorTextFocus && neovim.mode == 'visual'"
   },
   // ============================================
   // Alt + J/K 移动行（类似 IntelliJ IDEA）
@@ -215,6 +283,10 @@
     "key": "alt+cmd+s",
     "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
     "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
+  },
+  {
+    "key": "cmd+f10",
+    "command": "workbench.action.debug.selectDebugSession"
   }
   // ============================================
   // 其他 AI 工具快捷键（已注释，按需启用）
