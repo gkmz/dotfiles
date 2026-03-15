@@ -1,10 +1,30 @@
 [
   // Cursor 专用快捷键增量配置
-  // 示例：当你知道 Cursor Chat 的命令 ID 后，可以这样写：
-  // {
-  //   "key": "alt+c",
-  //   "command": "cursor.chat.toggle",
-  //   "when": "editorTextFocus"
-  // }
+  // 先移除内置/扩展里抢占 Alt+C 的绑定
+  {
+    "key": "alt+c",
+    "command": "-workbench.action.chat.addSelectedFilesToWorkingSet"
+  },
+  {
+    "key": "alt+c",
+    "command": "-workbench.action.openChat"
+  },
+  {
+    "key": "alt+c",
+    "command": "-workbench.action.toggleAuxiliaryBar"
+  },
+
+  // Alt + C（有选中）→ 聚焦 Chat 视图（Cursor 会用选中内容作为上下文）
+  {
+    "key": "alt+c",
+    "command": "workbench.panel.chat.view.copilot.focus",
+    "when": "editorTextFocus && editorHasSelection"
+  },
+  // Alt + C（无选中）→ 打开/聚焦 Chat
+  {
+    "key": "alt+c",
+    "command": "workbench.panel.chat.view.copilot.focus",
+    "when": "editorTextFocus && !editorHasSelection"
+  }
 ]
 
