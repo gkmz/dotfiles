@@ -1,6 +1,6 @@
 return {
   {
-    "CRAG7/nvim-code-runner",
+    "CRAG666/code_runner.nvim",
     cmd = { "RunCode", "RunFile", "RunProject", "RunClose", "CRFiletype", "CRProjects" },
     keys = {
       { "<leader>Rc", "<cmd>RunCode<cr>", desc = "Run code" },
