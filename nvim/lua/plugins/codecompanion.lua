@@ -1,13 +1,4 @@
 return {
-  -- Codeium for free autocomplete
-  {
-    "Exafunction/codeium.nvim",
-    cmd = "Codeium",
-    event = "InsertEnter",
-    build = ":Codeium Auth",
-    opts = {},
-  },
-
   -- CodeCompanion with custom keys from env
   {
     "olimorris/codecompanion.nvim",
