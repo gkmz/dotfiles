@@ -1,11 +1,3 @@
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "md" },
-  callback = function()
-    -- 设置自动换行的宽度，避免lint出现警告
-    vim.opt.textwidth = 80
-    vim.opt.formatoptions:append("t")
-  end,
-})
 
 return {
   {

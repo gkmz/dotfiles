@@ -64,29 +64,8 @@ require("lazy").setup({
   },
 })
 
--- config custom dap in project .nvim/dap.lua file
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    -- vscode中运行neovim
-    if utils.is_in_vscode() then
-      return
-    end
-    local dap_config = vim.fn.getcwd() .. "/.nvim/dap.lua"
-    -- vim.notify("dap_config:" .. dap_config)
-    if vim.fn.filereadable(dap_config) == 1 then
-      local custom_dap = dofile(dap_config)
-      local dap = require("dap")
-      -- dap.adapters.go = {
-      -- 	type = "executable",
-      -- 	command = "dlv",
-      -- 	args = { "dap", "-l", "127.0.0.1:38697" },
-      -- }
-      dap.configurations.go = vim.tbl_deep_extend("force", dap.configurations.go, custom_dap)
 
-      vim.notify("Loaded DAP config from .nvim/dap.lua")
-    end
-  end,
-})
+-- Additional startup logic has been moved to config/autocmds.lua
 
 
 -- require("config.keymaps").setup_keymaps()
