@@ -11,76 +11,39 @@ vim.api.nvim_create_autocmd("FileType", {
 return {
   {
     "leoluz/nvim-dap-go",
-    ft = { "go", "gomod" },
-    opts = function(_, opts)
-      -- Use opts for dap_configurations if possible, or handle in config
-      -- The original user config overwrote the whole config function.
-    end,
-    config = function(_, opts)
-      require("dap-go").setup(opts)
-      -- Add custom configs to dap.configurations.go
-      -- This ensures we don't wipe out what dap-go setup did, if anything, 
-      -- although dap-go setup usually just registers the adapter.
-      local dap = require("dap")
-      dap.configurations.go = dap.configurations.go or {}
-      table.insert(dap.configurations.go, {
-          type = "go",
-          name = "Debug Package Args",
-          request = "launch",
-          program = "${fileDirname}",
-          args = function()
-            local input = vim.fn.input("Args (e.g., -c conf.yml): ")
-            if input == "" then
-              return {}
-            end
-            return vim.split(input, " ")
-          end,
-          outputMode = "remote",
-          cwd = "${workspaceFolder}",
-      })
-    end,
+    opts = {}, -- Extra handles the rest
+    keys = {
+      { "<leader>Gd", function() require("dap-go").debug_test() end, desc = "Debug Test" },
+    },
   },
   {
     "ray-x/go.nvim",
-    dependencies = { -- optional packages
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
+    keys = {
+      { "<leader>G", group = "Go" },
+      { "<leader>Gi", "<cmd>GoInstallDeps<Cr>", desc = "Install Go Dependencies" },
+      { "<leader>Gt", "<cmd>GoMod tidy<cr>", desc = "Tidy" },
+      { "<leader>Ga", "<cmd>GoTestAdd<Cr>", desc = "Add Test" },
+      { "<leader>GA", "<cmd>GoTestsAll<Cr>", desc = "Add All Tests" },
+      { "<leader>Ge", "<cmd>GoTestsExp<Cr>", desc = "Add Exported Tests" },
+      { "<leader>Gg", "<cmd>GoGenerate<Cr>", desc = "Go Generate" },
+      { "<leader>GG", "<cmd>GoGenerate %<Cr>", desc = "Go Generate File" },
+      { "<leader>Gc", "<cmd>GoCmt<Cr>", desc = "Generate Comment" },
+      { "<leader>GI", "<cmd>GoImpl<Cr>", desc = "Implements Interface" },
     },
-    config = function()
-      -- disable lsp_cfg to avoid conflict with LazyVim's lspconfig
-      require("go").setup({ lsp_cfg = false })
-    end,
-    event = { "CmdlineEnter" },
-    ft = { "go", "gomod" },
-    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+    opts = {
+      lsp_cfg = false, -- avoid conflict with LazyVim's lspconfig
+    },
   },
   {
     "nvim-neotest/neotest",
-    ft = { "go" },
-    dependencies = {
-      {
-        "fredrikaverpil/neotest-golang",
+    optional = true,
+    opts = {
+      adapters = {
+        ["neotest-golang"] = {
+          go_test_args = { "-v", "-count=1", "-race", "-parallel=1" },
+          runner = "gotestsum",
+        },
       },
     },
-    opts = function(_, opts)
-      opts.adapters = opts.adapters or {}
-      opts.adapters["neotest-golang"] = {
-        go_test_args = {
-          "-v",
-          "-count=1",
-          "-race",
-          "-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
-          -- "-p=1",
-          "-parallel=1",
-        },
-
-        -- experimental
-        dev_notifications = true,
-        runner = "gotestsum",
-        gotestsum_args = { "--format=standard-verbose" },
-        -- testify_enabled = true,
-      }
-    end,
   },
 }

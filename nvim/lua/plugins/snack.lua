@@ -65,5 +65,8 @@ return {
         sections = get_sections(),
       },
     },
+    keys = {
+      { "<leader>;", "<cmd>Dashboard<CR>", desc = "Dashboard" },
+    },
   },
 }

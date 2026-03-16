@@ -88,4 +88,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
-require("config.keymaps").setup_keymaps()
+
+-- require("config.keymaps").setup_keymaps()

@@ -28,7 +28,14 @@ return {
         },
       },
     },
-
-    -- see below for full list of options 👇
+  },
+  keys = {
+    { "<leader>o", group = "Obsidian" },
+    { "<leader>os", "<cmd>ObsidianSearch<cr>", desc = "[N]otes: [s]earch text" },
+    { "<leader>of", "<cmd>ObsidianQuickSwitch<cr>", desc = "[N]otes: search [f]ilenames" },
+    { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[N]otes: [n]new" },
+    { "<leader>ol", "<cmd>ObsidianQuickSwitch Learning.md<cr><cr>", desc = "[N]otes: [l]earning" },
+    { "<leader>og", "<cmd>ObsidianQuickSwitch Go.md<cr><cr>", desc = "[N]otes: [g]olang learning" },
+    { "<leader>ov", "<cmd>ObsidianQuickSwitch Neovim config.md<cr><cr>", desc = "[N]otes: Neo[v]im todo" },
   },
 }
