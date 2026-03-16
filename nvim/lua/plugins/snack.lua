@@ -64,6 +64,9 @@ return {
         },
         sections = get_sections(),
       },
+      picker = {
+        enabled = true,
+      },
     },
     keys = {
       { "<leader>;", "<cmd>Dashboard<CR>", desc = "Dashboard" },
