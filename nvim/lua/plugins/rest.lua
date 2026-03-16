@@ -8,7 +8,6 @@ return {
     },
     ft = { "http" },
     keys = {
-      { "<leader>h", group = "Http", icon = "󰌷" },
       { "<leader>he", "<cmd>lua require('telescope').extensions.rest.select_env()<CR>", desc = "Select env file" },
       { "<leader>hr", "<cmd>Rest run<cr>", desc = "Run request under the cursor" },
       { "<leader>hl", "<cmd>Rest run last<cr>", desc = "Re-run latest request" },

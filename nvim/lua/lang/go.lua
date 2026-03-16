@@ -10,7 +10,6 @@ return {
   {
     "ray-x/go.nvim",
     keys = {
-      { "<leader>G", group = "Go" },
       { "<leader>Gi", "<cmd>GoInstallDeps<Cr>", desc = "Install Go Dependencies" },
       { "<leader>Gt", "<cmd>GoMod tidy<cr>", desc = "Tidy" },
       { "<leader>Ga", "<cmd>GoTestAdd<Cr>", desc = "Add Test" },

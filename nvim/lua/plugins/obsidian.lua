@@ -30,7 +30,6 @@ return {
     },
   },
   keys = {
-    { "<leader>o", group = "Obsidian" },
     { "<leader>os", "<cmd>ObsidianSearch<cr>", desc = "[N]otes: [s]earch text" },
     { "<leader>of", "<cmd>ObsidianQuickSwitch<cr>", desc = "[N]otes: search [f]ilenames" },
     { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "[N]otes: [n]new" },

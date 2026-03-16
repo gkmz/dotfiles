@@ -3,7 +3,6 @@ return {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory", "DiffviewFocusFiles", "DiffviewToggleFiles" },
     keys = {
-      { "<leader>gd", group = "Git Diff" },
       { "<leader>gdc", ":DiffviewOpen origin/main...HEAD<CR>", desc = "Compare commits" },
       { "<leader>gdq", ":DiffviewClose<CR>", desc = "Close Diffview tab" },
       { "<leader>gdh", ":DiffviewFileHistory %<CR>", desc = "File history" },

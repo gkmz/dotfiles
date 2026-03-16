@@ -7,8 +7,14 @@ return {
     vim.o.timeoutlen = 300
   end,
   opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    spec = {
+      { "<leader>G", group = "Golang", icon = "" },
+      { "<leader>o", group = "Obsidian", icon = "󱓧" },
+      { "<leader>h", group = "Http/Rest", icon = "󰌷" },
+      { "<leader>R", group = "Code Runner", icon = "" },
+      { "<leader>p", group = "Snippets", icon = "✂" },
+      { "<leader>gd", group = "Git Diff", icon = "" },
+      { "<leader>N", group = "NeoTree Misc", icon = "󰙅" },
+    },
   },
 }

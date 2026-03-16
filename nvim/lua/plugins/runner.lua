@@ -3,7 +3,6 @@ return {
     "CRAG7/nvim-code-runner",
     cmd = { "RunCode", "RunFile", "RunProject", "RunClose", "CRFiletype", "CRProjects" },
     keys = {
-      { "<leader>R", group = "Code Runner" },
       { "<leader>Rc", "<cmd>RunCode<cr>", desc = "Run code" },
       { "<leader>RC", "<cmd>RunCode tab<cr>", desc = "Run code in tab" },
       { "<leader>Rf", "<cmd>RunFile<cr>", desc = "Run file" },
