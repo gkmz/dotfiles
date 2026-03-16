@@ -1,7 +1,7 @@
 return {
   {
     "Pocco81/auto-save.nvim",
-    enabled = false,
+    enabled = true,
     event = "BufRead",
     vscode = true,
     config = function()
