@@ -66,27 +66,41 @@ wk.add({
 })
 
 -------------------------------------------------------------------------------
--- Terminal Keymaps
+-- Terminal Keymaps (toggleterm.nvim)
 -------------------------------------------------------------------------------
-local ctrl_slash = "<C-/>"
-local alt_underscore = "<A-_>"
-local ctrl_alt_slash = "<C-A-/>"
-local ctrl_alt_underscore = "<C-A-_>"
+-- <C-`>        : 切换底部终端（终端1）
+-- <C-`> 2<C-`> : 切换终端2，以此类推（:2ToggleTerm）
+-- <leader>tf   : 浮动终端
+-- <leader>tv   : 垂直终端
+-- <leader>tn   : 新建终端（下一个编号）
 
-local floating_term_cmd = function()
-  vim.api.nvim_set_keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true })
-  require("utils.terminal").toggle_fterm()
+local function toggle_term(id, direction)
+  local cmd = id and (id .. "ToggleTerm") or "ToggleTerm"
+  if direction then
+    cmd = cmd .. " direction=" .. direction
+  end
+  vim.cmd(cmd)
 end
 
-local split_term_cmd = function()
-  vim.api.nvim_set_keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true })
-  require("utils.terminal").toggle_terminal_native()
+-- 主终端：Ctrl+` 切换底部终端
+vim.keymap.set({ "n", "i", "t" }, "<C-`>", function() toggle_term(1) end, { desc = "Toggle Terminal 1" })
+
+-- 浮动终端
+vim.keymap.set({ "n", "i", "t" }, "<leader>tf", function() toggle_term(nil, "float") end,
+  { desc = "Toggle Float Terminal" })
+
+-- 垂直终端
+vim.keymap.set({ "n", "i", "t" }, "<leader>tv", function() toggle_term(nil, "vertical") end,
+  { desc = "Toggle Vertical Terminal" })
+
+-- 快速切换终端 1-4
+for i = 1, 4 do
+  vim.keymap.set({ "n" }, "<leader>t" .. i, function() toggle_term(i) end, { desc = "Toggle Terminal " .. i })
 end
 
-vim.keymap.set({ "n", "i", "t", "v" }, ctrl_alt_slash, split_term_cmd, { desc = "Toggle Terminal" })
-vim.keymap.set({ "n", "i", "t", "v" }, ctrl_alt_underscore, split_term_cmd, { desc = "Toggle Terminal" })
-vim.keymap.set({ "n", "i", "t", "v" }, ctrl_slash, floating_term_cmd, { desc = "Toggle Floating Terminal" })
-vim.keymap.set({ "n", "i", "t", "v" }, alt_underscore, floating_term_cmd, { desc = "Toggle Floating Terminal" })
+wk.add({
+  { "<leader>tc", function() require("utils.terminal").close_all_terminals() end, desc = "Close All Terminals" },
+})
 
 -------------------------------------------------------------------------------
 -- Zen Mode & Misc

@@ -27,7 +27,7 @@ function M.toggle_terminal_native()
 end
 
 function M.toggle_fterm()
-  require("FTerm").toggle()
+  Snacks.terminal.toggle()
 end
 
 function M.toggle_toggleterm()
@@ -39,5 +39,30 @@ function M.toggle_toggleterm()
   vim.cmd(cmd)
 end
 
+function M.split_terminal_right()
+  -- 只有在当前已经在终端窗口中时，才进行右侧分屏
+  if vim.bo.buftype ~= "terminal" then
+    M.toggle_terminal_native()
+    return
+  end
+
+  -- 在右侧打开垂直分屏
+  vim.cmd("vsplit")
+  vim.cmd("terminal")
+  -- 自动进入插入模式
+  vim.cmd("startinsert")
+end
+
+function M.close_all_terminals()
+  local buffers = vim.api.nvim_list_bufs()
+  for _, buf in ipairs(buffers) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype == "terminal" then
+      -- 强制删除终端 buffer，对应的窗口也会关闭
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+  vim.g.terminal_buf = nil
+  vim.g.terminal_win = nil
+end
 return M
 
