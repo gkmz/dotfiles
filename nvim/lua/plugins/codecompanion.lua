@@ -36,7 +36,15 @@ return {
       {
         "<leader>ac",
         function()
-          Snacks.terminal.open("claudecode", { interactive = true, side = "right", width = 0.4 })
+          Snacks.terminal.open("claude", {
+            win = {
+              position = "float",
+              border = "rounded",
+              width = 0.8,
+              height = 0.8,
+            },
+            interactive = true,
+          })
         end,
         desc = "Open ClaudeCode",
       },
