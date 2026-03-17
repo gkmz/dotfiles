@@ -42,10 +42,10 @@
   // ============================================
   // 扩展特定设置
   // ============================================
-  // "extensions.experimental.affinity": {
-  //   // VSCode Neovim 扩展使用独立进程，提高性能
-  //   "asvetliakov.vscode-neovim": 1
-  // },
+  "extensions.experimental.affinity": {
+    // VSCode Neovim 扩展使用独立进程，提高性能
+    "asvetliakov.vscode-neovim": 1
+  },
   // ============================================
   // VSCode Neovim 设置（修复中文渲染问题）
   // ============================================
