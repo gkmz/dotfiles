@@ -42,22 +42,22 @@
   // ============================================
   // 扩展特定设置
   // ============================================
-  "extensions.experimental.affinity": {
-    // VSCode Neovim 扩展使用独立进程，提高性能
-    "asvetliakov.vscode-neovim": 1
-  },
+  // "extensions.experimental.affinity": {
+  //   // VSCode Neovim 扩展使用独立进程，提高性能
+  //   "asvetliakov.vscode-neovim": 1
+  // },
   // ============================================
   // VSCode Neovim 设置（修复中文渲染问题）
   // ============================================
   "vscode-neovim.neovimInitVimPaths.darwin": "~/.config/nvim/init.lua", // macOS 上的 Neovim 配置文件路径
   "vscode-neovim.useWSL": false, // 不使用 WSL
   "vscode-neovim.textDecorations.enable": false, // 禁用 Neovim 的文本装饰，避免渲染冲突
-  "vscode-neovim.compositeKeys": {
-    // 组合键配置：jk 快速退出插入模式
-    "jk": {
-      "command": "vscode-neovim.escape"
-    }
-  },
+  // "vscode-neovim.compositeKeys": {
+  //   // 组合键配置：jk 快速退出插入模式
+  //   "jk": {
+  //     "command": "vscode-neovim.escape"
+  //   }
+  // },
   // ============================================
   // Neovim 键位映射（VSCode 中按 j/k 以“换行显示”为单位移动）
   // 说明：这里仅在 VSCode 中生效，不会改变终端 Neovim 的行为

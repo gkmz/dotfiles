@@ -119,6 +119,9 @@ def merge_settings_for_ide(ide: str):
 
     if os.path.isdir(ide_dir):
         for name in sorted(os.listdir(ide_dir)):
+            # 排除生成的最终文件，避免循环合并
+            if name in ["settings.json", "keybindings.json"]:
+                continue
             if name.startswith("settings") and name.endswith(".json"):
                 path = os.path.join(ide_dir, name)
                 extra = load_jsonc(path, default={})
@@ -147,6 +150,9 @@ def merge_keybindings_for_ide(ide: str):
 
     if os.path.isdir(ide_dir):
         for name in sorted(os.listdir(ide_dir)):
+            # 排除生成的最终文件，避免循环合并
+            if name in ["settings.json", "keybindings.json"]:
+                continue
             if name.startswith("keybindings") and name.endswith(".json"):
                 path = os.path.join(ide_dir, name)
                 extra = load_jsonc(path, default=[])

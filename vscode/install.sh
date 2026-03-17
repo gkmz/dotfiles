@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # VSCode 系列 IDE 统一配置安装脚本
 # 用途：创建软链接，将统一配置应用到所有 IDE

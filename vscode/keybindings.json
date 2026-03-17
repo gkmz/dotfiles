@@ -167,24 +167,24 @@
     },
     "when": "editorTextFocus && neovim.mode == 'normal'"
   },
-  {
-    "key": "j",
-    "command": "cursorMove",
-    "args": {
-      "to": "down",
-      "by": "wrappedLine"
-    },
-    "when": "editorTextFocus && neovim.mode == 'visual'"
-  },
-  {
-    "key": "k",
-    "command": "cursorMove",
-    "args": {
-      "to": "up",
-      "by": "wrappedLine"
-    },
-    "when": "editorTextFocus && neovim.mode == 'visual'"
-  },
+  // {
+  //   "key": "j",
+  //   "command": "cursorMove",
+  //   "args": {
+  //     "to": "down",
+  //     "by": "wrappedLine"
+  //   },
+  //   "when": "editorTextFocus && neovim.mode == 'visual'"
+  // },
+  // {
+  //   "key": "k",
+  //   "command": "cursorMove",
+  //   "args": {
+  //     "to": "up",
+  //     "by": "wrappedLine"
+  //   },
+  //   "when": "editorTextFocus && neovim.mode == 'visual'"
+  // },
   // ============================================
   // Alt + J/K 移动行（类似 IntelliJ IDEA）
   // ============================================
