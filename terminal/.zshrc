@@ -128,10 +128,7 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
-fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-
-[[ -s "/Users/hank/.gvm/scripts/gvm" ]] && source "/Users/hank/.gvm/scripts/gvm"
+# GVM and Brew initialized above
 
 export M2_HOME=$HOME/software/apache-maven-3.9.6
 export GRADLE_HOME=$HOME/software/gradle-7.1
