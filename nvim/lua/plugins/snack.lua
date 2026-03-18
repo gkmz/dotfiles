@@ -66,6 +66,19 @@ return {
       },
       picker = {
         enabled = true,
+        sources = {
+          files = {
+            ignored = true,
+            hidden = true,
+          },
+          explorer = {
+            ignored = true,
+            hidden = true,
+          },
+        },
+      },
+      explorer = {
+        enabled = true,
       },
       words = {
         enabled = true,
