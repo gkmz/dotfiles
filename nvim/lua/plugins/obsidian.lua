@@ -28,6 +28,8 @@ return {
         },
       },
     },
+    -- 禁用自带 UI 渲染，避免与 render-markdown 冲突
+    ui = { enable = false },
   },
   keys = {
     { "<leader>os", "<cmd>ObsidianSearch<cr>", desc = "[N]otes: [s]earch text" },

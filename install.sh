@@ -30,6 +30,7 @@ show_help() {
   echo -e "  vim            Vim 配置（.vimrc）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
+  echo -e "  tools          安装外部工具依赖（npm, brew 等）"
   echo ""
   echo -e "${BLUE}示例：${NC}"
   echo -e "  ./install.sh                    # 安装所有模块"
@@ -49,6 +50,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
+  echo -e "  ${GREEN}✓${NC} tools     - 安装外部工具依赖（mmdc 等）"
   echo ""
 }
 
@@ -198,6 +200,27 @@ install_ai_ide() {
   fi
 }
 
+# 模块：安装外部工具依赖
+install_tools() {
+  echo -e "${BLUE}=== 安装外部工具依赖 ===${NC}\n"
+
+  # 1. Mermaid CLI (用于 Snacks.image 渲染)
+  if ! command -v mmdc &> /dev/null; then
+    echo -e "${YELLOW}检测到 mmdc (mermaid-cli) 未安装，正在通过 npm 安装...${NC}"
+    if command -v npm &> /dev/null; then
+      npm install -g @mermaid-js/mermaid-cli
+      echo -e "${GREEN}  ✓ mermaid-cli 安装成功${NC}"
+    else
+      echo -e "${RED}  ✗ 错误：未找到 npm，请先安装 Node.js${NC}"
+    fi
+  else
+    echo -e "${GREEN}  ✓ mermaid-cli (mmdc) 已安装${NC}"
+  fi
+
+  # 也可以在这里增加其他工具的检测，如 luarocks, ripgrep 等
+  echo ""
+}
+
 # 主程序
 main() {
   echo -e "${GREEN}"
@@ -214,6 +237,7 @@ main() {
     install_git
     install_vim
     install_vscode
+    install_tools
     echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
   else
     case "$1" in
@@ -231,6 +255,7 @@ main() {
         install_git
         install_vim
         install_vscode
+        install_tools
         echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
         ;;
       *)
@@ -254,6 +279,9 @@ main() {
               ;;
             ai-ide)
               install_ai_ide
+              ;;
+            tools)
+              install_tools
               ;;
             *)
               echo -e "${RED}错误：未知模块 '$module'${NC}"

@@ -1,26 +1,24 @@
 return {
   {
-    "rest-nvim/rest.nvim",
-    enabled = true,
-    vscode = true,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-    ft = { "http" },
+    "mistweaverco/kulala.nvim",
+    ft = { "http", "rest" },
     keys = {
-      { "<leader>he", "<cmd>lua require('telescope').extensions.rest.select_env()<CR>", desc = "Select env file" },
-      { "<leader>hr", "<cmd>Rest run<cr>", desc = "Run request under the cursor" },
-      { "<leader>hl", "<cmd>Rest run last<cr>", desc = "Re-run latest request" },
+      { "<leader>hr", "<cmd>lua require('kulala').run()<cr>", desc = "Run request" },
+      { "<leader>ht", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body" },
+      { "<leader>hp", "<cmd>lua require('kulala').jump_prev()<cr>", desc = "Prev request" },
+      { "<leader>hn", "<cmd>lua require('kulala').jump_next()<cr>", desc = "Next request" },
+      { "<leader>he", "<cmd>lua require('kulala').set_env()<cr>", desc = "Select environment" },
     },
-    config = function()
-      require("rest-nvim").setup({})
-    end,
+    opts = {
+      -- 默认配置
+      display_mode = "float",
+    },
   },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      table.insert(opts.ensure_installed, "http")
+      vim.list_extend(opts.ensure_installed, { "http", "xml", "json" })
     end,
   },
 }

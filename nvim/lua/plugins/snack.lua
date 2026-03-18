@@ -67,6 +67,9 @@ return {
       picker = {
         enabled = true,
       },
+      words = {
+        enabled = true,
+      },
     },
     keys = {
       { "<leader>;", "<cmd>Dashboard<CR>", desc = "Dashboard" },

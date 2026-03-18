@@ -106,3 +106,7 @@ wk.add({
 -- Zen Mode & Misc
 -------------------------------------------------------------------------------
 vim.keymap.set({ "n" }, "<C-z>", "<Cmd>:ZenMode<CR>", { desc = "Zen Mode" })
+
+-- Snacks jump (引用跳转)
+vim.keymap.set("n", "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Next Reference" })
+vim.keymap.set("n", "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "Prev Reference" })
