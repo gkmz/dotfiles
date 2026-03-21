@@ -153,7 +153,7 @@ function Resolve-UserHome {
 function Install-Config {
   Write-Section "安装 Windows 配置"
 
-  $home = Resolve-UserHome
+  $userHome = Resolve-UserHome
   $appData = [Environment]::GetFolderPath("ApplicationData")
   $localAppData = [Environment]::GetFolderPath("LocalApplicationData")
 
@@ -162,9 +162,9 @@ function Install-Config {
   Backup-And-Link -Source (Join-Path $DotfilesDir "lazydocker\config.yml") -Target (Join-Path $appData "lazydocker\config.yml") -Name "lazydocker"
   Backup-And-Link -Source (Join-Path $DotfilesDir "wireshark") -Target (Join-Path $appData "Wireshark") -Name "wireshark"
 
-  $weztermConfigDir = Join-Path $home ".config\wezterm"
+  $weztermConfigDir = Join-Path $userHome ".config\wezterm"
   Backup-And-Link -Source (Join-Path $DotfilesDir "wezterm") -Target $weztermConfigDir -Name "wezterm dir"
-  Backup-And-Link -Source (Join-Path $DotfilesDir "wezterm\wezterm.lua") -Target (Join-Path $home ".wezterm.lua") -Name "wezterm entry"
+  Backup-And-Link -Source (Join-Path $DotfilesDir "wezterm\wezterm.lua") -Target (Join-Path $userHome ".wezterm.lua") -Name "wezterm entry"
 
   $unsupported = @("btop", "neofetch", "raycast", "uv", "waveterm", "zed", "opencode", "dlv")
   foreach ($name in $unsupported) {
@@ -182,14 +182,14 @@ function Install-Terminal {
 function Install-Git {
   Write-Section "安装 Git 配置"
 
-  $home = Resolve-UserHome
-  Backup-And-Link -Source (Join-Path $DotfilesDir "git\.gitconfig") -Target (Join-Path $home ".gitconfig") -Name ".gitconfig"
+  $userHome = Resolve-UserHome
+  Backup-And-Link -Source (Join-Path $DotfilesDir "git\.gitconfig") -Target (Join-Path $userHome ".gitconfig") -Name ".gitconfig"
 
   $optionalFiles = @(".gitignore", ".git_me", ".git_wk", ".git_os", ".git_cc")
   foreach ($file in $optionalFiles) {
     $source = Join-Path $DotfilesDir "git\$file"
     if (Test-Path -LiteralPath $source) {
-      Backup-And-Link -Source $source -Target (Join-Path $home $file) -Name $file
+      Backup-And-Link -Source $source -Target (Join-Path $userHome $file) -Name $file
     }
   }
 
@@ -198,8 +198,8 @@ function Install-Git {
 
 function Install-Vim {
   Write-Section "安装 Vim 配置"
-  $home = Resolve-UserHome
-  Backup-And-Link -Source (Join-Path $DotfilesDir "vim\.vimrc") -Target (Join-Path $home "_vimrc") -Name "_vimrc"
+  $userHome = Resolve-UserHome
+  Backup-And-Link -Source (Join-Path $DotfilesDir "vim\.vimrc") -Target (Join-Path $userHome "_vimrc") -Name "_vimrc"
 }
 
 function Get-PythonCommand {
