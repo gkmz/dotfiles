@@ -30,6 +30,28 @@ cd ~/dotfiles
 ./install.sh
 ```
 
+### Windows 一键安装
+
+```powershell
+git clone git@github.com:hankmor/dotfiles.git $HOME\dotfiles
+cd $HOME\dotfiles
+pwsh -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+前置条件：
+
+- 已安装 PowerShell 7+（`pwsh`）
+- 已安装 `git`
+- 如需安装 `vscode` 模块，需安装 `python` 或 `py`
+
+也可以按模块安装：
+
+```powershell
+.\install.ps1 -List
+.\install.ps1 config git
+.\install.ps1 vscode
+```
+
 ### 增量安装（推荐）
 
 支持模块化安装，只安装需要的配置：
@@ -135,6 +157,31 @@ cd ..
 
 修改任何一边，另一边自动同步，只需关心 Git 提交。
 
+### Windows 路径策略
+
+Windows 不是所有软件都把配置放在安装目录里，因此 `install.ps1` 分成两类处理：
+
+- **标准用户配置目录**：即使软件用 Scoop 安装，配置仍在 `%APPDATA%` / `%LOCALAPPDATA%`
+  - `nvim` -> `%LOCALAPPDATA%\nvim`
+  - `lazygit` -> `%LOCALAPPDATA%\lazygit\config.yml`
+  - `lazydocker` -> `%APPDATA%\lazydocker\config.yml`
+  - `wireshark` -> `%APPDATA%\Wireshark`
+- **便携 / 安装目录内配置**：优先探测 portable 目录，再回退到标准 `%APPDATA%`
+  - 普通安装：`%APPDATA%\{IDE}\User`
+  - 便携安装：`<安装目录>\data\user-data\User`
+  - Scoop 安装：优先 `%SCOOP%\persist\<app>\data\user-data\User`，其次 `%SCOOP%\apps\<app>\current\data\user-data\User`
+
+也就是说，Windows 脚本不会粗暴地把所有配置都链到安装目录，只对 VSCode 系列这种支持 portable data 目录的软件这么做；其余软件仍然链到各自官方用户配置目录。
+
+### Windows 当前支持
+
+- `config`: `nvim`、`wezterm`、`lazygit`、`lazydocker`、`wireshark`
+- `git`: 使用 `~\.gitconfig` 等软链接
+- `vim`: 使用 `~\_vimrc`
+- `vscode`: 自动识别 VSCode、Cursor、Windsurf、Kiro、Trae、Antigravity 的标准安装 / 便携安装 / Scoop 安装
+
+以下目录暂未做 Windows 自动映射：`btop`、`neofetch`、`raycast`、`uv`、`waveterm`、`zed`、`opencode`、`dlv`
+
 ## ⚠️ 敏感信息处理
 
 ### 使用本地配置文件
@@ -169,7 +216,8 @@ vim ~/.gitconfig.local
 ```
 dotfiles/
 ├── README.md              # 本文件
-├── install.sh             # 安装脚本
+├── install.sh             # macOS / Linux 安装脚本
+├── install.ps1            # Windows 安装脚本
 ├── uninstall.sh           # 卸载脚本
 ├── .gitignore             # Git 忽略规则
 │
@@ -177,7 +225,8 @@ dotfiles/
 │   ├── settings.json      # VSCode 系列通用 settings 基础配置
 │   ├── keybindings.json   # VSCode 系列通用 keybindings 基础配置
 │   ├── generate_ide_configs.py  # 生成各 IDE 最终配置的脚本
-│   ├── install.sh         # 将各 IDE 配置软链接到系统目录
+│   ├── install.sh         # macOS / Linux 下将各 IDE 配置软链接到系统目录
+│   ├── install.ps1        # Windows 下将各 IDE 配置软链接到系统目录
 │   ├── vscode/            # 原生 VSCode 专用配置（合并结果）
 │   ├── cursor/            # Cursor 专用配置（合并结果）
 │   ├── kiro/              # Kiro IDE 专用配置（合并结果）
