@@ -18,7 +18,7 @@ M.config = function(config)
 	config.native_macos_fullscreen_mode = false
 	config.adjust_window_size_when_changing_font_size = false
 	config.debug_key_events = false
-	config.window_decorations = "RESIZE" -- 配置窗口是否有标题栏和/或可调整大小的边框
+	-- config.window_decorations = "RESIZE" -- 配置窗口是否有标题栏和/或可调整大小的边框
 	config.enable_scroll_bar = false
 	config.tab_bar_at_bottom = false
 	config.enable_tab_bar = false -- 去掉tabbar
@@ -27,7 +27,7 @@ M.config = function(config)
 	config.tab_max_width = 26
 
 	config.background = {
-		wallpaper.random_wallpaper(os.getenv("HOME") .. "/.config/wezterm/wallpapers/"),
+		-- wallpaper.random_wallpaper(os.getenv("HOME") .. "/.config/wezterm/wallpapers/"),
 		{
 			source = {
 				-- Color = "#222436",
