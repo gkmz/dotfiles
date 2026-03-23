@@ -13,7 +13,7 @@ return {
     },
     init = function()
       -- The plugin documentation recommends setting these options here
-      vim.opt.wrap = false
+      vim.opt.wrap = true
       vim.opt.sidescrolloff = 36
       vim.g.neominimap_enabled = true
     end,
