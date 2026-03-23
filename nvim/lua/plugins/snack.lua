@@ -3,6 +3,7 @@ local title = [[
 ]]
 
 local header = require("utils.ascii_pic").random_logo()
+local image_preview = require("utils.image_preview")
 
 local function get_sections()
   local sections = {}
@@ -74,6 +75,30 @@ return {
           explorer = {
             ignored = true,
             hidden = true,
+            actions = {
+              explorer_confirm = function(picker, item, action)
+                if not item then
+                  return
+                elseif picker.input.filter.meta.searching then
+                  require("snacks.explorer.actions").update(picker, { target = item.file })
+                elseif item.dir then
+                  require("snacks.explorer.tree"):toggle(item.file)
+                  require("snacks.explorer.actions").update(picker, { refresh = true })
+                elseif image_preview.is_supported(item.file) then
+                  image_preview.open(item.file)
+                else
+                  Snacks.picker.actions.jump(picker, item, action)
+                end
+              end,
+            },
+            win = {
+              list = {
+                keys = {
+                  ["<CR>"] = "explorer_confirm",
+                  ["l"] = "explorer_confirm",
+                },
+              },
+            },
           },
         },
       },
