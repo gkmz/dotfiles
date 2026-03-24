@@ -1,0 +1,2 @@
+prefix_rule(pattern=["go", "mod", "tidy"], decision="allow")
+prefix_rule(pattern=["go", "test", "./..."], decision="allow")

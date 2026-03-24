@@ -28,6 +28,7 @@ show_help() {
   echo -e "  terminal       终端配置（.zshrc, .bashrc 等）"
   echo -e "  git            Git 配置（.gitconfig 等）"
   echo -e "  vim            Vim 配置（.vimrc）"
+  echo -e "  codex          Codex 配置（~/.codex 下必要文件）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  tools          安装外部工具依赖（npm, brew 等）"
@@ -35,6 +36,7 @@ show_help() {
   echo -e "${BLUE}示例：${NC}"
   echo -e "  ./install.sh                    # 安装所有模块"
   echo -e "  ./install.sh terminal git       # 只安装 terminal 和 git"
+  echo -e "  ./install.sh codex              # 只安装 Codex 配置"
   echo -e "  ./install.sh vscode             # 只安装 VSCode 系列 IDE"
   echo -e "  ./install.sh ai-ide             # 只安装 AI IDE 配置"
   echo -e "  ./install.sh -l                 # 列出所有模块"
@@ -48,6 +50,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} terminal  - 终端配置"
   echo -e "  ${GREEN}✓${NC} git       - Git 配置"
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
+  echo -e "  ${GREEN}✓${NC} codex     - Codex 配置（~/.codex 下必要文件）"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  ${GREEN}✓${NC} tools     - 安装外部工具依赖（mmdc 等）"
@@ -157,6 +160,22 @@ install_vim() {
     create_symlink "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc" ".vimrc"
 }
 
+# 模块：安装 Codex 配置
+install_codex() {
+  echo -e "${BLUE}=== 安装 Codex 配置 ===${NC}\n"
+
+  mkdir -p "$HOME/.codex/rules"
+
+  [ -f "$DOTFILES_DIR/codex/config.toml" ] && \
+    create_symlink "$DOTFILES_DIR/codex/config.toml" "$HOME/.codex/config.toml" "codex config.toml"
+
+  [ -f "$DOTFILES_DIR/codex/mcp_config.json" ] && \
+    create_symlink "$DOTFILES_DIR/codex/mcp_config.json" "$HOME/.codex/mcp_config.json" "codex mcp_config.json"
+
+  [ -f "$DOTFILES_DIR/codex/rules/default.rules" ] && \
+    create_symlink "$DOTFILES_DIR/codex/rules/default.rules" "$HOME/.codex/rules/default.rules" "codex default.rules"
+}
+
 # 模块：安装 VSCode 系列 IDE 配置
 install_vscode() {
   echo -e "${BLUE}=== 安装 VSCode 系列 IDE 配置 ===${NC}\n"
@@ -236,6 +255,7 @@ main() {
     install_terminal
     install_git
     install_vim
+    install_codex
     install_vscode
     install_tools
     echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
@@ -254,6 +274,7 @@ main() {
         install_terminal
         install_git
         install_vim
+        install_codex
         install_vscode
         install_tools
         echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
@@ -273,6 +294,9 @@ main() {
               ;;
             vim)
               install_vim
+              ;;
+            codex)
+              install_codex
               ;;
             vscode)
               install_vscode

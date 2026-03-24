@@ -1,0 +1,11 @@
+personality = "pragmatic"
+model = "gpt-5.3-codex"
+service_tier = "fast"
+model_reasoning_effort = "medium"
+
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+"gpt-5.1-codex-mini" = "gpt-5.4"
+
+[features]
+multi_agent = true

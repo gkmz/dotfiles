@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "/Users/hank/workspace/mine/ai/ai-exp/mcp/weather/weather"
+    },
+    "time": {
+      "command": "/Users/hank/workspace/mine/ai/ai-exp/mcp/query-time/query-time"
+    }
+  }
+}

@@ -47,6 +47,7 @@ function Show-Help {
   Write-Host "  terminal     终端 shell 配置（Windows 下默认跳过）"
   Write-Host "  git          Git 配置（.gitconfig 等）"
   Write-Host "  vim          Vim 配置（Windows 使用 _vimrc）"
+  Write-Host "  codex        Codex 配置（~/.codex 下必要文件）"
   Write-Host "  vscode       VSCode 系列 IDE 配置"
   Write-Host ""
   Write-Host "示例:"
@@ -63,6 +64,7 @@ function List-Modules {
   Write-Host "  [ok] terminal - 终端 shell 配置（Windows 下默认跳过）"
   Write-Host "  [ok] git      - Git 配置"
   Write-Host "  [ok] vim      - Vim 配置"
+  Write-Host "  [ok] codex    - Codex 配置（~/.codex 下必要文件）"
   Write-Host "  [ok] vscode   - VSCode 系列 IDE 配置"
   Write-Host ""
 }
@@ -202,6 +204,18 @@ function Install-Vim {
   Backup-And-Link -Source (Join-Path $DotfilesDir "vim\.vimrc") -Target (Join-Path $userHome "_vimrc") -Name "_vimrc"
 }
 
+function Install-Codex {
+  Write-Section "安装 Codex 配置"
+
+  $userHome = Resolve-UserHome
+  $codexDir = Join-Path $userHome ".codex"
+  New-Item -ItemType Directory -Path (Join-Path $codexDir "rules") -Force | Out-Null
+
+  Backup-And-Link -Source (Join-Path $DotfilesDir "codex\config.toml") -Target (Join-Path $codexDir "config.toml") -Name "codex config.toml"
+  Backup-And-Link -Source (Join-Path $DotfilesDir "codex\mcp_config.json") -Target (Join-Path $codexDir "mcp_config.json") -Name "codex mcp_config.json"
+  Backup-And-Link -Source (Join-Path $DotfilesDir "codex\rules\default.rules") -Target (Join-Path $codexDir "rules\default.rules") -Name "codex default.rules"
+}
+
 function Get-PythonCommand {
   if (Get-Command python -ErrorAction SilentlyContinue) {
     return @("python", "generate_ide_configs.py")
@@ -239,6 +253,7 @@ function Install-All {
   Install-Terminal
   Install-Git
   Install-Vim
+  Install-Codex
   Install-VSCode
 }
 
@@ -250,6 +265,7 @@ function Invoke-Module {
     "terminal" { Install-Terminal }
     "git" { Install-Git }
     "vim" { Install-Vim }
+    "codex" { Install-Codex }
     "vscode" { Install-VSCode }
     default { throw "未知模块: $Name" }
   }

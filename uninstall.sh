@@ -35,7 +35,7 @@ remove_symlink() {
   elif [ -e "$target" ]; then
     echo -e "${YELLOW}跳过 $name: 不是软链接${NC}\n"
   fi
-done
+}
 
 echo -e "${YELLOW}=== 删除 ~/.config 下的软链接 ===${NC}\n"
 
@@ -74,6 +74,9 @@ remove_symlink "$HOME/.git_me" ".git_me"
 remove_symlink "$HOME/.git_wk" ".git_wk"
 remove_symlink "$HOME/.git_os" ".git_os"
 remove_symlink "$HOME/.git_cc" ".git_cc"
+remove_symlink "$HOME/.codex/config.toml" "codex config.toml"
+remove_symlink "$HOME/.codex/mcp_config.json" "codex mcp_config.json"
+remove_symlink "$HOME/.codex/rules/default.rules" "codex default.rules"
 
 echo -e "${YELLOW}=== 删除 VSCode 系列 IDE 的软链接 ===${NC}\n"
 
