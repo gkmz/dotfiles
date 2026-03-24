@@ -20,6 +20,8 @@ M.config = function(config)
 		{ key = "9", mods = "CTRL", action = act.PaneSelect({ alphabet = "1234567890" }) },
 		-- show the pane selection mode, but have it swap the active and selected panes
 		{ key = "0", mods = "CTRL", action = act.PaneSelect({ mode = "SwapWithActive" }) },
+		-- close current pane
+		{ key = "w", mods = "ALT", action = act.CloseCurrentPane({ confirm = true }) },
 		-- allow to toggle maximize/normal window
 		{
 			key = "m",
