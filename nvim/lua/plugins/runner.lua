@@ -7,7 +7,7 @@ return {
       { "<leader>RC", "<cmd>RunCode tab<cr>", desc = "Run code in tab" },
       { "<leader>Rf", "<cmd>RunFile<cr>", desc = "Run file" },
       { "<leader>RF", "<cmd>RunFile tab<cr>", desc = "Run file in tab" },
-      { "<leader>Rm", "<cmd>RunCode project<cr>", desc = "Run current method (Go)" },
+      { "<leader>Rm", "<cmd>RunCode<cr>", desc = "Run main (Go)" },
       { "<leader>Rp", "<cmd>RunProject<cr>", desc = "Run project" },
       { "<leader>Rx", "<cmd>RunClose<cr>", desc = "Run close" },
       { "<leader>Rt", "<cmd>CRFiletype<cr>", desc = "Run file type" },
@@ -23,8 +23,8 @@ return {
         python = "python3 -u",
         typescript = "deno run",
         javascript = "node",
-        -- 针对 Go 增加运行当前方法的支持（需要光标在方法内）
-        go = "go test -v -run $methodName $dir",
+        -- 运行当前目录下的 Go 主程序（会向上查找 go.mod）
+        go = "cd $dir && go run .",
       },
     },
   },
