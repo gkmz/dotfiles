@@ -9,6 +9,7 @@ return {
   opts = {
     spec = {
       { "<leader>G", group = "Golang", icon = "" },
+      { "<leader>T", group = "Terminal", icon = "" },
       { "<leader>o", group = "Obsidian", icon = "󱓧" },
       { "<leader>h", group = "Http/Rest", icon = "󰌷" },
       { "<leader>R", group = "Code Runner", icon = "" },

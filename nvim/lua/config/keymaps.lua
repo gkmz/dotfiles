@@ -70,9 +70,10 @@ wk.add({
 -------------------------------------------------------------------------------
 -- <C-`>        : 切换底部终端（终端1）
 -- <C-`> 2<C-`> : 切换终端2，以此类推（:2ToggleTerm）
--- <leader>tf   : 浮动终端
--- <leader>tv   : 垂直终端
--- <leader>tn   : 新建终端（下一个编号）
+-- <leader>Tf   : 浮动终端
+-- <leader>Tv   : 垂直终端
+-- <leader>T1-4 : 切换终端1-4
+-- <leader>Tc   : 关闭全部终端
 
 local function toggle_term(id, direction)
   local cmd = id and (id .. "ToggleTerm") or "ToggleTerm"
@@ -86,20 +87,20 @@ end
 vim.keymap.set({ "n", "i", "t" }, "<C-`>", function() toggle_term(1) end, { desc = "Toggle Terminal 1" })
 
 -- 浮动终端
-vim.keymap.set({ "n", "i", "t" }, "<leader>tf", function() toggle_term(nil, "float") end,
+vim.keymap.set({ "n", "i", "t" }, "<leader>Tf", function() toggle_term(nil, "float") end,
   { desc = "Toggle Float Terminal" })
 
 -- 垂直终端
-vim.keymap.set({ "n", "i", "t" }, "<leader>tv", function() toggle_term(nil, "vertical") end,
+vim.keymap.set({ "n", "i", "t" }, "<leader>Tv", function() toggle_term(nil, "vertical") end,
   { desc = "Toggle Vertical Terminal" })
 
 -- 快速切换终端 1-4
 for i = 1, 4 do
-  vim.keymap.set({ "n" }, "<leader>t" .. i, function() toggle_term(i) end, { desc = "Toggle Terminal " .. i })
+  vim.keymap.set({ "n" }, "<leader>T" .. i, function() toggle_term(i) end, { desc = "Toggle Terminal " .. i })
 end
 
 wk.add({
-  { "<leader>tc", function() require("utils.terminal").close_all_terminals() end, desc = "Close All Terminals" },
+  { "<leader>Tc", function() require("utils.terminal").close_all_terminals() end, desc = "Close All Terminals" },
 })
 
 -------------------------------------------------------------------------------

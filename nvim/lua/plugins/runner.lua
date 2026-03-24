@@ -24,7 +24,7 @@ return {
         typescript = "deno run",
         javascript = "node",
         -- 运行当前目录下的 Go 主程序（会向上查找 go.mod）
-        go = "cd $dir && go run .",
+        go = "cd $dir && go run $fileName",
       },
     },
   },

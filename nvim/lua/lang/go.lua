@@ -38,7 +38,8 @@ return {
       adapters = {
         ["neotest-golang"] = {
           go_test_args = { "-v", "-count=1", "-race", "-parallel=1" },
-          runner = "gotestsum",
+          -- Keep runner on "go" for compatibility with the current neotest stack.
+          runner = "go",
         },
       },
     },
