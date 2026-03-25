@@ -1,3 +1,26 @@
+local function parse_aihubmix_free_models()
+  return {
+    "coding-glm-5-turbo-free",
+    "coding-glm-5-free",
+    "coding-minimax-m2.7-free",
+    "minimax-m2.5-free",
+    "coding-minimax-m2.5-free",
+    "gemini-3.1-flash-image-preview-free",
+    "gemini-3-flash-preview-free",
+    "gemini-2.0-flash-free",
+    "gpt-4.1-free",
+    "gpt-4.1-mini-free",
+    "gpt-4.1-nano-free",
+    "gpt-4o-free",
+    "glm-4.7-flash-free",
+    "coding-glm-4.7-free",
+    "step-3.5-flash-free",
+    "coding-minimax-m2.1-free",
+    "kimi-for-coding-free",
+    "mimo-v2-flash-free",
+  }
+end
+
 return {
   -- CodeCompanion with custom keys from env
   {
@@ -9,8 +32,8 @@ return {
     },
     opts = {
       strategies = {
-        chat = { adapter = "gemini" },
-        inline = { adapter = "gemini" },
+        chat = { adapter = "aihubmix" },
+        inline = { adapter = "aihubmix" },
       },
       display = {
         chat = {
@@ -47,6 +70,75 @@ return {
               },
             })
           end,
+          aihubmix = function()
+            local free_models = parse_aihubmix_free_models()
+            local active_model = free_models[1]
+            local active_index = 1
+            for i, model in ipairs(free_models) do
+              if model == active_model then
+                active_index = i
+                break
+              end
+            end
+
+            local function is_quota_or_rate_error(data)
+              if type(data) ~= "table" then
+                return false
+              end
+
+              if data.status == 429 then
+                return true
+              end
+
+              local body = type(data.body) == "string" and data.body:lower() or ""
+              return body:find("quota", 1, true) ~= nil
+                or body:find("insufficient", 1, true) ~= nil
+                or body:find("rate limit", 1, true) ~= nil
+                or body:find("too many requests", 1, true) ~= nil
+            end
+
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "aihubmix",
+              formatted_name = "AIHubMix",
+              env = {
+                url = "cmd:echo ${AIHUBMIX_BASE_URL:-https://aihubmix.com/v1}",
+                api_key = "cmd:echo ${AIHUBMIX_API_KEY:-$OPENAI_API_KEY}",
+                chat_url = "/chat/completions",
+                models_endpoint = "/models",
+              },
+              schema = {
+                model = {
+                  default = active_model,
+                  choices = free_models,
+                },
+              },
+              handlers = {
+                setup = function(self)
+                  if self.opts and self.opts.stream then
+                    self.parameters.stream = true
+                    self.parameters.stream_options = { include_usage = true }
+                  end
+                  self.parameters.model = free_models[active_index]
+                  self.schema.model.default = free_models[active_index]
+                  return true
+                end,
+                on_exit = function(self, data)
+                  if is_quota_or_rate_error(data) and #free_models > 1 then
+                    local previous = free_models[active_index]
+                    active_index = (active_index % #free_models) + 1
+                    local next_model = free_models[active_index]
+                    vim.schedule(function()
+                      vim.notify(
+                        string.format("AIHubMix免费模型已从 %s 切换到 %s", previous, next_model),
+                        vim.log.levels.WARN
+                      )
+                    end)
+                  end
+                  return require("codecompanion.adapters.http.openai").handlers.on_exit(self, data)
+                end,
+              },
+            })
+          end,
           deepseek = function()
             return require("codecompanion.adapters").extend("deepseek", {
               schema = {
@@ -80,7 +172,8 @@ return {
               name = "minimax",
               formatted_name = "MiniMax",
               env = {
-                url = "cmd:echo ${MINIMAX_BASE_URL:-https://api.minimax.io/v1}",
+                -- url = "cmd:echo ${MINIMAX_BASE_URL:-https://api.minimax.io/v1}",
+                url = "cmd:echo ${MINIMAX_BASE_URL:-https://api.minimaxi.com/v1}",
                 api_key = "cmd:echo $MINIMAX_API_KEY",
                 chat_url = "/chat/completions",
                 models_endpoint = "/models",
