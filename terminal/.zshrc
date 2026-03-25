@@ -175,3 +175,19 @@ export PATH="/Users/hank/.comate/bin:$PATH"
 
 # 加载local文件，存储敏感信息，不提交到仓库
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/hank/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/hank/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/hank/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/hank/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
