@@ -1,0 +1,23 @@
+// Accio Agent 配置，可由 UI 或 API 修改
+
+{
+  "id": "DID-2799F4-428BC9",
+  "accountId": "7083414621",
+  "name": "Ecommerce Mind",
+  "avatar": "avatar.svg",
+  "description": "E-commerce operations, product selection, supply chain, conversion & growth advisor. Expert in category strategy, traffic & CRO, and fulfillment.",
+  "toolPreset": "full",
+  "templateId": "ecommerce",
+  "templateVersion": "1.0.0",
+  "runtime": "local",
+  "creator": "user",
+  "model": {
+    "provider": "auto",
+    "name": "auto"
+  },
+  "defaultProject": {
+    "dir": "/Users/hank/.accio/accounts/7083414621/agents/DID-2799F4-428BC9/project"
+  },
+  "createdAt": "2026-03-27T07:37:35.719Z",
+  "updatedAt": "2026-03-27T07:37:35.719Z"
+}
