@@ -18,3 +18,9 @@ trust_level = "trusted"
 
 [projects."/Users/hank/workspace/mine/ai/all-in-rag"]
 trust_level = "trusted"
+
+[projects."/Users/hank/workspace/mine/petowns/petown-api"]
+trust_level = "trusted"
+
+[projects."/Users/hank/workspace/mine/notebook"]
+trust_level = "trusted"

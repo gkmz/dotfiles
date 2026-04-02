@@ -31,6 +31,7 @@ show_help() {
   echo -e "  codex          Codex 配置（~/.codex 下必要文件）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
+  echo -e "  accio          Accio 配置（~/.accio 软链接）"
   echo -e "  tools          安装外部工具依赖（npm, brew 等）"
   echo ""
   echo -e "${BLUE}示例：${NC}"
@@ -53,6 +54,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} codex     - Codex 配置（~/.codex 下必要文件）"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
+  echo -e "  ${GREEN}✓${NC} accio     - Accio 配置（~/.accio 软链接）"
   echo -e "  ${GREEN}✓${NC} tools     - 安装外部工具依赖（mmdc 等）"
   echo ""
 }
@@ -219,6 +221,123 @@ install_ai_ide() {
   fi
 }
 
+# 模块：安装 Accio 配置
+install_accio() {
+  echo -e "${BLUE}=== 安装 Accio 配置 ===${NC}\n"
+
+  local accio_src="$DOTFILES_DIR/accio"
+  local accio_dst="$HOME/.accio"
+
+  if [ ! -d "$accio_src" ]; then
+    echo -e "${RED}错误：未找到 accio 目录${NC}\n"
+    return 1
+  fi
+
+  # 如果 ~/.accio 已经是正确的软链接，跳过
+  if [ -L "$accio_dst" ] && [ "$(readlink "$accio_dst")" = "$accio_src" ]; then
+    echo -e "${GREEN}  ✓ 已存在正确的软链接，跳过${NC}\n"
+    return
+  fi
+
+  # 如果 ~/.accio 是真实目录，将运行时数据合并回来后再建软链
+  if [ -d "$accio_dst" ] && [ ! -L "$accio_dst" ]; then
+    echo -e "${YELLOW}  检测到真实目录 $accio_dst，正在合并运行时数据...${NC}"
+
+    # 将运行时目录/文件从原 ~/.accio 保留到 dotfiles 目录之外的临时位置，
+    # 安装后再还原。策略：把整个原目录移走，建软链后，把运行时数据写回软链目录。
+    local backup_dir="${accio_dst}.backup.$(date +%Y%m%d_%H%M%S)"
+    mv "$accio_dst" "$backup_dir"
+    echo -e "${YELLOW}  原目录已备份至 $backup_dir${NC}"
+
+    # 建软链
+    ln -sf "$accio_src" "$accio_dst"
+    echo -e "${GREEN}  ✓ 创建软链接: $accio_dst -> $accio_src${NC}"
+
+    # 还原运行时目录/文件（覆盖到软链目录，即写回 dotfiles/accio/）
+    local RUNTIME_ITEMS=(
+      "logs"
+      "bin"
+      "network"
+      "model_cache.json"
+      "onboarding_cache.json"
+      "utdid"
+    )
+    for item in "${RUNTIME_ITEMS[@]}"; do
+      if [ -e "$backup_dir/$item" ]; then
+        cp -r "$backup_dir/$item" "$accio_dst/"
+      fi
+    done
+
+    # 还原各 account 下的运行时数据（conversations/sessions/tasks 等）
+    for account_dir in "$backup_dir/accounts"/*/; do
+      local account=$(basename "$account_dir")
+      local ACCOUNT_RUNTIME=(
+        "conversations"
+        "channels"
+        "tasks"
+        "pairings"
+        "pairings-viewed.json"
+        "mcp_oauth"
+        "workspaces"
+        "subagent-sessions"
+      )
+      for item in "${ACCOUNT_RUNTIME[@]}"; do
+        if [ -e "$account_dir/$item" ]; then
+          mkdir -p "$accio_dst/accounts/$account"
+          cp -r "$account_dir/$item" "$accio_dst/accounts/$account/"
+        fi
+      done
+
+      # 还原各 agent 下的运行时数据
+      for agent_dir in "$account_dir/agents"/*/; do
+        local agent=$(basename "$agent_dir")
+        local AGENT_RUNTIME=(
+          "sessions"
+          "subagent-sessions"
+          "runtime"
+          "project"
+          "msg-queue"
+        )
+        for item in "${AGENT_RUNTIME[@]}"; do
+          if [ -e "$agent_dir/$item" ]; then
+            mkdir -p "$accio_dst/accounts/$account/agents/$agent"
+            cp -r "$agent_dir/$item" "$accio_dst/accounts/$account/agents/$agent/"
+          fi
+        done
+        # 还原 agent-core/diary 和 HEARTBEAT.md
+        if [ -d "$agent_dir/agent-core/diary" ]; then
+          mkdir -p "$accio_dst/accounts/$account/agents/$agent/agent-core"
+          cp -r "$agent_dir/agent-core/diary" "$accio_dst/accounts/$account/agents/$agent/agent-core/"
+        fi
+        if [ -f "$agent_dir/agent-core/HEARTBEAT.md" ]; then
+          mkdir -p "$accio_dst/accounts/$account/agents/$agent/agent-core"
+          cp "$agent_dir/agent-core/HEARTBEAT.md" "$accio_dst/accounts/$account/agents/$agent/agent-core/"
+        fi
+        # 还原 agent-core/skills/skills.jsonc
+        if [ -f "$agent_dir/agent-core/skills/skills.jsonc" ]; then
+          mkdir -p "$accio_dst/accounts/$account/agents/$agent/agent-core/skills"
+          cp "$agent_dir/agent-core/skills/skills.jsonc" "$accio_dst/accounts/$account/agents/$agent/agent-core/skills/"
+        fi
+        # 还原 audit.jsonl
+        for perm_audit in "$agent_dir/permissions/audit.jsonl"; do
+          if [ -f "$perm_audit" ]; then
+            mkdir -p "$accio_dst/accounts/$account/agents/$agent/permissions"
+            cp "$perm_audit" "$accio_dst/accounts/$account/agents/$agent/permissions/"
+          fi
+        done
+      done
+    done
+
+    echo -e "${GREEN}  ✓ 运行时数据已还原${NC}"
+    echo -e "${YELLOW}  备份保留在 $backup_dir，确认无误后可手动删除${NC}\n"
+  else
+    # 删除现有软链（若指向别处）
+    [ -L "$accio_dst" ] && rm "$accio_dst"
+    ln -sf "$accio_src" "$accio_dst"
+    echo -e "${GREEN}  ✓ 创建软链接: $accio_dst -> $accio_src${NC}\n"
+  fi
+}
+
 # 模块：安装外部工具依赖
 install_tools() {
   echo -e "${BLUE}=== 安装外部工具依赖 ===${NC}\n"
@@ -257,6 +376,7 @@ main() {
     install_vim
     install_codex
     install_vscode
+    install_accio
     install_tools
     echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
   else
@@ -276,6 +396,7 @@ main() {
         install_vim
         install_codex
         install_vscode
+        install_accio
         install_tools
         echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
         ;;
@@ -303,6 +424,9 @@ main() {
               ;;
             ai-ide)
               install_ai_ide
+              ;;
+            accio)
+              install_accio
               ;;
             tools)
               install_tools

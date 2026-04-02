@@ -88,3 +88,5 @@ zed/prompts/
 zed/embeddings/
 vscode/*/settings.json
 vscode/*/keybindings.json
+accio/logs
+# Accio 详细规则在 accio/.gitignore 中管理
