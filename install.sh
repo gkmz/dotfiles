@@ -29,6 +29,7 @@ show_help() {
   echo -e "  git            Git 配置（.gitconfig 等）"
   echo -e "  vim            Vim 配置（.vimrc）"
   echo -e "  codex          Codex 配置（~/.codex 下必要文件）"
+  echo -e "  claude         Claude Code 配置（~/.claude 软链接）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  accio          Accio 配置（~/.accio 软链接）"
@@ -38,6 +39,7 @@ show_help() {
   echo -e "  ./install.sh                    # 安装所有模块"
   echo -e "  ./install.sh terminal git       # 只安装 terminal 和 git"
   echo -e "  ./install.sh codex              # 只安装 Codex 配置"
+  echo -e "  ./install.sh claude             # 只安装 Claude 配置"
   echo -e "  ./install.sh vscode             # 只安装 VSCode 系列 IDE"
   echo -e "  ./install.sh ai-ide             # 只安装 AI IDE 配置"
   echo -e "  ./install.sh -l                 # 列出所有模块"
@@ -52,6 +54,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} git       - Git 配置"
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
   echo -e "  ${GREEN}✓${NC} codex     - Codex 配置（~/.codex 下必要文件）"
+  echo -e "  ${GREEN}✓${NC} claude    - Claude Code 配置（~/.claude 软链接）"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  ${GREEN}✓${NC} accio     - Accio 配置（~/.accio 软链接）"
@@ -176,6 +179,14 @@ install_codex() {
 
   [ -f "$DOTFILES_DIR/codex/rules/default.rules" ] && \
     create_symlink "$DOTFILES_DIR/codex/rules/default.rules" "$HOME/.codex/rules/default.rules" "codex default.rules"
+}
+
+# 模块：安装 Claude Code 配置
+install_claude() {
+  echo -e "${BLUE}=== 安装 Claude Code 配置 ===${NC}\n"
+
+  [ -d "$DOTFILES_DIR/claude" ] && \
+    create_symlink "$DOTFILES_DIR/claude" "$HOME/.claude" "claude"
 }
 
 # 模块：安装 VSCode 系列 IDE 配置
@@ -375,6 +386,7 @@ main() {
     install_git
     install_vim
     install_codex
+    install_claude
     install_vscode
     install_accio
     install_tools
@@ -395,6 +407,7 @@ main() {
         install_git
         install_vim
         install_codex
+        install_claude
         install_vscode
         install_accio
         install_tools
@@ -418,6 +431,9 @@ main() {
               ;;
             codex)
               install_codex
+              ;;
+            claude)
+              install_claude
               ;;
             vscode)
               install_vscode

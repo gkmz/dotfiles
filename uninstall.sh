@@ -77,6 +77,7 @@ remove_symlink "$HOME/.git_cc" ".git_cc"
 remove_symlink "$HOME/.codex/config.toml" "codex config.toml"
 remove_symlink "$HOME/.codex/mcp_config.json" "codex mcp_config.json"
 remove_symlink "$HOME/.codex/rules/default.rules" "codex default.rules"
+remove_symlink "$HOME/.claude" "claude"
 
 echo -e "${YELLOW}=== 删除 VSCode 系列 IDE 的软链接 ===${NC}\n"
 

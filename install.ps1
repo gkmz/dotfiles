@@ -48,6 +48,7 @@ function Show-Help {
   Write-Host "  git          Git 配置（.gitconfig 等）"
   Write-Host "  vim          Vim 配置（Windows 使用 _vimrc）"
   Write-Host "  codex        Codex 配置（~/.codex 下必要文件）"
+  Write-Host "  claude       Claude Code 配置（~/.claude 软链接）"
   Write-Host "  vscode       VSCode 系列 IDE 配置"
   Write-Host ""
   Write-Host "示例:"
@@ -65,6 +66,7 @@ function List-Modules {
   Write-Host "  [ok] git      - Git 配置"
   Write-Host "  [ok] vim      - Vim 配置"
   Write-Host "  [ok] codex    - Codex 配置（~/.codex 下必要文件）"
+  Write-Host "  [ok] claude   - Claude Code 配置（~/.claude 软链接）"
   Write-Host "  [ok] vscode   - VSCode 系列 IDE 配置"
   Write-Host ""
 }
@@ -216,6 +218,13 @@ function Install-Codex {
   Backup-And-Link -Source (Join-Path $DotfilesDir "codex\rules\default.rules") -Target (Join-Path $codexDir "rules\default.rules") -Name "codex default.rules"
 }
 
+function Install-Claude {
+  Write-Section "安装 Claude Code 配置"
+
+  $userHome = Resolve-UserHome
+  Backup-And-Link -Source (Join-Path $DotfilesDir "claude") -Target (Join-Path $userHome ".claude") -Name "claude"
+}
+
 function Get-PythonCommand {
   if (Get-Command python -ErrorAction SilentlyContinue) {
     return @("python", "generate_ide_configs.py")
@@ -254,6 +263,7 @@ function Install-All {
   Install-Git
   Install-Vim
   Install-Codex
+  Install-Claude
   Install-VSCode
 }
 
@@ -266,6 +276,7 @@ function Invoke-Module {
     "git" { Install-Git }
     "vim" { Install-Vim }
     "codex" { Install-Codex }
+    "claude" { Install-Claude }
     "vscode" { Install-VSCode }
     default { throw "未知模块: $Name" }
   }
