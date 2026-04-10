@@ -1,0 +1,8 @@
+# 默认忽略 ~/.claude 的所有内容（绝大多数是运行时数据）
+*
+
+# 保留可提交的配置文件
+!.gitignore
+!README.md
+!settings.json
+!settings-*.json
