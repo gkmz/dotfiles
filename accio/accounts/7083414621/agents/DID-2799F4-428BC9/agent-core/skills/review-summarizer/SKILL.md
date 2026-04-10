@@ -1,6 +1,7 @@
 ---
 name: review-summarizer
 description: Scrape, analyze, and summarize product reviews from multiple platforms (Amazon, Google, Yelp, TripAdvisor). Extract key insights, sentiment analysis, pros/cons, and recommendations. Use when researching products for arbitrage, creating affiliate content, or making purchasing decisions.
+region_scope: INTL
 ---
 
 # Review Summarizer

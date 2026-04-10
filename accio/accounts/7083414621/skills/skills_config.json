@@ -13,5 +13,8 @@
   },
   "27_shopify-builder": {
     "installedVersion": "0.0.36"
+  },
+  "geekmo-tech-writer": {
+    "enabled": true
   }
 }

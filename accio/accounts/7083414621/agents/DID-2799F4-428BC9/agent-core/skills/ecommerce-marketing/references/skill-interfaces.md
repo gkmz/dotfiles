@@ -106,11 +106,11 @@ Input/output specs for all 19 marketing sub-skills. Use this to prepare the righ
 ## Publishing Skills
 
 ### mcp-tools
-- **Input**: Action (search/mcp), tool name, tool_args
+- **Input**: `accio-mcp-cli search` / `accio-mcp-cli toolkit` / `accio-mcp-cli call` with tool name and arguments
 - **Output**: Results from 100+ remote services
-- **API**: MCP gateway — varies by platform
+- **API**: accio-mcp-cli → MCP gateway — varies by platform
 - **Platforms**: Twitter/X, LinkedIn, TikTok, Reddit, Google Workspace, Notion, GitHub
-- **Notes**: Gateway tool. Use `mcp_call(action="search", keyword="twitter")` to discover available tools.
+- **Notes**: Gateway via CLI. Use `accio-mcp-cli search twitter` (alias: `keyword`) or `accio-mcp-cli toolkit` to discover tools, then `accio-mcp-cli call <tool-name> ...`.
 
 ### social-media-publisher
 - **Input**: Platform (Instagram/Twitter), content (text, images), hashtags, user tags

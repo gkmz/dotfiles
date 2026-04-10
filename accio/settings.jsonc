@@ -9,6 +9,7 @@
   },
   "dev": {
     "environment": "prod",
+    "region": "",
     "messageIdDebug": true,
     "groupChatDebug": true,
     "replayEnabled": false,

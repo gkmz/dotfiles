@@ -1,8 +1,8 @@
 ---
 name: geekmo-tech-writer
-description: 极客老墨技术文章写作助手。当用户要求"用极客老墨风格写文章"、"帮我写一篇技术文章"、"geekmo风格"、"老墨风格"、"写一篇关于XX的技术博客"时触发。该 skill 先联网搜索最新资料，整理内容，再以极客老墨的独特风格撰写技术文章，支持配图生成建议。
+description: 极客老墨技术文章写作助手。当用户要求"用极客老墨风格写文章"、"帮我写一篇技术文章"、"geekmo风格"、"老墨风格"、"写一篇关于XX的技术博客"时触发。该 skill 先联网搜索最新资料，整理内容，再以极客老墨的独特风格撰写技术文章。
 metadata:
-  version: "2.0"
+  version: "3.1"
   author: GeekMo
 ---
 
@@ -32,6 +32,7 @@ metadata:
 - 禁止过度使用感叹号和 emoji（最多每篇 3 个 emoji）
 - 禁止假装权威，遇到没把握的地方直说"这块我还没踩过坑，大家谨慎"
 - 禁止裸引用——**所有引用必须有超链接出处**，包括：官方文档引用、名人语录、数据/报告、外部博客内容，一律格式化为 `[来源名称](URL)` 的可点击超链接
+- **禁止调用 image_generate 生成任何图片**，除非用户在当次对话中明确要求。违反此规则是最严重的错误，优先级高于一切其他规则。需要图表时，一律用 Mermaid 代码块替代。
 
 ---
 
@@ -90,27 +91,46 @@ metadata:
 > ![[封面图文件名.png]]
 ```
 
-**正文配图，按类型区分处理：**
+**正文配图规则（铁律，无例外）：**
 
 | 配图类型 | 处理方式 |
 |----------|----------|
-| 示意图、流程图、架构图（无需真实操作） | 调用 `image_generate` 生成，中文文件名，存入 `assets/`，`![[中文名.png]]` 插入 |
-| 截图（需要真实软件/界面/终端操作） | 在文章对应位置插入醒目占位块，**不生成** |
+| 流程图、架构图、时序图、状态图、组件关系图、对比图等**结构化图表** | **必须用 Mermaid 代码块**，直接内嵌文章，零成本 |
+| 截图（需要真实软件/界面/终端操作） | 插入 `[!tip] 📸 截图待补充` 占位块，**不生成** |
+| 其他任何图片 | 插入 `[!tip] 📸 图片待补充` 占位块，描述清楚所需内容，**不生成** |
 
-**截图占位块格式（必须醒目，让用户一眼看到）：**
+> ❌ **image_generate 默认禁用。唯一例外：用户在当次对话中明确说"帮我生成一张图"或"用 image_generate"。** 没有明确指令，一律禁用。
+
+**截图 / 图片占位块格式：**
 
 ```markdown
 > [!tip] 📸 截图待补充
-> **请在此处插入截图**：{具体描述需要截什么，例如："Docker Desktop 的 Containers 面板，显示运行中的容器列表"}
+> **请在此处插入截图**：{具体描述，例如："Docker Desktop 的 Containers 面板，显示运行中的容器列表"}
 ```
 
-**AI 生成示意图规范：**
-- 文件名：中文描述性名称，如 `三级加载机制示意.png`、`Go协程调度模型.png`
-- 统一存入 `notebook/assets/` 目录
-- prompt 风格参考：
-  - 流程图：`clean flowchart diagram, {主题} workflow, minimalist style, white background, blue green palette, professional, no decorative elements`
-  - 架构图：`clean technical architecture diagram, {主题}, white background, minimalist flat design, clear structure, professional`
-  - 概念示意：`isometric illustration, {主题} concept, soft pastel colors, clean minimal design, no text`
+**Mermaid 速查（能用必用）：**
+
+| 图表类型 | 语法关键词 |
+|----------|-----------|
+| 流程图 | `flowchart LR` / `flowchart TD` |
+| 时序图 | `sequenceDiagram` |
+| 架构/组件关系 | `flowchart` + `subgraph` 分组 |
+| 状态机 | `stateDiagram-v2` |
+| 甘特图 | `gantt` |
+| ER 图 | `erDiagram` |
+| 类图 | `classDiagram` |
+
+Mermaid 代码块插入格式（Obsidian 兼容）：
+
+````markdown
+```mermaid
+flowchart LR
+    A[输入文本] --> B[Tokenization]
+    B --> C[Prefill]
+    C --> D[Decode 循环]
+    D --> E[输出文本]
+```
+````
 
 ### Step 4：撰写文章
 
@@ -162,14 +182,15 @@ updated: {今天日期 YYYY-MM-DD}
 - [ ] 所有引用（文档、语录、数据、博客）是否都有可点击超链接？
 - [ ] 正文第一行是否有封面图占位符（提醒用户补充）？
 - [ ] 截图位置是否都插入了 `[!tip]` 占位块，描述清晰？
-- [ ] 示意图是否已调用 `image_generate` 生成，文件名为中文？
+- [ ] 流程图/架构图是否已用 Mermaid 代码块实现？
+- [ ] 是否调用了 image_generate？（**默认绝对不允许，除非用户本次明确要求，否则必须删除**）
 
-### Step 5：配图生成（如有）
+### Step 5：配图处理（文章写完后执行）
 
-文章写完后，对每处配图按类型处理：
-1. **示意图/流程图/架构图**：调用 `image_generate` 生成，中文文件名，下载存入 `assets/`，`![[中文名.png]]` 插入正文
-2. **截图**：插入 `[!tip] 📸 截图待补充` 占位块，写清楚需要截什么内容
-3. **封面图**：正文第一行插入占位提示，用户自己制作后替换
+1. **结构化图表**：确认已用 Mermaid 内嵌，无需额外操作
+2. **截图 / 其他图片**：确认已插入 `[!tip] 📸 图片待补充` 占位块，描述清晰
+3. **封面图**：确认正文第一行有占位提示
+4. **image_generate**：**默认不调用，除非用户本次明确要求**
 
 ---
 

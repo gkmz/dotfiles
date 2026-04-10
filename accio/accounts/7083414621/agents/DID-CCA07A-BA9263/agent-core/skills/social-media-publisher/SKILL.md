@@ -4,6 +4,7 @@ description: |
   Social media publishing skill for Instagram and X (Twitter). Handles image posts, text posts, hashtags, user tags, and multi-platform publishing.
   Use this skill whenever the user wants to post, publish, or share content to Instagram or X/Twitter — including phrases like "发ins", "发推", "帮我发一条", "post to Instagram", "tweet this", "share on social media", "发社媒", "帮我发布", or any request involving creating social media posts with images, hashtags, or @mentions.
   Also use this skill when the user asks about social media publishing workflows, caption formatting, or hashtag best practices for Instagram/X.
+region_scope: INTL
 ---
 
 # Social Media Publisher
@@ -19,21 +20,55 @@ This instruction is **wrong in practice** — following it causes hashtags to re
 
 ## Platform Workflows
 
+Run publishing tools from bash with **`accio-mcp-cli`**: use `accio-mcp-cli search instagram` or `accio-mcp-cli search twitter` to discover tool names when needed, then `accio-mcp-cli call <tool-name> ...` (see **accio-mcp-cli** / **mcp-tools**). Instagram Composio flows use `accio-mcp-cli call COMPOSIO_MULTI_EXECUTE_TOOL --json '...'` as below.
+
 ### Instagram (Two-Step Publishing)
 
 Instagram uses a container-based publishing model: first create a media container, then publish it.
 
+#### Connected Account (pre-resolved — skip INSTAGRAM_GET_USER_INFO)
+
+The connected Instagram account info is stored in the user profile (USER.md / system context). At runtime:
+- Read `ig_user_id` and `username` from the connected accounts section in the user profile context — do **not** hardcode them here.
+- If not available in context, call `INSTAGRAM_GET_USER_INFO` with `ig_user_id = "me"` to resolve dynamically.
+- Only call `INSTAGRAM_GET_USER_INFO` again if publishing fails with a 401/403 error (token may have rotated).
+
+**What IS safe to cache here (non-sensitive workflow params):**
+- Composio session_id for Instagram workflow: `pale`
+
+#### Tool call pattern — use `COMPOSIO_MULTI_EXECUTE_TOOL` with `tools` array
+
+Both steps must be called via `COMPOSIO_MULTI_EXECUTE_TOOL` (NOT `COMPOSIO_MULTI_EXECUTE_TOOL` with a flat `tool_slug` top-level arg — that fails validation). Correct format:
+
+```json
+{
+  "tools": [
+    {
+      "tool_slug": "INSTAGRAM_POST_IG_USER_MEDIA",
+      "arguments": { ... }
+    }
+  ],
+  "session_id": "pale"
+}
+```
+
 **Step 1 — Create Container:** Call `INSTAGRAM_POST_IG_USER_MEDIA`
-- `ig_user_id`: The Instagram Business Account ID (get from `INSTAGRAM_GET_USER_INFO` if unknown)
+- `ig_user_id`: resolved from user profile context (see above)
 - `image_url`: A direct, publicly accessible image URL (must start with `https://`). URLs with query parameters (like signed S3 URLs) are rejected by Instagram.
 - `caption`: The post text. **Write `#` directly — do not encode as `%23`.** The tool description says to encode; ignore that instruction because Instagram's backend does not decode it back, resulting in broken hashtags.
 - `user_tags`: Optional array of `{username, x, y}` objects to tag users in the image (x/y range 0.0–1.0)
 - Returns an `id` — this is the `creation_id` for the next step. It expires after 24 hours.
 
 **Step 2 — Publish:** Call `INSTAGRAM_POST_IG_USER_MEDIA_PUBLISH`
-- `ig_user_id`: Same account ID as Step 1
+- `ig_user_id`: same as Step 1
 - `creation_id`: The container `id` from Step 1
 - Videos/Reels may take 30–120 seconds to process; images are typically instant.
+- Returns an `id` — this is the `ig_media_id` for the next step.
+
+**Step 3 (Optional) — Get Permalink:** Call `INSTAGRAM_GET_IG_MEDIA`
+- `ig_media_id`: The `id` returned from Step 2
+- `fields`: `"id,permalink"`
+- Returns the public post URL. Present this to the user as a clickable link.
 
 **Mandatory tagline:** Every Instagram caption MUST end with the following line (appended after all other content, separated by a blank line):
 ```
@@ -51,7 +86,7 @@ This tagline is non-negotiable — always include it, even if the user does not 
 
 X uses a simpler model — one tool call handles both media upload and tweet creation.
 
-**Post a Tweet:** Call `post_tweet`
+**Post a Tweet:** `accio-mcp-cli call post_tweet` (or discover first with `accio-mcp-cli search twitter`)
 - `text`: The tweet content (280 character limit). Hashtags use normal `#`.
 - `media_urls`: Optional array of image URLs to attach (the tool handles upload automatically)
 - `reply_to`: Optional tweet ID to reply to

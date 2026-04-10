@@ -2,14 +2,17 @@
 name: gmail-assistant
 description: Send, search, and manage Gmail messages with automatic delivery verification and smart draft workflow
 always_apply: true
+region_scope: INTL
 ---
 
 # Gmail Assistant
 
-Operate Gmail through the `mcp_call` gateway. All tool calls use `action=mcp`.
+Operate Gmail through **`accio-mcp-cli`** (run from bash). When unsure of a tool name or parameters, run `accio-mcp-cli search gmail` or `accio-mcp-cli toolkit gmail` first, then `accio-mcp-cli call <tool-name> ...` with the Gmail tool names below.
 
-`user_google_email` is **required** for all Google tools — include it in `tool_args`.
+`user_google_email` is **required** for all Google tools. When using the `--json` flag, you **MUST** include `user_google_email` inside the JSON object rather than as a separate flag.
 Get it from the user or from prior conversation context.
+
+`query` is **required** for `search_gmail_messages`. If searching the inbox without specific filters, use `label:INBOX`.
 
 ---
 
@@ -45,7 +48,7 @@ User requests sending an email
 Display draft in chat (To, Cc, Subject, Body) for user preview
   │
   ▼
-User confirms → call send_gmail_message
+User confirms → accio-mcp-cli call send_gmail_message
   │
   ▼
 Wait ~5 seconds → auto-verify delivery (see below)
@@ -79,15 +82,10 @@ delivery. This step is non-optional.
 **Immediate Verification Step:**
 Wait ~5-10 seconds for Gmail to process, then use a single optimized query:
 
-```json
-{
-  "action": "mcp",
-  "name": "search_gmail_messages",
-  "tool_args": {
-    "query": "from:mailer-daemon@googlemail.com (subject:\"Delivery Status Notification\" OR subject:\"找不到地址\" OR subject:\"Address not found\") newer_than:1d",
-    "page_size": 5
-  }
-}
+```bash
+accio-mcp-cli call search_gmail_messages --user_google_email "user@example.com" \
+  --query 'from:mailer-daemon@googlemail.com (subject:"Delivery Status Notification" OR subject:"找不到地址" OR subject:"Address not found") newer_than:1d' \
+  --page_size 5
 ```
 
 **Evaluation Logic:**
@@ -110,95 +108,49 @@ Wait ~5-10 seconds for Gmail to process, then use a single optimized query:
 
 ### Search messages
 
-```json
-{
-  "action": "mcp",
-  "name": "search_gmail_messages",
-  "tool_args": {
-    "query": "from:sales@futuretech.com has:attachment newer_than:7d",
-    "page_size": 10
-  }
-}
+```bash
+accio-mcp-cli call search_gmail_messages --user_google_email "user@example.com" \
+  --query "from:sales@futuretech.com has:attachment newer_than:7d" --page_size 10
 ```
 
 ### Read message content
 
-```json
-{
-  "action": "mcp",
-  "name": "get_gmail_message_content",
-  "tool_args": {
-    "message_id": "<message_id>"
-  }
-}
+```bash
+accio-mcp-cli call get_gmail_message_content --user_google_email "user@example.com" \
+  --message_id "<message_id>"
 ```
 
 ### Batch read multiple messages
 
-```json
-{
-  "action": "mcp",
-  "name": "get_gmail_messages_content_batch",
-  "tool_args": {
-    "message_ids": ["<id1>", "<id2>", "<id3>"]
-  }
-}
+```bash
+accio-mcp-cli call get_gmail_messages_content_batch \
+  --json '{"user_google_email": "user@example.com", "message_ids":["<id1>","<id2>","<id3>"]}'
 ```
 
 ### Send email (HTML format)
 
-```json
-{
-  "action": "mcp",
-  "name": "send_gmail_message",
-  "tool_args": {
-    "to": "alice@example.com",
-    "cc": "bob@example.com",
-    "subject": "Q1 Report",
-    "body": "<h1>Q1 Report</h1><p>Please see details below...</p>",
-    "body_format": "html"
-  }
-}
+```bash
+accio-mcp-cli call send_gmail_message \
+  --json '{"user_google_email": "user@example.com", "to":"alice@example.com","cc":"bob@example.com","subject":"Q1 Report","body":"<h1>Q1 Report</h1><p>Please see details below...</p>","body_format":"html"}'
 ```
 
 ### Reply within the same thread
 
-```json
-{
-  "action": "mcp",
-  "name": "send_gmail_message",
-  "tool_args": {
-    "to": "alice@example.com",
-    "subject": "Re: Q1 Report",
-    "body": "Thanks for the update!",
-    "thread_id": "<thread_id>"
-  }
-}
+```bash
+accio-mcp-cli call send_gmail_message \
+  --json '{"user_google_email": "user@example.com", "to":"alice@example.com","subject":"Re: Q1 Report","body":"Thanks for the update!","thread_id":"<thread_id>"}'
 ```
 
 ### Create label and archive message
 
-```json
-{
-  "action": "mcp",
-  "name": "manage_gmail_label",
-  "tool_args": {
-    "action": "create",
-    "label_name": "Invoices/2026-Q1"
-  }
-}
+```bash
+accio-mcp-cli call manage_gmail_label --user_google_email "user@example.com" \
+  --json '{"action":"create","label_name":"Invoices/2026-Q1"}'
 ```
 
-```json
-{
-  "action": "mcp",
-  "name": "modify_gmail_message_labels",
-  "tool_args": {
-    "message_id": "<message_id>",
-    "add_label_ids": ["<label_id>"],
-    "remove_label_ids": ["INBOX"]
-  }
-}
+```bash
+accio-mcp-cli call modify_gmail_message_labels --user_google_email "user@example.com" \
+  --json '{"message_id":"<message_id>","add_label_ids":["<label_id>"],"remove_label_ids":["INBOX"]}'
 ```
 
 ---
@@ -225,4 +177,6 @@ Wait ~5-10 seconds for Gmail to process, then use a single optimized query:
    - `filename:pdf` — by attachment type
 
 5. **Auth failures** — If a call returns an authentication error, guide the user to
-   re-authorize via `start_google_auth`.
+   re-authorize via `start_google_auth` (invoke with `accio-mcp-cli call start_google_auth`).
+
+6. **Email Summarization** — When the user asks to "check Gmail", summarize the results by category (e.g., Academic, E-commerce, Tools, Social) to provide a clear overview. Highlight important actions needed (e.g., expiring subscriptions, accepted papers).
