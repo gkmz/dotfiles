@@ -21,6 +21,124 @@ local function parse_aihubmix_free_models()
   }
 end
 
+local function pick_default_adapter()
+  if vim.env.CODECOMPANION_DEFAULT_ADAPTER and vim.env.CODECOMPANION_DEFAULT_ADAPTER ~= "" then
+    return vim.env.CODECOMPANION_DEFAULT_ADAPTER
+  end
+
+  -- If Ollama is available locally, prefer local DeepSeek R1 by default.
+  if vim.fn.executable("ollama") == 1 then
+    return "local_deepseek_r1"
+  end
+
+  return "aihubmix"
+end
+
+local default_adapter = pick_default_adapter()
+
+local function open_chat_with(adapter, model)
+  local cmd = "CodeCompanionChat adapter=" .. adapter
+  if model and model ~= "" then
+    cmd = cmd .. " model=" .. model
+  end
+  vim.cmd(cmd)
+end
+
+local function get_http_adapters()
+  local ok, config = pcall(require, "codecompanion.config")
+  if not ok or not config.adapters or not config.adapters.http then
+    return {}
+  end
+
+  local adapters = {}
+  for name, _ in pairs(config.adapters.http) do
+    if name ~= "opts" and name ~= "http" and name ~= "acp" then
+      table.insert(adapters, name)
+    end
+  end
+  table.sort(adapters)
+  return adapters
+end
+
+local function get_adapter_models(adapter_name)
+  local ok_config, config = pcall(require, "codecompanion.config")
+  if not ok_config or not config.adapters or not config.adapters.http then
+    return {}, nil
+  end
+
+  local adapter_config = config.adapters.http[adapter_name]
+  if not adapter_config then
+    return {}, nil
+  end
+
+  local ok_adapter, adapter = pcall(require("codecompanion.adapters").resolve, adapter_config)
+  if not ok_adapter or not adapter or adapter.type ~= "http" then
+    return {}, nil
+  end
+
+  local model_schema = adapter.schema and adapter.schema.model or {}
+  local choices = model_schema.choices
+  if type(choices) == "function" then
+    local ok_choices, result = pcall(choices, adapter, { async = false })
+    choices = ok_choices and result or nil
+  end
+
+  local models = {}
+  if type(choices) == "table" then
+    if vim.islist(choices) then
+      models = vim.deepcopy(choices)
+    else
+      for name, _ in pairs(choices) do
+        table.insert(models, name)
+      end
+    end
+  end
+
+  if #models == 0 and type(model_schema.default) == "string" and model_schema.default ~= "" then
+    table.insert(models, model_schema.default)
+  end
+
+  table.sort(models)
+  return models, model_schema.default
+end
+
+local function pick_adapter_and_model()
+  local adapters = get_http_adapters()
+  if #adapters == 0 then
+    vim.notify("CodeCompanion: no HTTP adapters available", vim.log.levels.WARN)
+    return
+  end
+
+  vim.ui.select(adapters, { prompt = "Select provider (adapter)" }, function(adapter)
+    if not adapter then
+      return
+    end
+
+    local models, default_model = get_adapter_models(adapter)
+    if #models == 0 then
+      open_chat_with(adapter, nil)
+      return
+    end
+
+    if default_model and default_model ~= "" then
+      for i, model in ipairs(models) do
+        if model == default_model then
+          table.remove(models, i)
+          break
+        end
+      end
+      table.insert(models, 1, default_model)
+    end
+
+    vim.ui.select(models, { prompt = "Select model (" .. adapter .. ")" }, function(model)
+      if not model then
+        return
+      end
+      open_chat_with(adapter, model)
+    end)
+  end)
+end
+
 return {
   -- CodeCompanion with custom keys from env
   {
@@ -32,8 +150,8 @@ return {
     },
     opts = {
       strategies = {
-        chat = { adapter = "aihubmix" },
-        inline = { adapter = "aihubmix" },
+        chat = { adapter = default_adapter },
+        inline = { adapter = default_adapter },
       },
       display = {
         chat = {
@@ -155,6 +273,29 @@ return {
               },
             })
           end,
+          local_deepseek_r1 = function()
+            return require("codecompanion.adapters").extend("ollama", {
+              name = "local_deepseek_r1",
+              formatted_name = "Local DeepSeek R1",
+              env = {
+                url = function()
+                  return vim.env.OLLAMA_HOST or "http://127.0.0.1:11434"
+                end,
+              },
+              schema = {
+                model = {
+                  default = vim.env.LOCAL_DEEPSEEK_R1_MODEL or "deepseek-r1:latest",
+                  choices = {
+                    ["deepseek-r1:latest"] = { opts = { can_reason = true, can_use_tools = true } },
+                    ["deepseek-r1:70b"] = { opts = { can_reason = true, can_use_tools = true } },
+                    ["deepseek-r1:32b"] = { opts = { can_reason = true, can_use_tools = true } },
+                    ["deepseek-r1:14b"] = { opts = { can_reason = true, can_use_tools = true } },
+                    ["deepseek-r1:8b"] = { opts = { can_reason = true, can_use_tools = true } },
+                  },
+                },
+              },
+            })
+          end,
           doubao = function()
             return require("codecompanion.adapters").extend("openai_compatible", {
               name = "doubao",
@@ -250,6 +391,30 @@ return {
       { "<A-a>", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "Toggle AI Chat" },
       { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "Toggle AI Chat" },
       { "<leader>a", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "CodeCompanion Actions" },
+      {
+        "<leader>am",
+        function()
+          open_chat_with("aihubmix", "gpt-4.1-free")
+        end,
+        mode = { "n", "v" },
+        desc = "Chat: Cloud gpt-4.1-free",
+      },
+      {
+        "<leader>as",
+        function()
+          pick_adapter_and_model()
+        end,
+        mode = { "n", "v" },
+        desc = "Chat: Select provider/model",
+      },
+      {
+        "<leader>al",
+        function()
+          open_chat_with("local_deepseek_r1", vim.env.LOCAL_DEEPSEEK_R1_MODEL or "deepseek-r1:latest")
+        end,
+        mode = { "n", "v" },
+        desc = "Chat: Local deepseek-r1",
+      },
       { "ga", "<cmd>CodeCompanionChat Add<cr>", mode = "v", desc = "Add selection to AI Chat" },
       {
         "<leader>ac",
