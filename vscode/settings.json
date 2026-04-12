@@ -298,6 +298,20 @@
   "git.openRepositoryInParentFolders": "never",
   "editor.mouseWheelZoom": true,
   "makefile.configureOnOpen": false,
-  "redhat.telemetry.enabled": false
+  "redhat.telemetry.enabled": false,
+  "codingcopilot.enableInlineChat": true,
+  "codingcopilot.enableInlineChatIDEShortcutsTip": false,
+  "codingcopilot.commitMessageStyle": "Auto",
+  "codingcopilot.commitMessageLanguage": "zh_CN",
+  "codingcopilot.toolbarOnSelection": false,
+  "codingcopilot.enableAutoCompletions": true,
+  "codingcopilot.enableNextEditSuggestions": true,
+  "codingcopilot.generationPreference": "intelligentMode",
+  "codingcopilot.selectedCompletionModel": "",
+  "codingcopilot.enableCompletionLanguage": {
+    "scmInput": false
+  },
+  "codingcopilot.enableFloatShortcut": true,
+  "codingcopilot.enableIDENotification": true
   // 在这里添加你的其他设置
 }

@@ -1,7 +1,7 @@
 personality = "pragmatic"
-model = "gpt-5.3-codex"
+model = "gpt-5.4"
 service_tier = "fast"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "low"
 
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"

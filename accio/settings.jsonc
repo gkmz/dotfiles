@@ -4,6 +4,7 @@
     "language": "zh",
     "bypassSandbox": false,
     "chatInputAutoShrink": false,
+    "codingWorkspaceInFilesEnabled": false,
     "keepSystemAwake": false,
     "desktopNotifications": true
   },
