@@ -1,4 +1,4 @@
--- 快捷键配置
+-- -- 快捷键配置
 local wezterm = require("wezterm")
 local act = wezterm.action
 local key = require("utils/keys")

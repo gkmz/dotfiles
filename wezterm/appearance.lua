@@ -35,7 +35,7 @@ M.config = function(config)
 			},
 			width = "100%",
 			height = "100%",
-			opacity = 0.9,
+			opacity = 0.8,
 		},
 	}
 
@@ -46,12 +46,6 @@ M.config = function(config)
 		font = config.font,
 		font_size = config.font_size,
 	}
-
-	-- always maximize window when opening
-	wezterm.on("gui-startup", function()
-		local tab, pane, window = wezterm.mux.spawn_window({})
-		window:gui_window():maximize()
-	end)
 
 	wezterm.on("window-config-reloaded", function(window, pane)
 		window:toast_notification("wezterm", "configuration reloaded!", nil, 4000)

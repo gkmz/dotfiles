@@ -4,6 +4,10 @@ local act = wezterm.action
 local M = {}
 
 wezterm.on("gui-startup", function(cmd)
+	-- 注意：gui-startup 在 gui-attached 之前触发，不能对「刚 spawn 的 mux 窗口」立刻 gui_window()，
+	-- 否则会报错：mux window id N is not currently associated with a gui window。
+	-- 也不要在这里额外 spawn 一个空窗口再 maximize——会多出一个无意义的 window id=1 并更容易踩中上述时序问题。
+
 	-- allow `wezterm start -- something` to affect what we spawn
 	-- in our initial window
 	local project_dir = wezterm.home_dir
@@ -31,7 +35,13 @@ wezterm.on("gui-startup", function(cmd)
 		args = args,
 	})
 	tab:set_title("coding")
-	window:gui_window():maximize()
+	-- 延后到下一帧再取 gui_window，避免 mux 尚未挂到 GUI
+	wezterm.time.call_after(1, function()
+		local gui = window:gui_window()
+		if gui then
+			gui:maximize()
+		end
+	end)
 
 	if paneCnt > 1 then
 		if paneCnt > 3 then

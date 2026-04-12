@@ -26,7 +26,7 @@ M.config = function(config)
 		{ family = "Hei", weight = 550, stretch = "Expanded", scale = 1.0 },
 		{ family = "Monaco", weight = 500, italic = false, stretch = "Expanded", scale = 1.0 },
 	})
-	config.font_size = 13.0
+	config.font_size = 16.0
 	config.line_height = 1.4
 end
 

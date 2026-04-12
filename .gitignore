@@ -91,3 +91,5 @@ vscode/*/keybindings.json
 accio/logs
 # Accio 详细规则在 accio/.gitignore 中管理
 DID-DB9653-765527
+accio/accounts/7083414621/permissions
+accio/accounts/7083414621/connectors/lark
