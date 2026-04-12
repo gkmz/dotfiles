@@ -350,7 +350,7 @@ MIT License
 
 **极客老墨的开发环境配置**
 
-📝 [博客](https://hankmo.com) | 💻 [GitHub](https://github.com/hankmor) | 📱 微信公众号：**极客老墨**
+📝 [博客](https://hankmo.com) | 💻 [GitHub](https://github.com/gkmz) | 📱 微信公众号：**极客老墨**
 
 <p align="center">
   <img src="./weixinqr.jpg" alt="微信公众号：极客老墨" width="200"/>
