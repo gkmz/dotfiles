@@ -52,6 +52,8 @@ engine:
   translators:
     - punct_translator
     - table_translator@custom_phrase
+    # 偏旁/部首走词库驱动（z 前缀），由 Lua 读取词库，触发更稳定
+    - lua_translator@radical_lookup
     - reverse_lookup_translator
     - script_translator
     - lua_translator@date_time
@@ -87,8 +89,9 @@ custom_phrase:
 reverse_lookup:
   dictionary: stroke
   enable_completion: true
-  prefix: "`"
-  suffix: "'"
+  # 改为 z 前缀触发笔画反查，避免反引号在不同键盘布局下不顺手
+  prefix: "zbh"
+  suffix: ""
   tips: 〔筆畫〕
   preedit_format:
     - xlit/hspnz/一丨丿丶乙/
@@ -114,7 +117,8 @@ recognizer:
   import_preset: default
   patterns:
     punct: '^/([0-9]0?|[A-Za-z]+)$'
-    reverse_lookup: "`[a-z]*'?$"
+    # 同时支持新前缀 zbh 与旧前缀 `（兼容历史习惯）
+    reverse_lookup: "^zbh[a-z]*$|`[a-z]*'?$"
 
 __patch:
   # 使用八股文语言模型（与官方朙月拼音一致）

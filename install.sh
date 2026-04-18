@@ -361,6 +361,7 @@ install_rime() {
   local -a rime_links=(
     "default.custom.yaml"
     "hank_luna_pinyin.schema.yaml"
+    "radical_lookup.dict.yaml"
     "hank_pinyin_simp.schema.yaml"
     "luna_pinyin.custom.yaml"
     "luna_pinyin_simp.schema.yaml"
@@ -377,6 +378,9 @@ install_rime() {
 
   if [ -f "$DOTFILES_DIR/rime/lua/date_time.lua" ]; then
     create_symlink "$DOTFILES_DIR/rime/lua/date_time.lua" "$rime_dst/lua/date_time.lua" "rime lua/date_time.lua"
+  fi
+  if [ -f "$DOTFILES_DIR/rime/lua/radical_lookup.lua" ]; then
+    create_symlink "$DOTFILES_DIR/rime/lua/radical_lookup.lua" "$rime_dst/lua/radical_lookup.lua" "rime lua/radical_lookup.lua"
   fi
 
   # rime.lua 是 librime-lua 常见入口；用于注册 lua_translator@date_time 等函数

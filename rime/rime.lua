@@ -4,3 +4,5 @@
 
 -- 将 lua/date_time.lua 返回的翻译函数注册为 date_time
 date_time = require("date_time")
+-- 将 lua/radical_lookup.lua 返回的翻译函数注册为 radical_lookup
+radical_lookup = require("radical_lookup")
