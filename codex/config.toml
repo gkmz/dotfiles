@@ -42,3 +42,8 @@ trust_level = "trusted"
 
 [projects."/Users/hank/workspace/mine/ai/aics"]
 trust_level = "trusted"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-04-18T11:30:57Z"
+source_type = "local"
+source = "/Users/hank/.codex/.tmp/bundled-marketplaces/openai-bundled"

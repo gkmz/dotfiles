@@ -1,0 +1,37 @@
+# Rime 全局自定义：默认方案、切换键
+# 依赖：macOS 鼠须管（Squirrel）自带的 SharedSupport 方案。
+#
+# 中英切换说明：
+# - 若你使用「系统输入法快捷键」在「ABC / 鼠须管」之间切换，可不在 Rime 里绑定 Shift。
+# - 若只保留鼠须管一个输入法，仍需在方案内切「中文 ↔ 西文」（例如方案选单或自设热键）。
+patch:
+  # 方案列表：第一项为默认启用的输入方案（简体 + 全拼）
+  schema_list:
+    - schema: hank_luna_pinyin
+    - schema: luna_pinyin
+    - schema: luna_pinyin_simp
+
+  # 方案选单热键：Control+`（主键盘区 Tab 上方）或 F4
+  switcher/hotkeys:
+    - "Control+grave"
+
+  # 选单里列出的开关须与当前方案 switches.name 一致。
+  # 使用完整覆盖写法，避免 @+ 语法兼容差异导致补丁失效。
+  switcher/fold_options: false
+  switcher/abbreviate_options: false
+  switcher/save_options:
+    - ascii_mode
+    - ascii_punct
+    - simplification
+    - emoji_suggestion
+
+  # 强制默认半角，避免日期/英文在中文输入时变成全角字符
+  full_shape/reset: 0
+
+  # 不按 Shift 切换中英（交给 macOS 输入法切换或 easy_en 混输）
+  ascii_composer/good_old_caps_lock: true
+  ascii_composer/switch_key/Shift_L: noop
+  ascii_composer/switch_key/Shift_R: noop
+
+  # 候选条每页候选数（可按喜好调整）
+  "menu/page_size": 10

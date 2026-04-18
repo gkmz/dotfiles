@@ -1,0 +1,34 @@
+# 朙月拼音·简化字 补丁：日期时间 Lua、绘文字（rime-emoji）、中英混输（easy_en）
+# 建议：./install.sh rime → ./rime/install-plugins.sh english → ./rime/install-plugins.sh emoji → 鼠须管「重新部署」
+patch:
+  # easy_en 仍用可选补丁（未安装 easy_en.yaml 时跳过）
+  __patch:
+    - easy_en:/patch?
+
+  # --- 绘文字：必须合并进「方案」本身；仅改 default.switcher/save_options 不会出现 emoji 候选。
+  # 内联 rime-emoji 的 emoji_suggestion，避免「emoji_suggestion:/patch?」在部分版本被静默忽略。
+  # 依赖 ~/Library/Rime/opencc/{emoji.json,emoji_word.txt,emoji_category.txt}
+  switches/@next:
+    name: emoji_suggestion
+    reset: 1
+    states: [ "🈚︎", "🈶️" ]
+  "engine/filters/@before 0":
+    simplifier@emoji_suggestion
+  emoji_suggestion:
+    opencc_config: emoji.json
+    option_name: emoji_suggestion
+    tips: none
+    inherit_comment: false
+
+  # 关闭 easy_en 的「整句切分」，避免依赖本机未安装的 wordninja 动态库
+  easy_en/split_sentence: false
+  # 略提高英文词条优先级（默认 -1，可按喜好改为 0～2）
+  easy_en/initial_quality: 0
+
+  # 在引擎末尾注册 Lua 翻译器：编码见 lua/date_time.lua
+  "engine/translators/@+":
+    - lua_translator@date_time
+
+  # 快捷开关绘文字（仅当已安装 emoji_suggestion 补丁时有效）
+  key_binder/bindings/+:
+    - { when: always, accept: Control+Shift+E, toggle: emoji_suggestion }

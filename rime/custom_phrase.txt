@@ -1,0 +1,8 @@
+# 自定义短语：格式为 编码<TAB>短语<TAB>权重（数字越大越靠前）
+# 与 Lua 动态时间互补：这里适合固定邮箱、地址、常用口令式短语
+#
+# 示例（请改成你自己的内容）：
+# mail	you@example.com	1
+# gh	https://github.com/	1
+
+gh https://github.com/ 1

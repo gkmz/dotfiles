@@ -1,0 +1,34 @@
+# 朙月拼音补丁（关键）：Squirrel 自带 luna_pinyin_simp 通过 __include 复用 luna_pinyin，
+# 且默认只在 luna_pinyin.schema.yaml 中加载 luna_pinyin.custom.yaml。
+# 因此 emoji / Lua / easy_en 等增强应写在本文件，才能对简体方案生效。
+patch:
+  # easy_en 可选补丁（未安装 easy_en.yaml 时跳过）
+  __patch:
+    - easy_en:/patch?
+
+  # 绘文字开关与过滤器（依赖 ~/Library/Rime/opencc/emoji.json 及相关词表）
+  switches/@next:
+    name: emoji_suggestion
+    reset: 1
+    states: [ "🈚︎", "🈶️" ]
+  # 默认使用简体输出（luna_pinyin 的简繁开关名为 simplification）
+  simplification/reset: 1
+  "engine/filters/@before 0":
+    simplifier@emoji_suggestion
+  emoji_suggestion:
+    opencc_config: emoji.json
+    option_name: emoji_suggestion
+    tips: none
+    inherit_comment: false
+
+  # easy_en 细节
+  easy_en/split_sentence: false
+  easy_en/initial_quality: 0
+
+  # 注册 Lua 日期时间翻译器
+  "engine/translators/@+":
+    - lua_translator@date_time
+
+  # 快捷键：Control+Shift+E 切换绘文字
+  key_binder/bindings/+:
+    - { when: always, accept: Control+Shift+E, toggle: emoji_suggestion }

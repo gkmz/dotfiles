@@ -33,6 +33,7 @@ show_help() {
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  accio          Accio 配置（~/.accio 软链接）"
+  echo -e "  rime           鼠须管 Rime 配置（~/Library/Rime 软链接）"
   echo -e "  tools          安装外部工具依赖（npm, brew 等）"
   echo ""
   echo -e "${BLUE}示例：${NC}"
@@ -58,6 +59,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  ${GREEN}✓${NC} accio     - Accio 配置（~/.accio 软链接）"
+  echo -e "  ${GREEN}✓${NC} rime      - 鼠须管 Rime（~/Library/Rime）"
   echo -e "  ${GREEN}✓${NC} tools     - 安装外部工具依赖（mmdc 等）"
   echo ""
 }
@@ -349,6 +351,42 @@ install_accio() {
   fi
 }
 
+# 模块：鼠须管（Squirrel）Rime 用户目录软链接
+install_rime() {
+  echo -e "${BLUE}=== 安装 Rime（鼠须管）用户配置 ===${NC}\n"
+
+  local rime_dst="$HOME/Library/Rime"
+  mkdir -p "$rime_dst/lua"
+
+  local -a rime_links=(
+    "default.custom.yaml"
+    "hank_luna_pinyin.schema.yaml"
+    "hank_pinyin_simp.schema.yaml"
+    "luna_pinyin.custom.yaml"
+    "luna_pinyin_simp.schema.yaml"
+    "luna_pinyin_simp.custom.yaml"
+    "squirrel.custom.yaml"
+    "custom_phrase.txt"
+  )
+  local f
+  for f in "${rime_links[@]}"; do
+    if [ -f "$DOTFILES_DIR/rime/$f" ]; then
+      create_symlink "$DOTFILES_DIR/rime/$f" "$rime_dst/$f" "rime $f"
+    fi
+  done
+
+  if [ -f "$DOTFILES_DIR/rime/lua/date_time.lua" ]; then
+    create_symlink "$DOTFILES_DIR/rime/lua/date_time.lua" "$rime_dst/lua/date_time.lua" "rime lua/date_time.lua"
+  fi
+
+  # rime.lua 是 librime-lua 常见入口；用于注册 lua_translator@date_time 等函数
+  if [ -f "$DOTFILES_DIR/rime/rime.lua" ]; then
+    create_symlink "$DOTFILES_DIR/rime/rime.lua" "$rime_dst/rime.lua" "rime rime.lua"
+  fi
+
+  echo -e "${YELLOW}可选插件（Git SSH 克隆）：${BLUE}$DOTFILES_DIR/rime/install-plugins.sh english|emoji|all${YELLOW}，然后鼠须管「重新部署」${NC}\n"
+}
+
 # 模块：安装外部工具依赖
 install_tools() {
   echo -e "${BLUE}=== 安装外部工具依赖 ===${NC}\n"
@@ -389,6 +427,7 @@ main() {
     install_claude
     install_vscode
     install_accio
+    install_rime
     install_tools
     echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
   else
@@ -410,6 +449,7 @@ main() {
         install_claude
         install_vscode
         install_accio
+        install_rime
         install_tools
         echo -e "${YELLOW}注意：ai-ide 模块需要在项目目录中单独运行${NC}\n"
         ;;
@@ -443,6 +483,9 @@ main() {
               ;;
             accio)
               install_accio
+              ;;
+            rime)
+              install_rime
               ;;
             tools)
               install_tools

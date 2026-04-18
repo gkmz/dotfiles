@@ -1,0 +1,62 @@
+# 鼠须管（macOS）外观：Monaco + 浅色/深色两套自定义配色（display P3，接近系统质感）
+# Squirrel ≥1.0：用 candidate_list_layout 控制横向/纵向，勿再用已废弃的 horizontal 键
+patch:
+  us_keyboard_layout: true
+  show_notifications_when: appropriate
+
+  # 在浅色/深色外观下自动切换配色（需在「系统设置 → 外观」使用自动时效果明显）
+  style:
+    color_scheme: dotfiles_light
+    color_scheme_dark: dotfiles_dark
+    # linear：候选横排；与 text_orientation 组合成「横排横向」
+    candidate_list_layout: linear
+    text_orientation: horizontal
+    inline_preedit: true
+    memorize_size: true
+    corner_radius: 10
+    hilited_corner_radius: 8
+    border_height: 1
+    border_width: 1
+    line_spacing: 6
+    spacing: 10
+    shadow_size: 1
+    # 主字体：英文等宽 Monaco；中文候选由系统回退到苹方/黑体
+    font_face: "Monaco"
+    font_point: 15
+    label_font_face: "Monaco"
+    label_font_point: 12
+    comment_font_face: "PingFang SC"
+    comment_font_point: 12
+
+  # 自定义配色：柔和背景 + 高亮偏 macOS 系统蓝
+  preset_color_schemes/dotfiles_light:
+    name: Dotfiles／浅色
+    color_space: display_p3
+    back_color: 0xF0F9F9FB
+    border_color: 0x28000000
+    text_color: 0x6E6E73
+    candidate_text_color: 0x1D1D1F
+    label_color: 0x8E8E93
+    comment_text_color: 0x636366
+    hilited_text_color: 0x007AFF
+    hilited_back_color: 0x12007AFF
+    hilited_candidate_back_color: 0xE6007AFF
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_candidate_label_color: 0xE8F0FF
+    hilited_comment_text_color: 0xCCE8F0FF
+
+  preset_color_schemes/dotfiles_dark:
+    name: Dotfiles／深色
+    color_space: display_p3
+    back_color: 0xF02C2C2E
+    border_color: 0x30FFFFFF
+    text_color: 0xAEAEB2
+    candidate_text_color: 0xF2F2F7
+    label_color: 0x8E8E93
+    comment_text_color: 0x98989D
+    hilited_text_color: 0x0A84FF
+    hilited_back_color: 0x220A84FF
+    hilited_candidate_back_color: 0xCC0A84FF
+    hilited_candidate_text_color: 0xFFFFFFFF
+    hilited_candidate_label_color: 0xE8F4FF
+    hilited_comment_text_color: 0xCCD0E8FF
