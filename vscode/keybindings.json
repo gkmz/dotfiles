@@ -2,17 +2,23 @@
   // ============================================ // 文件浏览器相关快捷键
   // ============================================
   // Cmd + 1: 智能切换文件浏览器
-  // 当编辑器获得焦点时 → 打开文件浏览器并定位到当前文件
+  // 当侧边栏隐藏，或当前不是文件浏览器时 -> 打开文件浏览器
   {
     "key": "cmd+1",
-    "command": "workbench.files.action.showActiveFileInExplorer",
-    "when": "editorFocus"
+    "command": "workbench.view.explorer",
+    "when": "!sideBarVisible || activeViewlet != 'workbench.view.explorer'"
   },
-  // 当文件浏览器已打开且获得焦点时 → 关闭侧边栏
+  // 当文件浏览器已打开时 -> 关闭侧边栏（无需文件树焦点）
   {
     "key": "cmd+1",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "sideBarFocus && activeViewlet == 'workbench.view.explorer'"
+    "when": "sideBarVisible && activeViewlet == 'workbench.view.explorer'"
+  },
+  // 当侧边栏可见但焦点在编辑器时 -> 同步定位当前文件（保持原有体验）
+  {
+    "key": "cmd+1",
+    "command": "workbench.files.action.showActiveFileInExplorer",
+    "when": "editorFocus && sideBarVisible && activeViewlet == 'workbench.view.explorer'"
   },
   // 禁用 Cmd + 1 的默认行为（原本是切换到第一个编辑器组）
   {
