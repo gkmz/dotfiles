@@ -30,6 +30,9 @@ patch:
 
   # 不按 Shift 切换中英（交给 macOS 输入法切换或 easy_en 混输）
   ascii_composer/good_old_caps_lock: true
+  # 使用中英切换键（Caps Lock）时，先把当前英文编码上屏，再切换状态
+  # 避免出现“按切换键把已输入英文清空，必须按回车才能上屏”的体验
+  ascii_composer/switch_key/Caps_Lock: commit_code
   ascii_composer/switch_key/Shift_L: noop
   ascii_composer/switch_key/Shift_R: noop
 
