@@ -2,23 +2,17 @@
   // ============================================ // 文件浏览器相关快捷键
   // ============================================
   // Cmd + 1: 智能切换文件浏览器
-  // 当侧边栏隐藏，或当前不是文件浏览器时 -> 打开文件浏览器
+  // 当侧边栏隐藏时 -> 打开文件浏览器
   {
     "key": "cmd+1",
     "command": "workbench.view.explorer",
-    "when": "!sideBarVisible || activeViewlet != 'workbench.view.explorer'"
+    "when": "!sideBarVisible"
   },
-  // 当文件浏览器已打开时 -> 关闭侧边栏（无需文件树焦点）
+  // 当侧边栏可见时 -> 关闭侧边栏（不依赖 activeViewlet）
   {
     "key": "cmd+1",
     "command": "workbench.action.toggleSidebarVisibility",
-    "when": "sideBarVisible && activeViewlet == 'workbench.view.explorer'"
-  },
-  // 当侧边栏可见但焦点在编辑器时 -> 同步定位当前文件（保持原有体验）
-  {
-    "key": "cmd+1",
-    "command": "workbench.files.action.showActiveFileInExplorer",
-    "when": "editorFocus && sideBarVisible && activeViewlet == 'workbench.view.explorer'"
+    "when": "sideBarVisible"
   },
   // 禁用 Cmd + 1 的默认行为（原本是切换到第一个编辑器组）
   {
@@ -245,19 +239,31 @@
   // ============================================
   // 专注模式：一键切换所有面板
   // ============================================
-  // Cmd + 0: 智能切换所有面板的显示状态
-  // 需要安装 multi-command 扩展: code --install-extension ryuta46.multi-command
-  //
+  // Cmd + 0: 智能切换所有面板的显示状态（不依赖第三方扩展）
   // 如果有任何面板可见（左侧栏/底部面板/右侧栏）→ 隐藏所有面板
   {
     "key": "cmd+0",
-    "command": "multiCommand.hideAllPanels",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "workbench.action.closeSidebar",
+        "workbench.action.closePanel",
+        "workbench.action.closeAuxiliaryBar"
+      ]
+    },
     "when": "sideBarVisible || panelVisible || auxiliaryBarVisible"
   },
   // 如果所有面板都隐藏 → 显示所有面板
   {
     "key": "cmd+0",
-    "command": "multiCommand.showAllPanels",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "workbench.action.toggleSidebarVisibility",
+        "workbench.action.togglePanel",
+        "workbench.action.toggleAuxiliaryBar"
+      ]
+    },
     "when": "!sideBarVisible && !panelVisible && !auxiliaryBarVisible"
   },
   // 禁用 Cmd + 0 的默认行为（原本是聚焦到侧边栏）

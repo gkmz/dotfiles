@@ -9,22 +9,17 @@
     "key": "alt+c",
     "command": "-workbench.action.openChat"
   },
+  // Alt + C（有选中）→ 新建聊天并携带选中内容（引用到聊天）
   {
     "key": "alt+c",
-    "command": "-workbench.action.toggleAuxiliaryBar"
-  },
-
-  // Alt + C（有选中）→ 聚焦 Chat 视图（Cursor 会用选中内容作为上下文）
-  {
-    "key": "alt+c",
-    "command": "workbench.panel.chat.view.copilot.focus",
+    "command": "aichat.newchataction",
     "when": "editorTextFocus && editorHasSelection"
   },
-  // Alt + C（无选中）→ 打开/聚焦 Chat
+  // Alt + C（无选中）→ 切换聊天侧栏（打开/隐藏）
   {
     "key": "alt+c",
-    "command": "workbench.panel.chat.view.copilot.focus",
-    "when": "editorTextFocus && !editorHasSelection"
+    "command": "workbench.action.toggleAuxiliaryBar",
+    "when": "!editorHasSelection"
   }
 ]
 
