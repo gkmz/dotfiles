@@ -1,0 +1,176 @@
+/*
+ * Obsidian Minimal 全局主题（极简护眼版）
+ * 设计目标：
+ * 1) 浅色优先，降低视觉疲劳
+ * 2) 弱化装饰与对比，突出正文阅读
+ * 3) 跟随系统自动浅/深色切换
+ */
+
+/* ===== 亮色（默认）===== */
+.theme-light {
+  --background-primary: #f8fafc;
+  --background-secondary: #f2f5f9;
+  --background-secondary-alt: #edf2f8;
+  --background-modifier-border: #e2e8f2;
+  --background-modifier-hover: #eef3f9;
+
+  --text-normal: #2a3342;
+  --text-muted: #667386;
+  --text-faint: #8591a3;
+  --text-accent: #3a78c2;
+  --text-accent-hover: #3169ac;
+
+  --interactive-accent: #3a78c2;
+  --interactive-accent-hover: #3169ac;
+  --blockquote-border-color: #8ab2df;
+  --hr-color: #e3e9f2;
+
+  --code-background: #f1f5fb;
+  --code-normal: #2b3747;
+  --code-comment: #7b8899;
+  --code-function: #4c5db8;
+  --code-keyword: #2d6cad;
+  --code-string: #35735f;
+}
+
+/* ===== 暗色（系统自动切换时生效）===== */
+.theme-dark {
+  --background-primary: #141922;
+  --background-secondary: #1b2230;
+  --background-secondary-alt: #20283a;
+  --background-modifier-border: #2f3a52;
+  --background-modifier-hover: #263147;
+
+  --text-normal: #dbe3ef;
+  --text-muted: #a8b4c8;
+  --text-faint: #8d9ab0;
+  --text-accent: #78addb;
+  --text-accent-hover: #93bfe6;
+
+  --interactive-accent: #78addb;
+  --interactive-accent-hover: #93bfe6;
+  --blockquote-border-color: #6f91b8;
+  --hr-color: #33415a;
+
+  --code-background: #1a2332;
+  --code-normal: #d5dfea;
+  --code-comment: #95a5bc;
+  --code-function: #98a6db;
+  --code-keyword: #83b1db;
+  --code-string: #7dc0aa;
+}
+
+/* ===== 全局排版与组件（亮暗共用）===== */
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-reading-view .markdown-preview-view {
+  /* 中文阅读：适中行高，减少“松散感” */
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.markdown-source-view.mod-cm6 .cm-line,
+.markdown-preview-view p,
+.markdown-preview-view li {
+  letter-spacing: 0.01em;
+}
+
+/* 中文优先字体栈：系统字体优先，兼顾跨平台回退 */
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-preview-view {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC",
+    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+}
+
+/* 代码字体单独设置，避免中文正文和代码风格混淆 */
+.markdown-source-view.mod-cm6 .cm-inline-code,
+.markdown-preview-view code,
+.markdown-source-view.mod-cm6 .HyperMD-codeblock,
+.markdown-preview-view pre code {
+  font-family: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+  font-size: 0.92em;
+}
+
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  letter-spacing: -0.01em;
+}
+
+.markdown-preview-view h1 {
+  margin-top: 0.95em;
+  margin-bottom: 0.4em;
+}
+
+.markdown-preview-view h2 {
+  margin-top: 0.9em;
+  margin-bottom: 0.34em;
+  border-bottom: 1px solid color-mix(in srgb, var(--background-modifier-border) 75%, transparent);
+  padding-bottom: 0.18em;
+}
+
+.markdown-preview-view h3 {
+  margin-top: 0.75em;
+  margin-bottom: 0.25em;
+}
+
+.markdown-preview-view p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.markdown-preview-view ul,
+.markdown-preview-view ol {
+  margin-block-start: 0.35em;
+  margin-block-end: 0.45em;
+}
+
+.markdown-preview-view li {
+  margin-block: 0.08em;
+}
+
+.markdown-preview-view blockquote {
+  border-left: 2px solid var(--blockquote-border-color);
+  background: color-mix(in srgb, var(--background-secondary) 56%, transparent);
+  border-radius: 8px;
+  padding: 0.75em 1em;
+}
+
+.markdown-preview-view code,
+.cm-inline-code {
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+  border: 1px solid color-mix(in srgb, var(--background-modifier-border) 70%, transparent);
+}
+
+.markdown-source-view.mod-cm6 .cm-scroller,
+.markdown-preview-view {
+  /* 宽度 100%：不限制阅读/编辑区域宽度 */
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+.workspace-split.mod-left-split .workspace-tab-header-container,
+.workspace-split.mod-right-split .workspace-tab-header-container {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self {
+  border-radius: 6px;
+}
+
+.nav-file-title:hover,
+.nav-folder-title:hover,
+.tree-item-self:hover {
+  background: color-mix(in srgb, var(--background-modifier-hover) 72%, transparent);
+}
+
+.tag {
+  border-radius: 999px;
+  padding: 0.08em 0.55em;
+}
