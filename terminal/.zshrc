@@ -150,6 +150,7 @@ export JAVA_HOME=$HOME/.jenv/versions/openjdk64-21.0.6
 export XDG_CONFIG_HOME="$HOME/.config"
 export HF_ENDPOINT=https://hf-mirror.com
 export MY_SHELL=~/shell/
+export HF_ENDPOINT=https://hf-mirror.com
 
 alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/docs/hank'
 alias ws="cd ~/workspace/.ws"
@@ -158,11 +159,12 @@ alias ows="cd ~/workspace/opensource/"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 alias ls='eza'
+alias 'ls -al'='eza -lah'
 alias ll='eza -lh'
 alias lt='eza -T -L 2'
 alias lg='eza -lh --git'
-
 alias cat='bat'
+alias comfyui='cd ~/Documents/ComfyUI'
 
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$NODE_HOME/bin:$ANDROID_HOME:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_HOME/build-tools/34.0.0/:$ANDROID_HOME/emulator/:$ANDROID_HOME/emulator/bin64:$ANDROID_HOME/platform-tools:$PYTHON_HOME/bin:$CHROME_DRIVER:$(brew --prefix)/Cellar/imagemagick/7.1.1-44/bin:$M2_HOME/bin:$JAVA_HOME/bin:$HOME/.local/share/nvim/mason/packages/google-java-format:$MY_SHELL
 # Added by Antigravity
@@ -191,3 +193,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+# bun completions
+[ -s "/Users/hank/.bun/_bun" ] && source "/Users/hank/.bun/_bun"
