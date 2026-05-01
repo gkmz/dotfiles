@@ -133,7 +133,7 @@ fi
 export M2_HOME=$HOME/software/apache-maven-3.9.6
 export GRADLE_HOME=$HOME/software/gradle-7.1
 export GRADLE_USER_HOME=$HOME/.m2/repository/
-export GOROOT=$HOME/.gvm/gos/go1.24.0
+# export GOROOT=$HOME/.gvm/gos/go1.24.0
 export GOPATH=$HOME/go
 export GOLAND_VM_OPTIONS=$HOME/software/install/jetbrains/ja-netfilter2023.1/vmoptions/goland.vmoptions
 #export GOPROXY=https://goproxy.io,direct
