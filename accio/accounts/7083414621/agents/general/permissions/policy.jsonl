@@ -1,2 +1,0 @@
-{"type":"prefix","pattern":["shopify"],"decision":"allow","bypassSandbox":true,"createdAt":"2026-03-27T21:51:06.856+08:00"}
-{"type":"prefix","pattern":["python3"],"decision":"allow","bypassSandbox":true,"createdAt":"2026-04-02T12:36:01.969+08:00"}
