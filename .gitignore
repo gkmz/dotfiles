@@ -93,3 +93,15 @@ accio/logs
 DID-DB9653-765527
 accio/accounts/7083414621/permissions
 accio/accounts/7083414621/connectors/lark
+git/.git_wk
+codex/rules/default.rules
+git/.git_wk
+codex/config.toml
+accio/accounts/7083414621/agents/sqlite/index.db
+accio/accounts/7083414621/agents/DID-2799F4-428BC9/profile.jsonc
+accio/accounts/7083414621/agents/DID-2799F4-428BC9/agent-core/MEMORY.md
+accio/accounts/7083414621/agents/DID-2799F4-428BC9/agent-core/skills/market-insight-product-selection/chart-design-guide.md
+accio/accounts/7083414621/agents/DID-2799F4-428BC9/agent-core/skills/product-selection/chart-design-guide.md
+accio/accounts/7083414621/agents/DID-2799F4-428BC9/agent-core/skills/market-insight-product-selection/chart-design-guide.md
+accio/accounts/7083414621/agents/DID-CCA07A-BA9263/agent-core/skills/social-media-publisher/SKILL.md
+accio/accounts/7083414621/.decay-last-triggered-agents.json

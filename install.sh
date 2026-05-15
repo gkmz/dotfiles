@@ -172,6 +172,10 @@ install_codex() {
   echo -e "${BLUE}=== 安装 Codex 配置 ===${NC}\n"
 
   mkdir -p "$HOME/.codex/rules"
+  mkdir -p "$HOME/.codex/skills"
+
+  [ -f "$DOTFILES_DIR/codex/AGENTS.md" ] && \
+    create_symlink "$DOTFILES_DIR/codex/AGENTS.md" "$HOME/.codex/AGENTS.md" "codex AGENTS.md"
 
   [ -f "$DOTFILES_DIR/codex/config.toml" ] && \
     create_symlink "$DOTFILES_DIR/codex/config.toml" "$HOME/.codex/config.toml" "codex config.toml"
@@ -179,8 +183,17 @@ install_codex() {
   [ -f "$DOTFILES_DIR/codex/mcp_config.json" ] && \
     create_symlink "$DOTFILES_DIR/codex/mcp_config.json" "$HOME/.codex/mcp_config.json" "codex mcp_config.json"
 
+  [ -f "$DOTFILES_DIR/codex/hooks.json" ] && \
+    create_symlink "$DOTFILES_DIR/codex/hooks.json" "$HOME/.codex/hooks.json" "codex hooks.json"
+
+  [ -f "$DOTFILES_DIR/codex/keybindings.json" ] && \
+    create_symlink "$DOTFILES_DIR/codex/keybindings.json" "$HOME/.codex/keybindings.json" "codex keybindings.json"
+
   [ -f "$DOTFILES_DIR/codex/rules/default.rules" ] && \
     create_symlink "$DOTFILES_DIR/codex/rules/default.rules" "$HOME/.codex/rules/default.rules" "codex default.rules"
+
+  [ -d "$DOTFILES_DIR/ai-ide/skills/geekmo-tech-writer" ] && \
+    create_symlink "$DOTFILES_DIR/ai-ide/skills/geekmo-tech-writer" "$HOME/.codex/skills/geekmo-tech-writer" "codex geekmo-tech-writer skill"
 }
 
 # 模块：安装 Claude Code 配置
