@@ -16,11 +16,11 @@ patch:
     - "Control+grave"
 
   # 选单里列出的开关须与当前方案 switches.name 一致。
+  # 不保存 ascii_mode，避免切到西文后重新回到鼠须管仍被记为英文模式。
   # 使用完整覆盖写法，避免 @+ 语法兼容差异导致补丁失效。
   switcher/fold_options: false
   switcher/abbreviate_options: false
   switcher/save_options:
-    - ascii_mode
     - ascii_punct
     - simplification
     - emoji_suggestion
@@ -28,13 +28,12 @@ patch:
   # 强制默认半角，避免日期/英文在中文输入时变成全角字符
   full_shape/reset: 0
 
-  # 不按 Shift 切换中英（交给 macOS 输入法切换或 easy_en 混输）
+  # 不按 Shift / Caps Lock 切换 Rime 内部中英状态。
+  # Caps Lock 交给 macOS 输入源切换；否则切回鼠须管时会停在 Rime 的西文模式。
   ascii_composer/good_old_caps_lock: true
-  # 使用中英切换键（Caps Lock）时，先把当前英文编码上屏，再切换状态
-  # 避免出现“按切换键把已输入英文清空，必须按回车才能上屏”的体验
-  ascii_composer/switch_key/Caps_Lock: commit_code
+  ascii_composer/switch_key/Caps_Lock: noop
   ascii_composer/switch_key/Shift_L: noop
   ascii_composer/switch_key/Shift_R: noop
 
   # 候选条每页候选数（可按喜好调整）
-  "menu/page_size": 10
+  "menu/page_size": 6

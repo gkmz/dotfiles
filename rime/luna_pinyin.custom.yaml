@@ -26,8 +26,7 @@ patch:
   easy_en/initial_quality: 0
 
   # 注册 Lua 日期时间翻译器
-  "engine/translators/@+":
-    - lua_translator@date_time
+  engine/translators/@next: lua_translator@date_time
 
   # 快捷键：Control+Shift+E 切换绘文字
   key_binder/bindings/+:

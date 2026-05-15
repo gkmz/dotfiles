@@ -26,8 +26,7 @@ patch:
   easy_en/initial_quality: 0
 
   # 在引擎末尾注册 Lua 翻译器：编码见 lua/date_time.lua
-  "engine/translators/@+":
-    - lua_translator@date_time
+  engine/translators/@next: lua_translator@date_time
 
   # 快捷开关绘文字（仅当已安装 emoji_suggestion 补丁时有效）
   key_binder/bindings/+:

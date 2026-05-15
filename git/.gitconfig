@@ -62,7 +62,7 @@
 # ============================================
 [push]
 	default = simple
-	followTags = true
+	followTags = false
 
 # ============================================
 # 拉取配置
@@ -118,7 +118,7 @@
 	path = ~/.git_os
 [includeIf "gitdir:~/workspace/"]
 	path = ~/.git_me
-[includeIf "gitdir:~/workspace/work/"]
+[includeIf "gitdir:~/workspace/.ws/"]
 	path = ~/.git_wk
 [includeIf "gitdir:~/workspace/mine/blockchain/"]
 	path = ~/.git_cc
@@ -130,3 +130,5 @@
 	path = ~/.gitconfig.local
 [safe]
 	directory = *
+[coderabbit]
+	machineId = cli/99e0704ff5a64ffab15cffe50dc83d6e
