@@ -322,5 +322,18 @@
   {
     "key": "cmd+5",
     "command": "-workbench.action.focusFifthEditorGroup"
+  },
+  // ============================================
+  // 释放 Rime / 系统输入法快捷键
+  // ============================================
+  // Ctrl + ` 原本是 VSCode 默认终端切换，会抢鼠须管方案选单。
+  {
+    "key": "ctrl+`",
+    "command": "-workbench.action.terminal.toggleTerminal"
+  },
+  // Ctrl + Shift + ` 原本是 VSCode 默认新建终端，会抢鼠须管备用方案选单。
+  {
+    "key": "ctrl+shift+`",
+    "command": "-workbench.action.terminal.new"
   }
 ]

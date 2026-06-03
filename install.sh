@@ -371,14 +371,25 @@ install_rime() {
   local rime_dst="$HOME/Library/Rime"
   mkdir -p "$rime_dst/lua"
 
-  local -a rime_links=(
-    "default.custom.yaml"
+  local -a stale_rime_files=(
     "hank_luna_pinyin.schema.yaml"
-    "radical_lookup.dict.yaml"
-    "hank_pinyin_simp.schema.yaml"
     "luna_pinyin.custom.yaml"
     "luna_pinyin_simp.schema.yaml"
     "luna_pinyin_simp.custom.yaml"
+  )
+  local stale
+  for stale in "${stale_rime_files[@]}"; do
+    if [ -L "$rime_dst/$stale" ]; then
+      rm "$rime_dst/$stale"
+      echo -e "${GREEN}  ✓ 删除旧 Rime 软链接: $rime_dst/$stale${NC}"
+    fi
+  done
+
+  local -a rime_links=(
+    "default.custom.yaml"
+    "hank_pinyin_simp.schema.yaml"
+    "hank_pinyin_trad.schema.yaml"
+    "radical_lookup.dict.yaml"
     "squirrel.custom.yaml"
     "custom_phrase.txt"
   )

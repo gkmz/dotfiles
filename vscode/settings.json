@@ -10,6 +10,8 @@
   "editor.wordWrap": "on", // 自动换行，避免横向滚动
   "editor.minimap.enabled": true, // 显示代码缩略图（右侧小地图）
   "editor.formatOnSave": true, // 保存文件时自动格式化代码
+  "editor.editContext": false, // 使用传统 textarea 输入路径，避免 VSCode/Electron EditContext 影响中文输入法
+  "editor.experimentalEditContextEnabled": false, // 兼容旧版 VSCode 的 EditContext 开关
   // ============================================
   // 文件和工作区
   // ============================================

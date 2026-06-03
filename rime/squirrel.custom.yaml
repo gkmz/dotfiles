@@ -4,6 +4,10 @@ patch:
   us_keyboard_layout: true
   show_notifications_when: appropriate
 
+  # Squirrel 默认会让部分编辑器应用进入 ascii_mode。
+  # VS Code 里需要明确关闭，否则即使 F3 选中“简体中文”仍会直接输入英文。
+  app_options/com.microsoft.VSCode/ascii_mode: false
+
   # 在浅色/深色外观下自动切换配色（需在「系统设置 → 外观」使用自动时效果明显）
   style:
     color_scheme: dotfiles_light

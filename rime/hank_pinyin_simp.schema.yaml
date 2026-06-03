@@ -1,26 +1,18 @@
 # Rime schema
 # encoding: utf-8
-#
-# 这是独立的「简体增强」方案：
-# 1) 默认简体（simplification reset=1）
-# 2) 启用 emoji_suggestion 过滤器
-# 3) 启用 lua_translator@date_time（rq/sj/dt/xq）
 
 schema:
-  schema_id: hank_luna_pinyin
-  name: 朙月拼音·简体增强
-  version: "0.1"
+  schema_id: hank_pinyin_simp
+  name: 简体中文
+  version: "1.0"
   author:
     - hank
   description: |
-    基于朙月拼音，增加 emoji 与日期时间快捷输入。
+    精简拼音方案：默认简体，保留 emoji、日期时间、偏旁部首输入。
   dependencies:
     - stroke
 
 switches:
-  - name: ascii_mode
-    reset: 0
-    states: [ 中文, 西文 ]
   - name: full_shape
     reset: 0
     states: [ 半角, 全角 ]
@@ -28,6 +20,7 @@ switches:
     reset: 1
     states: [ 漢字, 汉字 ]
   - name: ascii_punct
+    reset: 0
     states: [ 。，, ．， ]
   - name: emoji_suggestion
     reset: 1
@@ -52,7 +45,6 @@ engine:
   translators:
     - punct_translator
     - table_translator@custom_phrase
-    # 偏旁/部首走词库驱动（z 前缀），由 Lua 读取词库，触发更稳定
     - lua_translator@radical_lookup
     - reverse_lookup_translator
     - script_translator
@@ -89,7 +81,6 @@ custom_phrase:
 reverse_lookup:
   dictionary: stroke
   enable_completion: true
-  # 改为 z 前缀触发笔画反查，避免反引号在不同键盘布局下不顺手
   prefix: "zbh"
   suffix: ""
   tips: 〔筆畫〕
@@ -108,18 +99,26 @@ punctuator:
   import_preset: symbols
 
 key_binder:
-  import_preset: default
-  bindings/+:
-    # 快捷键：Control+Shift+E 切换 emoji
+  bindings:
+    - { when: composing, accept: Control+p, send: Up }
+    - { when: composing, accept: Control+n, send: Down }
+    - { when: composing, accept: Control+b, send: Left }
+    - { when: composing, accept: Control+f, send: Right }
+    - { when: composing, accept: Control+a, send: Home }
+    - { when: composing, accept: Control+e, send: End }
+    - { when: composing, accept: Control+d, send: Delete }
+    - { when: composing, accept: Control+g, send: Escape }
+    - { when: has_menu, accept: minus, send: Page_Up }
+    - { when: has_menu, accept: equal, send: Page_Down }
+    - { when: paging, accept: comma, send: Page_Up }
+    - { when: has_menu, accept: period, send: Page_Down }
     - { when: always, accept: Control+Shift+E, toggle: emoji_suggestion }
 
 recognizer:
   import_preset: default
   patterns:
     punct: '^/([0-9]0?|[A-Za-z]+)$'
-    # 同时支持新前缀 zbh 与旧前缀 `（兼容历史习惯）
-    reverse_lookup: "^zbh[a-z]*$|`[a-z]*'?$"
+    reverse_lookup: "^zbh[a-z]*$"
 
 __patch:
-  # 使用八股文语言模型（与官方朙月拼音一致）
   - grammar:/hant?
