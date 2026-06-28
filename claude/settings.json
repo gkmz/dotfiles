@@ -1,4 +1,12 @@
 {
   "env": {},
-  "model": "opus[1m]"
+  "permissions": {
+    "allow": []
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
+  },
+  "skipDangerousModePermissionPrompt": true
 }
