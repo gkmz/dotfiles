@@ -39,6 +39,65 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -------------------------------------------------------------------------------
+-- Lightweight Auto Save
+-------------------------------------------------------------------------------
+local autosave_group = vim.api.nvim_create_augroup("dotfiles_light_auto_save", { clear = true })
+
+local autosave_skip_filetypes = {
+  gitcommit = true,
+  gitrebase = true,
+  help = true,
+  lazy = true,
+  ["neo-tree"] = true,
+  qf = true,
+  TelescopePrompt = true,
+}
+
+local autosave_skip_buftypes = {
+  acwrite = true,
+  help = true,
+  nofile = true,
+  nowrite = true,
+  prompt = true,
+  quickfix = true,
+  terminal = true,
+}
+
+local function should_auto_save(buf)
+  if not vim.api.nvim_buf_is_valid(buf) or not vim.bo[buf].modified then
+    return false
+  end
+
+  if vim.api.nvim_buf_get_name(buf) == "" then
+    return false
+  end
+
+  if not vim.bo[buf].modifiable or vim.bo[buf].readonly then
+    return false
+  end
+
+  if autosave_skip_filetypes[vim.bo[buf].filetype] or autosave_skip_buftypes[vim.bo[buf].buftype] then
+    return false
+  end
+
+  return true
+end
+
+vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
+  group = autosave_group,
+  callback = function(event)
+    if not should_auto_save(event.buf) then
+      return
+    end
+
+    -- 使用 noautocmd 避免保存触发额外格式化或递归 autocmd，行为更接近 JetBrains 的轻量自动保存。
+    vim.api.nvim_buf_call(event.buf, function()
+      vim.cmd("silent! noautocmd write")
+    end)
+  end,
+})
+
+-------------------------------------------------------------------------------
 -- Project Specific DAP Config
 -------------------------------------------------------------------------------
 vim.api.nvim_create_autocmd("VimEnter", {

@@ -44,6 +44,18 @@ local function open_chat_with(adapter, model)
   vim.cmd(cmd)
 end
 
+local function open_agent_cli(command)
+  Snacks.terminal.open(command, {
+    win = {
+      position = "float",
+      border = "rounded",
+      width = 0.86,
+      height = 0.86,
+    },
+    interactive = true,
+  })
+end
+
 local function get_http_adapters()
   local ok, config = pcall(require, "codecompanion.config")
   if not ok or not config.adapters or not config.adapters.http then
@@ -152,6 +164,30 @@ return {
       strategies = {
         chat = { adapter = default_adapter },
         inline = { adapter = default_adapter },
+      },
+      prompt_library = {
+        ["Document Code"] = {
+          strategy = "chat",
+          description = "Generate documentation comments for selected code",
+          opts = {
+            alias = "doc_comment",
+            is_slash_cmd = true,
+            auto_submit = true,
+            modes = { "v" },
+          },
+          prompts = {
+            {
+              role = "user",
+              content = [[请为选中的代码生成清晰、简洁、符合当前语言习惯的文档注释。
+
+要求：
+- 只输出建议添加或替换的注释和必要的最小代码片段。
+- Go 使用 Go doc 风格，公开方法注释以标识符名称开头。
+- Python 使用简洁 docstring，说明参数、返回值和异常边界。
+- 不要改写业务逻辑。]],
+            },
+          },
+        },
       },
       display = {
         chat = {
@@ -392,14 +428,6 @@ return {
       { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "Toggle AI Chat" },
       { "<leader>a", "<cmd>CodeCompanionActions<cr>", mode = { "n", "v" }, desc = "CodeCompanion Actions" },
       {
-        "<leader>am",
-        function()
-          open_chat_with("aihubmix", "gpt-4.1-free")
-        end,
-        mode = { "n", "v" },
-        desc = "Chat: Cloud gpt-4.1-free",
-      },
-      {
         "<leader>as",
         function()
           pick_adapter_and_model()
@@ -415,21 +443,27 @@ return {
         mode = { "n", "v" },
         desc = "Chat: Local deepseek-r1",
       },
+      { "<leader>ae", "<cmd>CodeCompanion /explain<cr>", mode = "n", desc = "Explain code" },
+      { "<leader>ae", ":CodeCompanion /explain<cr>", mode = "v", desc = "Explain selection" },
+      { "<leader>ar", "<cmd>CodeCompanion /fix<cr>", mode = "n", desc = "Fix/refactor code" },
+      { "<leader>ar", ":CodeCompanion /fix<cr>", mode = "v", desc = "Fix/refactor selection" },
+      { "<leader>at", "<cmd>CodeCompanion /tests<cr>", mode = "n", desc = "Generate tests" },
+      { "<leader>at", ":CodeCompanion /tests<cr>", mode = "v", desc = "Generate tests for selection" },
+      { "<leader>ad", ":CodeCompanion /doc_comment<cr>", mode = "v", desc = "Generate doc comments" },
       { "ga", "<cmd>CodeCompanionChat Add<cr>", mode = "v", desc = "Add selection to AI Chat" },
       {
         "<leader>ac",
         function()
-          Snacks.terminal.open("claude", {
-            win = {
-              position = "float",
-              border = "rounded",
-              width = 0.8,
-              height = 0.8,
-            },
-            interactive = true,
-          })
+          open_agent_cli("claude")
         end,
-        desc = "Open ClaudeCode",
+        desc = "Open Claude CLI",
+      },
+      {
+        "<leader>ax",
+        function()
+          open_agent_cli("codex")
+        end,
+        desc = "Open Codex CLI",
       },
     },
   },

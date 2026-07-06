@@ -3,7 +3,6 @@ local title = [[
 ]]
 
 local header = require("utils.ascii_pic").random_logo()
-local image_preview = require("utils.image_preview")
 
 local function get_sections()
   local sections = {}
@@ -84,8 +83,6 @@ return {
                 elseif item.dir then
                   require("snacks.explorer.tree"):toggle(item.file)
                   require("snacks.explorer.actions").update(picker, { refresh = true })
-                elseif image_preview.is_supported(item.file) then
-                  image_preview.open(item.file)
                 else
                   Snacks.picker.actions.jump(picker, item, action)
                 end

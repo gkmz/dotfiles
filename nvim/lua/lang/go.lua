@@ -1,24 +1,29 @@
-
 return {
   {
     "leoluz/nvim-dap-go",
     opts = {}, -- Extra handles the rest
     keys = {
-      { "<leader>Gd", function() require("dap-go").debug_test() end, desc = "Debug Test" },
+      {
+        "<leader>lgd",
+        function()
+          require("dap-go").debug_test()
+        end,
+        desc = "Debug Go test",
+      },
     },
   },
   {
     "ray-x/go.nvim",
     keys = {
-      { "<leader>Gi", "<cmd>GoInstallDeps<Cr>", desc = "Install Go Dependencies" },
-      { "<leader>Gt", "<cmd>GoMod tidy<cr>", desc = "Tidy" },
-      { "<leader>Ga", "<cmd>GoTestAdd<Cr>", desc = "Add Test" },
-      { "<leader>GA", "<cmd>GoTestsAll<Cr>", desc = "Add All Tests" },
-      { "<leader>Ge", "<cmd>GoTestsExp<Cr>", desc = "Add Exported Tests" },
-      { "<leader>Gg", "<cmd>GoGenerate<Cr>", desc = "Go Generate" },
-      { "<leader>GG", "<cmd>GoGenerate %<Cr>", desc = "Go Generate File" },
-      { "<leader>Gc", "<cmd>GoCmt<Cr>", desc = "Generate Comment" },
-      { "<leader>GI", "<cmd>GoImpl<Cr>", desc = "Implements Interface" },
+      { "<leader>lgi", "<cmd>GoInstallDeps<Cr>", desc = "Install Go dependencies" },
+      { "<leader>lgm", "<cmd>GoMod tidy<cr>", desc = "Go mod tidy" },
+      { "<leader>lga", "<cmd>GoTestAdd<Cr>", desc = "Add Go test" },
+      { "<leader>lgA", "<cmd>GoTestsAll<Cr>", desc = "Add all Go tests" },
+      { "<leader>lge", "<cmd>GoTestsExp<Cr>", desc = "Add exported Go tests" },
+      { "<leader>lgg", "<cmd>GoGenerate<Cr>", desc = "Go generate" },
+      { "<leader>lgG", "<cmd>GoGenerate %<Cr>", desc = "Go generate file" },
+      { "<leader>lgc", "<cmd>GoCmt<Cr>", desc = "Generate Go comment" },
+      { "<leader>lgI", "<cmd>GoImpl<Cr>", desc = "Implement Go interface" },
     },
     opts = {
       lsp_cfg = false, -- avoid conflict with LazyVim's lspconfig
