@@ -2,6 +2,7 @@ local wezterm = require("wezterm")
 local wallpaper = require("utils/wallpaper")
 local M = {}
 
+--- 配置主题、窗口外观、背景和基础性能参数。
 M.config = function(config)
 	-- =========================================
 	-- 主题配置
@@ -71,15 +72,16 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	local overrides = window:get_config_overrides() or {}
 
 	if name == "T_SESSION" then
-		local session = value
+		local session = value or "default"
 		wezterm.log_info("is session", session)
+		-- 根据 tmux session 名称尝试加载同名壁纸目录，不存在时回退为纯黑背景。
+		local home_dir = os.getenv("HOME") or wezterm.home_dir
+		local wallpaper_dir = home_dir .. "/.config/wezterm/wallpapers/" .. session
 		overrides.background = {
-			window.set_tmux_session_wallpaper(value),
+			wallpaper.random_wallpaper(wallpaper_dir),
 			{
 				source = {
-					Gradient = {
-						colors = { "#000000" },
-					},
+					Color = "#000000",
 				},
 				width = "100%",
 				height = "100%",
@@ -90,8 +92,14 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 
 	if name == "ZEN_MODE" then
 		-- zenmod will use wezterm plugin to increase font size when start zenmod
-		local incremental = value:find("+")
-		local number_value = tonumber(value)
+		local zen_value = value or ""
+		local incremental = zen_value:find("+", 1, true)
+		local number_value = tonumber(zen_value)
+		if number_value == nil then
+			wezterm.log_warn("ignore invalid ZEN_MODE value", zen_value)
+			window:set_config_overrides(overrides)
+			return
+		end
 		if incremental ~= nil then
 			while number_value > 0 do
 				window:perform_action(wezterm.action.IncreaseFontSize, pane)

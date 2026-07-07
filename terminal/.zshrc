@@ -200,3 +200,4 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 [ -s "/Users/hank/.bun/_bun" ] && source "/Users/hank/.bun/_bun"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+eval "$(rbenv init - zsh)"

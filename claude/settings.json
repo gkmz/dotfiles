@@ -6,7 +6,16 @@
   "model": "opus[1m]",
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true
+    "gopls-lsp@claude-plugins-official": true,
+    "minimalist-entrepreneur@minimalist-entrepreneur": true
+  },
+  "extraKnownMarketplaces": {
+    "minimalist-entrepreneur": {
+      "source": {
+        "source": "github",
+        "repo": "slavingia/skills"
+      }
+    }
   },
   "skipDangerousModePermissionPrompt": true
 }

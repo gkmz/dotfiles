@@ -15,7 +15,7 @@ end
 require("font").config(config)
 require("appearance").config(config)
 require("keymap").config(config)
-require("layout")
+require("layout").config(config)
 
 config.window_close_confirmation = "NeverPrompt"
 
