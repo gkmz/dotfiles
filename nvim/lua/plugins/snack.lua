@@ -72,6 +72,8 @@ return {
             hidden = true,
           },
           explorer = {
+            -- 文件树保持用户当前浏览位置，仅在显式触发时定位当前文件。
+            follow_file = false,
             ignored = true,
             hidden = true,
             actions = {
@@ -108,6 +110,13 @@ return {
     },
     keys = {
       { "<leader>;", "<cmd>Dashboard<CR>", desc = "Dashboard" },
+      {
+        "<leader>fe",
+        function()
+          Snacks.explorer.reveal()
+        end,
+        desc = "Reveal Current File in Explorer",
+      },
     },
   },
 }
