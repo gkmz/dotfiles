@@ -183,6 +183,13 @@ M.config = function(config)
 		{ key = "k", mods = "CTRL|SHIFT|ALT", action = act.AdjustPaneSize({ "Up", 2 }) },
 		{ key = "h", mods = "CTRL|SHIFT|ALT", action = act.AdjustPaneSize({ "Left", 2 }) },
 		{ key = "l", mods = "CTRL|SHIFT|ALT", action = act.AdjustPaneSize({ "Right", 5 }) },
+		-- Alt+0 透传给 Neovim，用于切换当前窗口临时全屏。
+		{ key = "0", mods = "ALT", action = act.SendString("\x1b0") },
+		-- 仅按 Alt+Shift 时把按键透传给 Neovim，避免 macOS Option 组合字符导致 <M-K>/<M-L> 失效。
+		{ key = "J", mods = "ALT|SHIFT", action = act.SendString("\x1bJ") },
+		{ key = "K", mods = "ALT|SHIFT", action = act.SendString("\x1bK") },
+		{ key = "H", mods = "ALT|SHIFT", action = act.SendString("\x1bH") },
+		{ key = "L", mods = "ALT|SHIFT", action = act.SendString("\x1bL") },
 	}
 
 	-- re-source current file
