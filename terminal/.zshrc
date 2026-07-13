@@ -201,3 +201,4 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 eval "$(rbenv init - zsh)"
+alias codex='/Applications/ChatGPT.app/Contents/Resources/codex'
