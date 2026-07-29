@@ -21,7 +21,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "~/workspace/mine/vaults/",
+        path = "~/workspace/mine/notebook/",
         -- Optional, override certain settings.
         overrides = {
           notes_subdir = "notes",

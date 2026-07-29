@@ -4,7 +4,10 @@
 
 local status, wk = pcall(require, "which-key")
 if not status then
-  return
+  -- which-key 仅用于快捷键提示；不可用时仍继续注册核心映射。
+  wk = {
+    add = function() end,
+  }
 end
 
 -------------------------------------------------------------------------------
@@ -27,6 +30,12 @@ vim.keymap.set({ "n" }, "<M-x>", "dd", { remap = true, desc = "Delete Current Li
 -------------------------------------------------------------------------------
 -- Window Keymaps
 -------------------------------------------------------------------------------
+local window = require("utils.window")
+
+vim.keymap.set({ "n", "t" }, "<A-0>", function()
+  window.toggle_current_window_fullscreen()
+end, { desc = "Toggle Current Window Fullscreen" })
+
 -- Resize window fastly
 vim.keymap.set({ "n" }, "<M-up>", ":res -5<cr>")
 vim.keymap.set({ "n" }, "<M-down>", ":res +5<cr>")
@@ -90,10 +99,24 @@ wk.add({
 -- <leader>Tr1-4 : 切换右侧终端 1-4，后续编号向下追加
 -- <leader>Tc    : 打开 Codex CLI 浮动终端
 -- <leader>Tl    : 打开 Claude CLI 浮动终端
+-- <leader>Tmx   : 将当前终端标记为 Codex CLI
+-- <leader>Tma   : 将当前终端标记为 Claude CLI
+-- ga             : 将当前文件或选区作为结构化上下文添加到 Agentic
+-- gC             : 将选中内容发送到已打开的 Claude CLI
 -- <leader>Th    : 隐藏全部终端，但保留 shell 进程
 -- <leader>Tq    : 关闭全部终端
 
 local terminal = require("utils.terminal")
+
+-- 终端模式下裸 Esc 默认会传给 shell；这里显式回到 Neovim 的 terminal-normal 状态。
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { desc = "Exit Terminal Input Mode" })
+
+-- AI 终端中直接用 Ctrl+h/j/k/l 跳转窗口；普通终端保留原控制字符。
+for _, direction in ipairs({ "h", "j", "k", "l" }) do
+  vim.keymap.set("t", "<C-" .. direction .. ">", function()
+    return terminal.navigate_from_ai_agent_terminal(direction)
+  end, { expr = true, desc = "Navigate Window from AI Terminal" })
+end
 
 -- 主终端：Ctrl+` 切换底部 1 号终端
 vim.keymap.set({ "n", "i", "t" }, "<C-`>", function()
@@ -136,32 +159,40 @@ wk.add({
   {
     "<leader>Tc",
     function()
-      Snacks.terminal.open("codex", {
-        win = {
-          position = "float",
-          border = "rounded",
-          width = 0.86,
-          height = 0.86,
-        },
-        interactive = true,
-      })
+      terminal.open_ai_agent("codex")
     end,
     desc = "Open Codex CLI",
   },
   {
     "<leader>Tl",
     function()
-      Snacks.terminal.open("claude", {
-        win = {
-          position = "float",
-          border = "rounded",
-          width = 0.86,
-          height = 0.86,
-        },
-        interactive = true,
-      })
+      terminal.open_ai_agent("claude")
     end,
     desc = "Open Claude CLI",
+  },
+  {
+    "<leader>Tmx",
+    function()
+      terminal.mark_current_terminal_as_ai_agent("codex")
+    end,
+    mode = { "n", "t" },
+    desc = "Mark Current Terminal as Codex CLI",
+  },
+  {
+    "<leader>Tma",
+    function()
+      terminal.mark_current_terminal_as_ai_agent("claude")
+    end,
+    mode = { "n", "t" },
+    desc = "Mark Current Terminal as Claude CLI",
+  },
+  {
+    "gC",
+    function()
+      terminal.send_visual_selection_to_ai_agent("claude")
+    end,
+    mode = "v",
+    desc = "Send Selection to Claude CLI",
   },
   {
     "<leader>Th",

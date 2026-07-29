@@ -202,3 +202,9 @@ export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 eval "$(rbenv init - zsh)"
 alias codex='/Applications/ChatGPT.app/Contents/Resources/codex'
+
+# kimi-code
+export PATH="/Users/hank/.kimi-code/bin:$PATH"
+
+# Added by MiniMax Code
+export PATH="/Users/hank/.mavis/bin:$PATH"

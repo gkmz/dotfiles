@@ -20,6 +20,14 @@ end
 
 return {
   {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        python = { "ruff_organize_imports", "ruff_format", "ruff_fix" },
+      },
+    },
+  },
+  {
     "linux-cultist/venv-selector.nvim",
     optional = true,
     keys = {
@@ -30,6 +38,20 @@ return {
   {
     "neovim/nvim-lspconfig",
     optional = true,
+    opts = {
+      servers = {
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                -- 在补全候选中提供可自动导入的符号，选择候选后由 Pyright 插入 import。
+                autoImportCompletions = true,
+              },
+            },
+          },
+        },
+      },
+    },
     keys = {
       { "<leader>lpr", ruff_fix_all, desc = "Ruff fix all", ft = "python" },
       { "<leader>lpf", ruff_format, desc = "Ruff format", ft = "python" },

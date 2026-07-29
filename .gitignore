@@ -33,6 +33,7 @@
 # 缓存目录
 cache/
 .cache/
+__pycache__/
 
 # 编辑器临时文件
 .vscode/

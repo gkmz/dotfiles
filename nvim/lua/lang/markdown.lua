@@ -2,6 +2,15 @@
 return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "AgenticChat" },
+    opts = function(_, opts)
+      -- Agentic 使用自定义 filetype，需要同时加入渲染白名单和 Lazy 加载条件。
+      opts.file_types = opts.file_types or { "markdown" }
+      if not vim.tbl_contains(opts.file_types, "AgenticChat") then
+        table.insert(opts.file_types, "AgenticChat")
+      end
+      return opts
+    end,
     keys = {
       {
         "<leader>uM",

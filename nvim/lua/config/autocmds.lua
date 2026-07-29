@@ -98,6 +98,33 @@ vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
 })
 
 -------------------------------------------------------------------------------
+-- Terminal Buffer Settings
+-------------------------------------------------------------------------------
+local terminal_group = vim.api.nvim_create_augroup("dotfiles_terminal_buffer", { clear = true })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = terminal_group,
+  callback = function(event)
+    -- 限制终端 scrollback，避免 Codex 等 TUI 频繁重绘时无限增长终端 buffer。
+    vim.bo[event.buf].scrollback = 10000
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "BufWinEnter", "TermEnter", "WinEnter" }, {
+  group = terminal_group,
+  callback = function(event)
+    if vim.bo[event.buf].buftype ~= "terminal" then
+      return
+    end
+
+    -- 终端窗口不显示代码行号，减少把 scrollback 增长误认为正文输出的干扰。
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.wo.signcolumn = "no"
+  end,
+})
+
+-------------------------------------------------------------------------------
 -- Project Specific DAP Config
 -------------------------------------------------------------------------------
 vim.api.nvim_create_autocmd("VimEnter", {

@@ -111,6 +111,45 @@ return {
     keys = {
       { "<leader>;", "<cmd>Dashboard<CR>", desc = "Dashboard" },
       {
+        "<leader>e",
+        function()
+          local explorer = Snacks.picker.get({ source = "explorer" })[1]
+
+          if explorer then
+            -- 关闭前保存当前目录，让 Snacks 恢复目录、光标和滚动位置。
+            explorer.init_opts.cwd = explorer:cwd()
+            explorer:close()
+            return
+          end
+
+          -- 没有活动实例时，恢复上次关闭的 Explorer 状态。
+          Snacks.picker.resume({ source = "explorer" })
+        end,
+        desc = "Toggle Explorer",
+      },
+      {
+        "<leader>E",
+        function()
+          local root = LazyVim.root()
+          local explorer = Snacks.picker.get({ source = "explorer" })[1]
+
+          if explorer then
+            -- 显式回到项目根目录，并将光标定位到根节点。
+            explorer:set_cwd(root)
+            explorer.init_opts.cwd = root
+            require("snacks.explorer.actions").update(explorer, {
+              target = root,
+              refresh = true,
+            })
+            return
+          end
+
+          -- Explorer 未打开时，直接从项目根目录打开。
+          Snacks.explorer({ cwd = root })
+        end,
+        desc = "Explorer Snacks (root dir)",
+      },
+      {
         "<leader>fe",
         function()
           Snacks.explorer.reveal()

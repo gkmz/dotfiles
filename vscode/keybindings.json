@@ -96,6 +96,20 @@
     "args": "<F10>",
     "when": "editorTextFocus && neovim.mode == 'normal'"
   },
+  // Alt + Shift + J/K：将窗口高度调整快捷键明确转发给 Neovim。
+  // 显式转发可避免 VS Code 或扩展先消费其中一个组合键。
+  {
+    "key": "alt+shift+j",
+    "command": "vscode-neovim.send",
+    "args": "<M-J>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "alt+shift+k",
+    "command": "vscode-neovim.send",
+    "args": "<M-K>",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
   // ============================================
   // Vim 风格滚动快捷键
   // ============================================
