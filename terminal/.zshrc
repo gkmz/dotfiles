@@ -122,6 +122,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# 加载 Vim 友好的自动建议接受和前缀历史检索快捷键。
+source "${${(%):-%x}:A:h}/zsh/history-keybindings.zsh"
+
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
   autoload -Uz compinit
