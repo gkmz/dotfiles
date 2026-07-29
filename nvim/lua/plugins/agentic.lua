@@ -1,6 +1,40 @@
+local user_question_pattern = [[^## .* User\%( - .*\)\?$]]
+
+local function jump_to_user_question(direction)
+  local flags = direction < 0 and "bnW" or "nW"
+  local position = vim.fn.searchpos(user_question_pattern, flags)
+  if position[1] == 0 then
+    return
+  end
+
+  -- 与 Agentic 原生标题导航一致，记录当前位置后再跳转，方便用两个单引号返回。
+  vim.cmd("normal! m'")
+  vim.api.nvim_win_set_cursor(0, { position[1], 0 })
+end
+
+local function setup_question_navigation(bufnr)
+  vim.keymap.set("n", "[u", function()
+    jump_to_user_question(-1)
+  end, { buffer = bufnr, desc = "Previous Agentic User Question" })
+
+  vim.keymap.set("n", "]u", function()
+    jump_to_user_question(1)
+  end, { buffer = bufnr, desc = "Next Agentic User Question" })
+end
+
 return {
   {
     "carlos-algms/agentic.nvim",
+    init = function()
+      local group = vim.api.nvim_create_augroup("dotfiles_agentic_question_navigation", { clear = true })
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "AgenticChat",
+        callback = function(event)
+          setup_question_navigation(event.buf)
+        end,
+      })
+    end,
     opts = {
       -- 使用已安装并复用 Codex CLI 认证的 ACP provider。
       provider = "codex-acp",
