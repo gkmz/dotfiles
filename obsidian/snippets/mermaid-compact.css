@@ -1,0 +1,223 @@
+/* Mermaid 图表使用独立滚动区域，避免撑破正文宽度 */
+.markdown-rendered .mermaid {
+  width: 100%;
+  max-width: 100%;
+  margin: 0.75em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 保留 Mermaid 图表的自然宽度，不强制压缩 */
+.markdown-rendered .mermaid > svg {
+  display: block;
+  width: auto !important;
+  max-width: none !important;
+  height: auto;
+  margin: 0;
+}
+
+/* 图表较窄时仍然居中 */
+.markdown-rendered .mermaid > svg[width="100%"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 减少图表上下留白 */
+.markdown-rendered .mermaid svg {
+  vertical-align: top;
+}
+
+/* 编辑模式下的 Mermaid 代码块 */
+.markdown-source-view.mod-cm6
+  .cm-preview-code-block.cm-lang-mermaid {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/*
+ * Mermaid 图表：
+ * 1. 始终居中
+ * 2. 小图保持自然宽度
+ * 3. 超出正文宽度时自动缩小
+ * 4. 不显示横向滚动条
+ */
+
+.markdown-rendered .mermaid,
+.markdown-preview-view .mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.75em auto;
+  overflow: visible;
+  text-align: center;
+}
+
+/*
+ * width: auto 保留 SVG 自身计算出的自然宽度。
+ * max-width: 100% 保证超宽图表自动缩小到正文宽度。
+ */
+.markdown-rendered .mermaid > svg,
+.markdown-preview-view .mermaid > svg {
+  display: block;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto;
+  flex: 0 1 auto;
+}
+
+/* Live Preview 模式 */
+.markdown-source-view.mod-cm6
+  .cm-preview-code-block.cm-lang-mermaid {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.75em auto;
+  overflow: visible;
+}
+
+.markdown-source-view.mod-cm6
+  .cm-preview-code-block.cm-lang-mermaid > svg {
+  display: block;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* Mermaid 图表的通用布局 */
+.markdown-rendered .mermaid,
+.markdown-preview-view .mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.9em auto;
+  overflow: visible;
+  text-align: center;
+}
+
+.markdown-rendered .mermaid > svg,
+.markdown-preview-view .mermaid > svg {
+  display: block;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* =========================
+   浅色主题
+   ========================= */
+
+.theme-light .markdown-rendered .mermaid > svg,
+.theme-light .markdown-preview-view .mermaid > svg {
+  /*background: #ffffff;*/
+}
+
+.theme-light .markdown-rendered .mermaid .node rect,
+.theme-light .markdown-rendered .mermaid .node polygon,
+.theme-light .markdown-rendered .mermaid .node circle,
+.theme-light .markdown-rendered .mermaid .node ellipse,
+.theme-light .markdown-preview-view .mermaid .node rect,
+.theme-light .markdown-preview-view .mermaid .node polygon,
+.theme-light .markdown-preview-view .mermaid .node circle,
+.theme-light .markdown-preview-view .mermaid .node ellipse {
+  fill: #e8f0fe !important;
+  stroke: #4b74b9 !important;
+}
+
+.theme-light .markdown-rendered .mermaid .cluster rect,
+.theme-light .markdown-preview-view .mermaid .cluster rect {
+  fill: #f8fafc !important;
+  stroke: #cbd5e1 !important;
+}
+
+.theme-light .markdown-rendered .mermaid .edgePath .path,
+.theme-light .markdown-rendered .mermaid .flowchart-link,
+.theme-light .markdown-preview-view .mermaid .edgePath .path,
+.theme-light .markdown-preview-view .mermaid .flowchart-link {
+  stroke: #64748b !important;
+}
+
+.theme-light .markdown-rendered .mermaid marker path,
+.theme-light .markdown-preview-view .mermaid marker path {
+  fill: #64748b !important;
+  stroke: #64748b !important;
+}
+
+.theme-light .markdown-rendered .mermaid .nodeLabel,
+.theme-light .markdown-rendered .mermaid .edgeLabel,
+.theme-light .markdown-rendered .mermaid .cluster-label,
+.theme-light .markdown-preview-view .mermaid .nodeLabel,
+.theme-light .markdown-preview-view .mermaid .edgeLabel,
+.theme-light .markdown-preview-view .mermaid .cluster-label {
+  color: #1f2937 !important;
+  fill: #1f2937 !important;
+}
+
+.theme-light .markdown-rendered .mermaid .edgeLabel rect,
+.theme-light .markdown-preview-view .mermaid .edgeLabel rect {
+  fill: #ffffff !important;
+}
+
+/* =========================
+   深色主题
+   ========================= */
+
+.theme-dark .markdown-rendered .mermaid > svg,
+.theme-dark .markdown-preview-view .mermaid > svg {
+  background: #191d2b;
+}
+
+.theme-dark .markdown-rendered .mermaid .node rect,
+.theme-dark .markdown-rendered .mermaid .node polygon,
+.theme-dark .markdown-rendered .mermaid .node circle,
+.theme-dark .markdown-rendered .mermaid .node ellipse,
+.theme-dark .markdown-preview-view .mermaid .node rect,
+.theme-dark .markdown-preview-view .mermaid .node polygon,
+.theme-dark .markdown-preview-view .mermaid .node circle,
+.theme-dark .markdown-preview-view .mermaid .node ellipse {
+  fill: #172238 !important;
+  stroke: #6fa3ff !important;
+}
+
+.theme-dark .markdown-rendered .mermaid .cluster rect,
+.theme-dark .markdown-preview-view .mermaid .cluster rect {
+  fill: #252a3a !important;
+  stroke: #596579 !important;
+}
+
+.theme-dark .markdown-rendered .mermaid .edgePath .path,
+.theme-dark .markdown-rendered .mermaid .flowchart-link,
+.theme-dark .markdown-preview-view .mermaid .edgePath .path,
+.theme-dark .markdown-preview-view .mermaid .flowchart-link {
+  stroke: #9aa9c2 !important;
+}
+
+.theme-dark .markdown-rendered .mermaid marker path,
+.theme-dark .markdown-preview-view .mermaid marker path {
+  fill: #9aa9c2 !important;
+  stroke: #9aa9c2 !important;
+}
+
+.theme-dark .markdown-rendered .mermaid .nodeLabel,
+.theme-dark .markdown-rendered .mermaid .edgeLabel,
+.theme-dark .markdown-rendered .mermaid .cluster-label,
+.theme-dark .markdown-preview-view .mermaid .nodeLabel,
+.theme-dark .markdown-preview-view .mermaid .edgeLabel,
+.theme-dark .markdown-preview-view .mermaid .cluster-label {
+  color: #e5e7eb !important;
+  fill: #e5e7eb !important;
+}
+
+.theme-dark .markdown-rendered .mermaid .edgeLabel rect,
+.theme-dark .markdown-preview-view .mermaid .edgeLabel rect {
+  fill: #191d2b !important;
+}

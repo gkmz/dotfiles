@@ -1,0 +1,29 @@
+/* 定义全局变量，便于调整 */
+:root {
+    --editor-font: "方正静蕾简体", sans-serif; /* 编辑器字体，例如宋体 */
+    --editor-font-size: 18px; /* 编辑器字体大小 */
+    --code-font: "ComicShannsMono Nerd Font", monospace; /* 代码字体，例如 Consolas */
+    --code-font-size: 12px; /* 代码字体大小 */
+}
+
+/* 编辑器普通文本（编辑模式） */
+.CodeMirror, .markdown-source-view {
+    font-family: var(--editor-font) !important;
+    font-size: var(--editor-font-size) !important;
+}
+
+/* 代码块和行内代码（编辑模式） */
+.CodeMirror pre, .CodeMirror-code, code {
+    font-family: var(--code-font) !important;
+    font-size: var(--code-font-size) !important;
+}
+
+/* 预览模式 */
+.markdown-preview-view {
+    font-family: var(--editor-font) !important;
+    font-size: var(--editor-font-size) !important;
+}
+.markdown-preview-view pre, .markdown-preview-view code {
+    font-family: var(--code-font) !important;
+    font-size: var(--code-font-size) !important;
+}
