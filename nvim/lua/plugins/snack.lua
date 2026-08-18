@@ -71,6 +71,11 @@ return {
             ignored = true,
             hidden = true,
           },
+          grep = {
+            -- 搜索隐藏文件和被 ignore 规则排除的配置文件，例如 .env。
+            ignored = true,
+            hidden = true,
+          },
           explorer = {
             -- 文件树保持用户当前浏览位置，仅在显式触发时定位当前文件。
             follow_file = false,

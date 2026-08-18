@@ -8,17 +8,16 @@ local ok, err = xpcall(function()
   local opts = lazy_plugin.values(plugin, "opts", false)
   assert(opts.provider == "openai", "Minuet does not use the OpenAI provider")
   assert(opts.provider_options.openai.api_key == "OPENAI_API_KEY", "Minuet does not read OPENAI_API_KEY")
-  assert(opts.provider_options.openai.model == "gpt-5.4-nano", "Minuet uses an unexpected OpenAI model")
+  assert(opts.provider_options.openai.model == "gpt-5.6-luna", "Minuet uses an unexpected OpenAI model")
+  assert(opts.provider_options.openai.end_point:match("/chat/completions$"), "Minuet endpoint is invalid")
+  assert(opts.provider_options.openai.stream == false, "Minuet uses incompatible streaming responses")
+  assert(opts.request_timeout == 8, "Minuet request timeout is too short for the configured provider")
+  assert(opts.context_window == 2048, "Minuet context window is too large for inline completion")
+  assert(opts.n_completions == 1, "Minuet requests too many completion candidates")
 
   local auto_trigger_ft = opts.virtualtext.auto_trigger_ft
-  for _, filetype in ipairs({ "go", "lua", "python", "javascript", "typescript", "javascriptreact", "typescriptreact" }) do
-    assert(vim.tbl_contains(auto_trigger_ft, filetype), "Minuet does not auto-trigger for " .. filetype)
-  end
-
-  assert(opts.virtualtext.keymap.next == "<A-y>", "Minuet manual trigger key is incorrect")
-  assert(opts.virtualtext.keymap.accept == "<A-a>", "Minuet accept key is incorrect")
-  assert(opts.virtualtext.keymap.accept_line == "<A-l>", "Minuet accept-line key is incorrect")
-  assert(opts.virtualtext.keymap.dismiss == "<A-e>", "Minuet dismiss key is incorrect")
+  assert(#auto_trigger_ft == 0, "Minuet auto-trigger must be managed by AICompletion")
+  assert(opts.virtualtext.show_on_completion_menu == true, "Minuet is hidden while the completion menu is visible")
 end, debug.traceback)
 
 if not ok then

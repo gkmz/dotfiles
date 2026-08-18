@@ -1,7 +1,18 @@
 return {
   {
     "leoluz/nvim-dap-go",
-    opts = {}, -- Extra handles the rest
+    opts = {
+      -- 对应 `go run .`：调试当前包，并在启动时交互输入程序参数。
+      dap_configurations = {
+        {
+          type = "go",
+          name = "Debug Package (Arguments)",
+          request = "launch",
+          program = "${fileDirname}",
+          args = require("dap-go").get_arguments,
+        },
+      },
+    },
     keys = {
       {
         "<leader>lgd",
@@ -9,6 +20,13 @@ return {
           require("dap-go").debug_test()
         end,
         desc = "Debug Go test",
+      },
+      {
+        "<leader>lgr",
+        function()
+          require("dap").continue()
+        end,
+        desc = "Debug Go package with arguments",
       },
     },
   },
