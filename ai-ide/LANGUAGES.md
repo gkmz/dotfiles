@@ -1,6 +1,6 @@
 # 支持的编程语言
 
-`geekmo-course` skill 支持所有主流编程语言的教程编写。
+`geekmo-zero-beginner-tutorial` skill 支持所有主流编程语言的教程编写。
 
 ## 已测试的语言
 
@@ -51,37 +51,37 @@
 
 ### Go 教程
 ```
-用 geekmo-course 风格写一篇 Go 切片的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 Go 切片的教程
 ```
 
 ### Rust 教程
 ```
-用 geekmo-course 风格写一篇 Rust 所有权系统的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 Rust 所有权系统的教程
 ```
 
 ### Python 教程
 ```
-用 geekmo-course 风格写一篇 Python 装饰器的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 Python 装饰器的教程
 ```
 
 ### JavaScript 教程
 ```
-用 geekmo-course 风格写一篇 JavaScript Promise 的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 JavaScript Promise 的教程
 ```
 
 ### TypeScript 教程
 ```
-用 geekmo-course 风格写一篇 TypeScript 泛型的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 TypeScript 泛型的教程
 ```
 
 ### Java 教程
 ```
-用 geekmo-course 风格写一篇 Java Stream API 的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 Java Stream API 的教程
 ```
 
 ### C++ 教程
 ```
-用 geekmo-course 风格写一篇 C++ 智能指针的教程
+用 geekmo-zero-beginner-tutorial 风格写一篇 C++ 智能指针的教程
 ```
 
 ## 语言特定的注意事项

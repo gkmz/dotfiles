@@ -1,173 +1,97 @@
 # AI IDE 配置
 
-这个目录包含了用于各种 AI IDE 的配置文件，包括 Skills 和 Steering 规则。
+本目录提供 AI IDE 的安装脚本、Steering 规则和本机适配配置。
 
-## 目录结构
+Skill 正文统一维护在 `/Users/hank/workspace/mine/workflow.skills`。本目录不再复制维护 Skill，而是负责把源仓库中的 Skill 安装到项目使用的 IDE 配置目录。
 
+## 仓库分工
+
+```text
+workflow.skills              Skill 的唯一源仓库，维护 Skill 正文和使用说明
+dotfiles/ai-ide              IDE 安装器、Steering 规则和本机适配层
+dotfiles/ai-ide/skills       历史兼容目录，不作为默认 Skill 源
 ```
-ai-ide/
-├── skills/              # AI Agent Skills
-│   ├── geekmo/         # 实战文章风格
-│   ├── geekmo-course/  # 教程文章风格
-│   └── README.md       # Skills 使用说明
-├── steering/           # Steering 规则
-│   └── *.md           # 各种规则文件
-├── install-ai-ide.sh  # 安装脚本
-└── README.md          # 本文件
-```
+
+这样可以避免同一个 Skill 在两个仓库中出现两份内容，减少同步遗漏和版本不一致。
 
 ## 快速开始
 
-### 1. 安装到项目
+在 `dotfiles` 仓库目录执行：
 
 ```bash
-# 自动检测项目使用的 IDE 并安装
-./install-ai-ide.sh ~/workspace/myproject
-
-# 安装到指定 IDE
-./install-ai-ide.sh ~/workspace/myproject kiro
-
-# 安装到多个 IDE
-./install-ai-ide.sh ~/workspace/myproject kiro cursor windsurf
-
-# 安装到当前目录
-./install-ai-ide.sh .
+./ai-ide/install-ai-ide.sh ~/workspace/myproject
 ```
 
-### 2. 验证安装
+也可以指定 IDE：
 
 ```bash
-# 查看已安装的 skills
-ls -la ~/workspace/myproject/.kiro/skills
-
-# 应该看到软链接指向 dotfiles
+./ai-ide/install-ai-ide.sh ~/workspace/myproject kiro
+./ai-ide/install-ai-ide.sh ~/workspace/myproject kiro cursor windsurf
 ```
 
-### 3. 使用 Skills
+安装器默认读取与 `dotfiles` 同级的 `workflow.skills`。如果源仓库位于其他位置，可以覆盖环境变量：
 
-在 AI IDE 中，使用以下提示词：
-
-**实战文章**（问题解决、经验分享）：
-```
-用 geekmo-practice 风格写一篇关于 Docker 部署的文章
+```bash
+WORKFLOW_SKILLS_DIR=/path/to/workflow.skills \
+  ./ai-ide/install-ai-ide.sh ~/workspace/myproject cursor
 ```
 
-**教程文章**（系统化知识讲解）：
+安装后验证：
+
+```bash
+./ai-ide/verify-install.sh ~/workspace/myproject
 ```
-用 geekmo-course 风格写一篇 Go 函数的教程
-用 geekmo-course 风格写一篇 Rust 所有权的教程
-用 geekmo-course 风格写一篇 Python 装饰器的教程
-```
+
+## 当前 Skill
+
+安装器会自动发现源仓库中直接包含 `SKILL.md` 的一级目录。当前包括：
+
+| Skill | 适用场景 |
+| --- | --- |
+| `geekmo-tech-writer` | 以个人技术写作风格撰写和审阅技术文章 |
+| `geekmo-zero-beginner-tutorial` | 面向零基础读者编写循序渐进的教程 |
+| `write-professional-technical-content` | 编写、扩写、审阅专业技术文章和技术架构内容 |
+| `superpowers-mermaid-diagrams` | 设计和优化 Mermaid 图表及其表达方式 |
+
+Skill 可以按任务组合使用。例如，写一篇面向初学者的专业技术教程时，可以同时要求使用专业技术内容 Skill 和零基础教程 Skill；需要流程图时，再加入 Mermaid Skill。
+
+## 更新方式
+
+修改 `/Users/hank/workspace/mine/workflow.skills` 中的 Skill 后，已经安装的软链接会直接指向最新内容，通常不需要重新安装。重启 IDE 可确保它重新加载 Skill。
+
+新增 Skill 时，只需要在 `workflow.skills` 下创建包含 `SKILL.md` 的一级目录，然后重新运行安装脚本或在目标项目中补充软链接。
+
+`ai-ide/skills` 目录暂时保留用于兼容历史配置，但安装脚本默认不会读取它，也不建议继续在其中新增或修改 Skill。
 
 ## 支持的 IDE
 
-- Kiro (`.kiro`)
-- Cursor (`.cursor`)
-- Windsurf (`.windsurf`)
-- Trae (`.trae`)
-- Antigravity (`.antigravity`)
-- Comate (`.comate`)
-- CodeBuddy (`.codebuddy`)
-- Lingma (`.lingma`)
-
-## Skills 说明
-
-### geekmo-practice - 实战文章风格
-
-**适用场景**：
-- 问题解决类文章
-- 工具使用经验分享
-- 踩坑记录
-- 技术选型分析
-
-**特点**：
-- 从具体问题出发
-- 讲解决方案和实现过程
-- 口语化更多，有故事性
-- 总结侧重经验和踩坑记录
-
-### geekmo-course - 教程文章风格
-
-**适用场景**：
-- 编程语言系统化教程（Go/Rust/Python/JavaScript 等）
-- 知识点讲解
-- 概念说明
-- 语法特性介绍
-
-**特点**：
-- 系统化讲解知识点
-- 知识点拆解 + 小代码片段
-- 口语化适度（开头/结尾）
-- 包含完整示例和练习题
-
-详细对比请查看 [skills/README.md](skills/README.md)
-
-## 工作原理
-
-安装脚本会在目标项目的 IDE 配置目录中创建软链接，指向 dotfiles 中的配置文件。这样：
-
-1. **集中管理**：所有配置在 dotfiles 中统一维护
-2. **自动同步**：修改 dotfiles 后，所有项目自动生效
-3. **版本控制**：配置文件可以通过 git 管理
-4. **多项目共享**：一次配置，多个项目使用
-
-## 更新配置
-
-如果修改了 skills 或 steering 内容：
-
-1. 编辑 `dotfiles/ai-ide/skills/*/SKILL.md` 或 `steering/*.md`
-2. 不需要重新运行安装脚本（软链接自动生效）
-3. 重启 IDE 使配置生效
-
-## 添加新的 Skill
-
-1. 在 `skills/` 目录下创建新的 skill 目录
-2. 添加 `SKILL.md` 和 `README.md`
-3. 重新运行安装脚本
+- Kiro：`.kiro`
+- Cursor：`.cursor`
+- Windsurf：`.windsurf`
+- Trae：`.trae`
+- Antigravity：规则使用 `.antigravity`，Skill 使用 `.agent`
+- Comate：`.comate`
+- CodeBuddy：`.codebuddy`
+- Lingma：`.lingma`
 
 ## 卸载
 
-删除项目中的软链接：
+删除目标项目中对应的 Skill 软链接或 IDE 配置目录。确认目标路径后再执行删除操作：
 
 ```bash
-rm -rf ~/workspace/myproject/.kiro/skills/geekmo
-rm -rf ~/workspace/myproject/.kiro/skills/geekmo-course
-rm -rf ~/workspace/myproject/.kiro/steering/*
-```
-
-或者删除整个配置目录：
-
-```bash
-rm -rf ~/workspace/myproject/.kiro
+rm -rf ~/workspace/myproject/.kiro/skills
 ```
 
 ## 故障排除
 
-### 软链接失效
-
-如果移动了 dotfiles 目录，软链接会失效。重新运行安装脚本即可：
+如果提示找不到 Skill 源仓库，请确认默认路径，或显式设置 `WORKFLOW_SKILLS_DIR`：
 
 ```bash
-./install-ai-ide.sh ~/workspace/myproject
+WORKFLOW_SKILLS_DIR=/Users/hank/workspace/mine/workflow.skills \
+  ./ai-ide/verify-install.sh ~/workspace/myproject
 ```
 
-### IDE 无法识别 Skill
-
-1. 检查软链接是否正确：`ls -la ~/.kiro/skills`
-2. 重启 IDE
-3. 确认 IDE 版本支持 Skills 功能
-
-### 权限问题
-
-确保安装脚本有执行权限：
-
-```bash
-chmod +x install-ai-ide.sh
-```
-
-## 贡献
-
-欢迎提 PR 改进配置和脚本！
+如果 IDE 没有识别 Skill，先运行验证脚本检查软链接，再重启 IDE，并确认当前 IDE 版本支持该目录约定。
 
 ## 许可
 

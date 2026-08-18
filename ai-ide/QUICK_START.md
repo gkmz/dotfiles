@@ -1,115 +1,53 @@
-# AI IDE Skills 快速参考
+# AI IDE Skills 快速开始
 
-## 一键安装
+## 安装
 
 ```bash
-cd ~/workspace/mine/dotfiles
+cd /Users/hank/workspace/mine/dotfiles
 ./ai-ide/install-ai-ide.sh ~/workspace/myproject
 ```
 
-## 两个 Skills 的区别
+默认 Skill 源仓库是：
 
-### 🔧 geekmo-practice - 实战文章
-
-**什么时候用**：
-- 我遇到了一个问题，想分享解决方案
-- 我想写工具使用经验
-- 我想记录踩坑过程
-
-**提示词**：
-```
-用 geekmo-practice 风格写一篇关于 Docker 部署的文章
+```text
+/Users/hank/workspace/mine/workflow.skills
 ```
 
-**文章特点**：
-- 开头讲问题/场景（可以较长）
-- 中间讲解决过程
-- 给出完整代码
-- 结尾总结经验和踩坑点
+源仓库不在默认位置时：
 
----
-
-### 📚 geekmo-course - 教程文章
-
-**什么时候用**：
-- 我想系统讲解某个语言的特性
-- 我想写知识点教程
-- 我需要配练习题
-- 适用于 Go、Rust、Python、JavaScript 等所有编程语言
-
-**提示词**：
-```
-用 geekmo-course 风格写一篇 Go 函数的教程
-用 geekmo-course 风格写一篇 Rust 所有权的教程
-用 geekmo-course 风格写一篇 Python 装饰器的教程
+```bash
+WORKFLOW_SKILLS_DIR=/path/to/workflow.skills \
+  ./ai-ide/install-ai-ide.sh ~/workspace/myproject cursor
 ```
 
-**文章特点**：
-- 开头简短引入（2-3 段）
-- 逐个讲解知识点 + 代码片段
-- 最后给出完整示例
-- 结尾有总结、建议和练习题
+## Skill 选择
 
----
+| 需求 | Skill |
+| --- | --- |
+| 个人风格的技术文章 | `geekmo-tech-writer` |
+| 面向零基础读者的教程 | `geekmo-zero-beginner-tutorial` |
+| 专业技术文章、技术架构、系统审阅 | `write-professional-technical-content` |
+| Mermaid 流程图、时序图、架构图 | `superpowers-mermaid-diagrams` |
 
-## 快速对比
+示例：
 
-| 特征 | geekmo-practice | geekmo-course |
-|------|----------------|---------------|
-| 开头 | 长故事 | 短引入 |
-| 代码 | 完整代码 | 小片段 |
-| 口语化 | 更多 | 适度 |
-| 练习题 | 无 | 有 |
+```text
+使用 write-professional-technical-content 改写这篇 Context 教程。
+使用 write-professional-technical-content 和 superpowers-mermaid-diagrams，补充一张请求取消流程图。
+```
 
-## 验证安装
+## 验证
 
 ```bash
 ./ai-ide/verify-install.sh ~/workspace/myproject
 ```
 
-## 常见问题
+验证脚本会根据 `workflow.skills` 中实际存在的 `SKILL.md` 检查全部 Skill，不再依赖固定的 Skill 名单。
 
-**Q: 如何选择用哪个 skill？**
-- 解决问题 → geekmo-practice
-- 讲知识点 → geekmo-course
+## 更新
 
-**Q: 可以混用吗？**
-- 不建议。每篇文章选一个风格，保持一致性。
+Skill 正文只在 `/Users/hank/workspace/mine/workflow.skills` 中维护。修改后，已安装的软链接会自动指向新内容；重启 IDE 使其重新加载即可。通常不需要修改 `dotfiles/ai-ide/skills`，也不需要重复复制文件。
 
-**Q: 如何更新 skill？**
-- 编辑 `dotfiles/ai-ide/skills/*/SKILL.md`
-- 重启 IDE 即可（软链接自动生效）
+## 个人命名是否可以
 
-**Q: 安装到多个项目？**
-```bash
-./ai-ide/install-ai-ide.sh ~/project1
-./ai-ide/install-ai-ide.sh ~/project2
-```
-
-## 示例提示词
-
-### 实战文章示例
-
-```
-用 geekmo-practice 风格写一篇文章：
-我在 Mac 上部署 Ollama 遇到的问题和解决方案
-```
-
-### 教程文章示例
-
-```
-用 geekmo-course 风格写一篇教程：
-Go 语言的切片（Slice）详解
-
-用 geekmo-course 风格写一篇教程：
-Rust 的所有权系统入门
-
-用 geekmo-course 风格写一篇教程：
-Python 装饰器从入门到精通
-```
-
-## 更多帮助
-
-- 详细说明：[README.md](README.md)
-- Skills 对比：[skills/README.md](skills/README.md)
-- 安装脚本：`./install-ai-ide.sh --help`
+可以。Skill 名称可以体现个人风格、方法论或工作流，例如 `geekmo-tech-writer`。只要名称稳定、描述清楚、适用边界明确，并且不与其他 Skill 产生严重重叠，就不需要为了通用化而改名。

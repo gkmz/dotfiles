@@ -13,6 +13,8 @@ NC='\033[0m'
 
 DOTFILES_DIR="$( cd "$( dirname "${(%):-%x}" )" && pwd )"
 TARGET_DIR=""
+DEFAULT_WORKFLOW_SKILLS_DIR="$DOTFILES_DIR/../../workflow.skills"
+WORKFLOW_SKILLS_DIR="${WORKFLOW_SKILLS_DIR:-$DEFAULT_WORKFLOW_SKILLS_DIR}"
 
 # AI IDE 配置目录映射
 typeset -A IDE_CONFIG_DIRS=(
@@ -50,6 +52,35 @@ show_help() {
   echo -e "  ./install-ai-ide.sh ~/workspace/myproject kiro cursor  # 安装到多个 IDE"
   echo -e "  ./install-ai-ide.sh .                                  # 安装到当前目录"
   echo ""
+  echo -e "${BLUE}Skill 源仓库:${NC}"
+  echo -e "  默认: ${WORKFLOW_SKILLS_DIR}"
+  echo -e "  可通过 WORKFLOW_SKILLS_DIR 环境变量覆盖"
+  echo ""
+}
+
+# 解析并校验唯一的 Skill 源仓库。
+resolve_workflow_skills() {
+  if [ ! -d "$WORKFLOW_SKILLS_DIR" ]; then
+    echo -e "${RED}错误: Skill 源仓库不存在: $WORKFLOW_SKILLS_DIR${NC}"
+    echo -e "${YELLOW}请设置 WORKFLOW_SKILLS_DIR，或将 workflow.skills 放在 dotfiles 同级目录${NC}"
+    return 1
+  fi
+
+  WORKFLOW_SKILLS_DIR="$(cd "$WORKFLOW_SKILLS_DIR" && pwd)"
+  local skill_count=0
+  for skill_dir in "$WORKFLOW_SKILLS_DIR"/*; do
+    if [ -f "$skill_dir/SKILL.md" ]; then
+      skill_count=$((skill_count + 1))
+    fi
+  done
+
+  if [ "$skill_count" -eq 0 ]; then
+    echo -e "${RED}错误: Skill 源仓库中没有找到包含 SKILL.md 的 Skill${NC}"
+    echo -e "${RED}源路径: $WORKFLOW_SKILLS_DIR${NC}"
+    return 1
+  fi
+
+  echo -e "${GREEN}Skill 源仓库: $WORKFLOW_SKILLS_DIR ($skill_count 个 Skill)${NC}"
 }
 
 # 创建软链接
@@ -125,12 +156,12 @@ install_to_ide() {
     fi
   elif [[ "$ide" == "antigravity_skills" ]]; then
     # Antigravity skills: 安装到 .agent/skills/
-    if [ -d "$DOTFILES_DIR/skills" ]; then
+    if [ -d "$WORKFLOW_SKILLS_DIR" ]; then
       echo -e "${YELLOW}安装 Skills 到 .agent/skills/...${NC}"
       local skills_target="$target_dir/skills"
       mkdir -p "$skills_target"
-      for skill_dir in "$DOTFILES_DIR/skills"/*; do
-        if [ -d "$skill_dir" ]; then
+      for skill_dir in "$WORKFLOW_SKILLS_DIR"/*; do
+        if [ -f "$skill_dir/SKILL.md" ]; then
           skill_name=$(basename "$skill_dir")
           create_symlink "$skill_dir" "$skills_target/$skill_name" "skills/$skill_name"
         fi
@@ -150,10 +181,10 @@ install_to_ide() {
     fi
     
     # 安装 skills
-    if [ -d "$DOTFILES_DIR/skills" ]; then
+    if [ -d "$WORKFLOW_SKILLS_DIR" ]; then
       echo -e "${YELLOW}安装 Skills...${NC}"
-      for skill_dir in "$DOTFILES_DIR/skills"/*; do
-        if [ -d "$skill_dir" ]; then
+      for skill_dir in "$WORKFLOW_SKILLS_DIR"/*; do
+        if [ -f "$skill_dir/SKILL.md" ]; then
           skill_name=$(basename "$skill_dir")
           create_symlink "$skill_dir" "$target_dir/skills/$skill_name" "skills/$skill_name"
         fi
@@ -220,6 +251,8 @@ main() {
     echo -e "${RED}错误: 不能安装到 HOME 目录，请指定具体的项目目录${NC}\n"
     exit 1
   fi
+
+  resolve_workflow_skills
   
   echo -e "${BLUE}目标目录: ${NC}$TARGET_DIR\n"
   
@@ -265,11 +298,12 @@ main() {
   echo -e "  1. 重启 IDE 使配置生效"
   echo -e "  2. 验证软链接: ${BLUE}ls -la $TARGET_DIR/.kiro/skills${NC}"
   echo -e "  3. 可用的 skills:"
-  echo -e "     - ${BLUE}geekmo-practice${NC}: 实战文章风格（问题解决、经验分享）"
-  echo -e "     - ${BLUE}geekmo-course${NC}: 教程文章风格（系统化知识讲解）"
+  echo -e "     - ${BLUE}geekmo-tech-writer${NC}: 个人技术写作风格"
+  echo -e "     - ${BLUE}geekmo-zero-beginner-tutorial${NC}: 零基础教程"
+  echo -e "     - ${BLUE}write-professional-technical-content${NC}: 专业技术内容写作"
+  echo -e "     - ${BLUE}superpowers-mermaid-diagrams${NC}: Mermaid 图表设计"
   echo -e "  4. 使用方法:"
-  echo -e "     - 实战文章: ${BLUE}用 geekmo-practice 风格写一篇...${NC}"
-  echo -e "     - 教程文章: ${BLUE}用 geekmo-course 风格写一篇 Go 函数教程${NC}\n"
+  echo -e "     - 例如: ${BLUE}使用 write-professional-technical-content 改写这篇文章${NC}\n"
 }
 
 main "$@"

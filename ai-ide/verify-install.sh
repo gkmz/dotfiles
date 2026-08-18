@@ -11,6 +11,9 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 TARGET_DIR=""
+DOTFILES_DIR="$( cd "$( dirname "${(%):-%x}" )" && pwd )"
+DEFAULT_WORKFLOW_SKILLS_DIR="$DOTFILES_DIR/../../workflow.skills"
+WORKFLOW_SKILLS_DIR="${WORKFLOW_SKILLS_DIR:-$DEFAULT_WORKFLOW_SKILLS_DIR}"
 
 # 显示帮助信息
 show_help() {
@@ -21,6 +24,31 @@ show_help() {
   echo -e "  ./verify-install.sh ~/workspace/myproject"
   echo -e "  ./verify-install.sh ."
   echo ""
+  echo -e "${BLUE}Skill 源仓库:${NC}"
+  echo -e "  默认: ${WORKFLOW_SKILLS_DIR}"
+  echo -e "  可通过 WORKFLOW_SKILLS_DIR 环境变量覆盖"
+  echo ""
+}
+
+# 解析并校验唯一的 Skill 源仓库。
+resolve_workflow_skills() {
+  if [ ! -d "$WORKFLOW_SKILLS_DIR" ]; then
+    echo -e "${RED}Skill 源仓库不存在: $WORKFLOW_SKILLS_DIR${NC}"
+    return 1
+  fi
+
+  WORKFLOW_SKILLS_DIR="$(cd "$WORKFLOW_SKILLS_DIR" && pwd)"
+  local skill_count=0
+  for skill_dir in "$WORKFLOW_SKILLS_DIR"/*; do
+    if [ -f "$skill_dir/SKILL.md" ]; then
+      skill_count=$((skill_count + 1))
+    fi
+  done
+
+  if [ "$skill_count" -eq 0 ]; then
+    echo -e "${RED}Skill 源仓库中没有找到包含 SKILL.md 的 Skill${NC}"
+    return 1
+  fi
 }
 
 # 检查软链接
@@ -39,6 +67,9 @@ check_symlink() {
   fi
   
   local link_target=$(readlink "$target")
+  if [[ "$link_target" != /* ]]; then
+    link_target="$(dirname "$target")/$link_target"
+  fi
   if [ ! -e "$link_target" ]; then
     echo -e "${RED}  ✗ $name 软链接失效: $link_target${NC}"
     return 1
@@ -65,7 +96,12 @@ verify_ide() {
   # 检查 skills
   if [ -d "$target_dir/skills" ]; then
     echo -e "${YELLOW}Skills:${NC}"
-    for skill in geekmo-practice geekmo-course; do
+    for skill_dir in "$WORKFLOW_SKILLS_DIR"/*; do
+      if [ -f "$skill_dir/SKILL.md" ]; then
+        skill=$(basename "$skill_dir")
+      else
+        continue
+      fi
       if ! check_symlink "$target_dir/skills/$skill" "$skill"; then
         has_error=1
       fi
@@ -84,7 +120,7 @@ verify_ide() {
         if ! check_symlink "$steering_file" "$filename"; then
           has_error=1
         fi
-        ((steering_count++))
+        steering_count=$((steering_count + 1))
       fi
     done
     if [ $steering_count -eq 0 ]; then
@@ -136,12 +172,15 @@ main() {
   local found_ide=0
   local has_error=0
   
+  resolve_workflow_skills
+
   typeset -A IDE_CONFIG_DIRS=(
     kiro .kiro
     cursor .cursor
     windsurf .windsurf
     trae .trae
-    antigravity .antigravity
+    antigravity_rules .antigravity
+    antigravity_skills .agent
     comate .comate
     codebuddy .codebuddy
     lingma .lingma
