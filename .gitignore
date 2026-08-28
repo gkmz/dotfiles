@@ -130,3 +130,7 @@ codex/config.toml
 codex/rules/default.rules
 git/.git_wk
 .nvimlog
+obsidian/plugins/dataview
+obsidian/workspace.json
+obsidian/themes
+obsidian/plugins

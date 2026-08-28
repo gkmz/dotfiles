@@ -1,0 +1,17 @@
+{
+  "accentColor": "#099a2d",
+  "baseFontSize": 18,
+  "cssTheme": "Catppuccin",
+  "theme": "system",
+  "translucency": false,
+  "nativeMenus": true,
+  "monospaceFontFamily": "ComicShannsMono Nerd Font Mono,JetBrainsMono Nerd Font Mono,Hannotate SC",
+  "interfaceFontFamily": "Hannotate SC,ComicShannsMono Nerd Font Mono",
+  "textFontFamily": "Hannotate SC,ComicShannsMono Nerd Font Mono",
+  "showViewHeader": false,
+  "baseFontSizeAction": false,
+  "showRibbon": true,
+  "enabledCssSnippets": [
+    "mermaid-compact"
+  ]
+}
