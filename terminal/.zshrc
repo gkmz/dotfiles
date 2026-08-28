@@ -211,3 +211,6 @@ export PATH="/Users/hank/.kimi-code/bin:$PATH"
 
 # Added by MiniMax Code
 export PATH="/Users/hank/.mavis/bin:$PATH"
+
+# Added by CodeBuddy CN - shell command
+export PATH="/Users/hank/.codebuddy/bin:$PATH"
