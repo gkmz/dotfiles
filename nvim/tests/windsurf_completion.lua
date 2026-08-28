@@ -22,6 +22,8 @@ local ok, err = xpcall(function()
   assert(type(LazyVim.cmp.actions.ai_accept) == "function", "AI completion is not integrated with LazyVim Tab")
   assert(vim.fn.maparg("<M-]>", "i") ~= "", "Next AI suggestion keymap is missing")
   assert(vim.fn.maparg("<M-[>", "i") ~= "", "Previous AI suggestion keymap is missing")
+  assert(vim.fn.exists(":MinuetModel") == 2, "Minuet model selection command is missing")
+  assert(vim.fn.maparg("<leader>am", "n") ~= "", "Minuet model selection keymap is missing")
   for _, key in ipairs({ "<A-y>", "<A-a>", "<A-l>", "<A-e>" }) do
     assert(vim.fn.maparg(key, "i") == "", "Legacy AI completion keymap is still registered: " .. key)
   end

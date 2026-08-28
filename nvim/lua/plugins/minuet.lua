@@ -7,6 +7,12 @@ return {
       require("utils.ai_completion").setup()
     end,
     opts = {
+      -- 使用 DeepSeek 的 OpenAI 兼容接口；模型 profile 可通过 :MinuetModel 切换。
+      model_profiles = {
+        flash = { model = "deepseek-v4-flash", label = "DeepSeek V4 Flash" },
+        reasoner = { model = "deepseek-v4-pro", label = "DeepSeek V4 Pro" },
+        custom = { model = vim.env.MINUET_MODEL or "deepseek-v4-flash", label = "自定义模型" },
+      },
       provider = "openai",
       -- 通用聊天接口需要控制上下文和候选数量，否则很难达到行内补全所需的延迟。
       context_window = 2048,
@@ -28,22 +34,24 @@ return {
       },
       provider_options = {
         openai = {
-          model = vim.env.MINUET_MODEL or "gpt-5.6-luna",
-          end_point = (vim.env.OPENAI_BASE_URL or ""):gsub("/+$", "") .. "/chat/completions",
+          model = (vim.env.MINUET_PROFILE == "reasoner" and "deepseek-reasoner")
+            or (vim.env.MINUET_PROFILE == "custom" and (vim.env.MINUET_MODEL or "deepseek-v4-flash"))
+            or "deepseek-v4-flash",
+          end_point = (vim.env.DEEPSEEK_BASE_URL or "https://api.deepseek.com/v1"):gsub("/+$", "")
+            .. "/chat/completions",
           -- 当前 provider 的 SSE 响应不兼容 Minuet，非流式请求才能稳定解析候选。
           stream = false,
           -- 只传递环境变量名称，避免将 API key 写入 Neovim 配置或 Git。
-          api_key = "OPENAI_API_KEY",
+          api_key = "DEEPSEEK_API_KEY",
           optional = {
             max_tokens = 96,
-            reasoning_effort = "none",
           },
         },
       },
     },
     config = function(_, opts)
-      if vim.env.OPENAI_API_KEY == nil or vim.env.OPENAI_API_KEY == "" or vim.env.OPENAI_BASE_URL == nil then
-        vim.notify("Minuet 未启用：请设置 OPENAI_API_KEY 和 OPENAI_BASE_URL。", vim.log.levels.WARN)
+      if vim.env.DEEPSEEK_API_KEY == nil or vim.env.DEEPSEEK_API_KEY == "" then
+        vim.notify("Minuet 未启用：请设置 DEEPSEEK_API_KEY。", vim.log.levels.WARN)
         return
       end
 

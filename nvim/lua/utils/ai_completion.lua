@@ -16,6 +16,33 @@ local providers = {
   off = true,
 }
 
+local function select_minuet_model(profile_name)
+  require("lazy").load({ plugins = { "minuet-ai.nvim" } })
+  local minuet = require("minuet")
+  local profiles = minuet.config.model_profiles or {}
+  if profile_name and profiles[profile_name] then
+    minuet.config.provider_options.openai.model = profiles[profile_name].model
+    vim.g.ai_completion_model = profiles[profile_name].model
+    vim.notify("Minuet 模型已切换为: " .. profiles[profile_name].model, vim.log.levels.INFO)
+    return
+  end
+  local names, by_name = {}, {}
+  for name, profile in pairs(profiles) do
+    local label = profile.label or name
+    names[#names + 1] = string.format("%s (%s)", label, profile.model)
+    by_name[names[#names]] = profile.model
+  end
+  table.sort(names)
+  vim.ui.select(names, { prompt = "选择 Minuet 模型:" }, function(choice)
+    local model = choice and by_name[choice]
+    if model then
+      minuet.config.provider_options.openai.model = model
+      vim.g.ai_completion_model = model
+      vim.notify("Minuet 模型已切换为: " .. model, vim.log.levels.INFO)
+    end
+  end)
+end
+
 local function minuet_enabled_for_buffer(bufnr)
   return vim.g.ai_completion_provider == "minuet" and supported_filetypes[vim.bo[bufnr].filetype] == true
 end
@@ -68,8 +95,8 @@ function M.set_provider(provider)
   end
 
   if provider == "minuet" then
-    if vim.env.OPENAI_API_KEY == nil or vim.env.OPENAI_API_KEY == "" or vim.env.OPENAI_BASE_URL == nil then
-      vim.notify("Minuet 需要 OPENAI_API_KEY 和 OPENAI_BASE_URL。", vim.log.levels.ERROR)
+    if vim.env.DEEPSEEK_API_KEY == nil or vim.env.DEEPSEEK_API_KEY == "" then
+      vim.notify("Minuet 需要 DEEPSEEK_API_KEY。", vim.log.levels.ERROR)
       return false
     end
   end
@@ -155,6 +182,23 @@ function M.setup()
     desc = "切换自动代码补全 provider",
   })
 
+  vim.api.nvim_create_user_command("MinuetModel", function(args)
+    select_minuet_model(args.args ~= "" and args.args or nil)
+  end, {
+    nargs = "?",
+    complete = function()
+      local minuet = package.loaded["minuet"]
+      local profiles = minuet and minuet.config.model_profiles or {}
+      local names = {}
+      for name in pairs(profiles) do
+        names[#names + 1] = name
+      end
+      return names
+    end,
+    desc = "选择 Minuet 模型",
+  })
+  vim.keymap.set("n", "<leader>am", select_minuet_model, { desc = "Select Minuet Model" })
+
   local group = vim.api.nvim_create_augroup("dotfiles_ai_completion", { clear = true })
   vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
     group = group,
@@ -175,7 +219,7 @@ function M.setup()
     run_action("prev", "cycle_completions", -1)
   end, { desc = "Previous AI Suggestion" })
 
-  -- 默认使用可控的 OpenAI 兼容 provider；环境变量缺失时保持关闭，避免 Windsurf 未认证仍反复启动。
+  -- 默认使用 DeepSeek provider；环境变量缺失时保持关闭，避免后台请求失败。
   if not M.set_provider(current_provider()) then
     M.set_provider("off")
   end
