@@ -10,6 +10,17 @@ vim.opt.wrap = true -- Always enable soft wrapping
 vim.opt.linebreak = true -- Wrap at word boundaries
 vim.g.autoformat = false -- Turn off LazyVim's autoformat-on-save
 
+-- 明确设置 split 的直线和连接字符，避免终端默认字符导致窗口边界断裂或过淡。
+vim.opt.fillchars:append({
+  vert = "│",
+  horiz = "─",
+  horizup = "┴",
+  horizdown = "┬",
+  vertleft = "┤",
+  vertright = "├",
+  verthoriz = "┼",
+})
+
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 if (vim.uv or vim.loop).fs_stat(mason_bin) then
   -- 让 Mason 安装的 tree-sitter、ruff、gopls、debugpy 等工具优先被 Neovim 发现。
