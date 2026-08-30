@@ -215,10 +215,25 @@ wk.add({
 -------------------------------------------------------------------------------
 vim.keymap.set({ "n" }, "<leader>uz", "<Cmd>:ZenMode<CR>", { desc = "Zen Mode" })
 
--- Snacks jump (引用跳转)
+-- Treesitter 函数名跳转：落点在名称节点上，便于直接执行 gr 查看引用。
+local treesitter_navigation = require("utils.treesitter_navigation")
+
 vim.keymap.set("n", "]]", function()
-  Snacks.words.jump(vim.v.count1)
-end, { desc = "Next Reference" })
+  treesitter_navigation.jump_function_name(1)
+end, { desc = "Next Function Name" })
 vim.keymap.set("n", "[[", function()
-  Snacks.words.jump(-vim.v.count1)
-end, { desc = "Prev Reference" })
+  treesitter_navigation.jump_function_name(-1)
+end, { desc = "Previous Function Name" })
+
+-- LSP attach 时 LazyVim 可能注册同名的 buffer-local 引用跳转；重新绑定以确保函数名导航优先。
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("user_function_name_navigation", { clear = true }),
+  callback = function(event)
+    vim.keymap.set("n", "]]", function()
+      treesitter_navigation.jump_function_name(1)
+    end, { buffer = event.buf, desc = "Next Function Name" })
+    vim.keymap.set("n", "[[", function()
+      treesitter_navigation.jump_function_name(-1)
+    end, { buffer = event.buf, desc = "Previous Function Name" })
+  end,
+})

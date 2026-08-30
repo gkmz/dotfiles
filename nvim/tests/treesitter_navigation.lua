@@ -1,6 +1,7 @@
 local ok, err = xpcall(function()
   -- 加载真实插件配置，验证方法跳转不是回退到 Vim 内置的文件名跳转。
   require("lazy").load({ plugins = { "nvim-treesitter", "nvim-treesitter-textobjects" } })
+  require("config.keymaps")
 
   local treesitter = require("nvim-treesitter")
   assert(vim.list_contains(treesitter.get_installed("parsers"), "go"), "Go Treesitter parser is not installed")
@@ -32,11 +33,29 @@ local ok, err = xpcall(function()
 
   previous_function.callback()
   assert(vim.api.nvim_win_get_cursor(0)[1] == 3, "[f did not jump to the previous Go function")
+
+  local next_method_name = vim.fn.maparg("]]", "n", false, true)
+  assert(type(next_method_name.callback) == "function", "]] does not have a Lua callback")
+  -- 模拟 LSP attach 后产生的 buffer-local 映射，确认用户映射会覆盖它。
+  vim.keymap.set("n", "]]", function() end, { buffer = true })
+  vim.api.nvim_exec_autocmds("LspAttach", { buffer = 0, modeline = false, data = { client_id = 0 } })
+  next_method_name = vim.fn.maparg("]]", "n", false, true)
+  assert(next_method_name.desc == "Next Function Name", "LspAttach replaced the function-name mapping")
+  vim.api.nvim_win_set_cursor(0, { 3, 0 })
+  next_method_name.callback()
+  local next_position = vim.api.nvim_win_get_cursor(0)
+  assert(next_position[1] == 6 and next_position[2] == 5, "]] did not jump to the next Go function name")
+
+  local previous_method_name = vim.fn.maparg("[[", "n", false, true)
+  assert(type(previous_method_name.callback) == "function", "[[ does not have a Lua callback")
+  previous_method_name.callback()
+  local previous_position = vim.api.nvim_win_get_cursor(0)
+  assert(previous_position[1] == 3 and previous_position[2] == 5, "[[ did not jump to the previous Go function name")
 end, debug.traceback)
 
 if not ok then
   print(err)
   vim.cmd("cquit 1")
 end
-print("OK: ]f and [f jump between Go functions")
+print("OK: function text objects and bracket navigation jump to Go function names")
 vim.cmd("qa!")
