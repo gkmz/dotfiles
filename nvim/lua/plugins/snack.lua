@@ -81,6 +81,22 @@ return {
             follow_file = false,
             ignored = true,
             hidden = true,
+            -- Explorer 使用左侧浮动窗口，不参与 split 布局；固定 28 列便于快速浏览文件。
+            layout = {
+              preview = false,
+              layout = {
+                position = "float",
+                width = 28,
+                min_width = 28,
+                height = 0.9,
+                row = 1,
+                col = 1,
+                border = true,
+                box = "vertical",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+              },
+            },
             actions = {
               explorer_confirm = function(picker, item, action)
                 if not item then

@@ -7,6 +7,11 @@ local groups = {
   float = { terms = {}, jobs = {}, wins = {}, root_win = nil },
 }
 
+-- 记录左侧编辑区锚点；bottom 和 right 终端都从这个窗口树分支创建。
+local layout_state = {
+  editor_win = nil,
+}
+
 local defaults = {
   bottom_size = 15,
   right_width_ratio = 0.4,
@@ -20,6 +25,25 @@ end
 
 local function valid_buf(buf)
   return buf and vim.api.nvim_buf_is_valid(buf)
+end
+
+local function find_editor_window()
+  if valid_win(layout_state.editor_win) then
+    local buf = vim.api.nvim_win_get_buf(layout_state.editor_win)
+    if vim.bo[buf].buftype ~= "terminal" then
+      return layout_state.editor_win
+    end
+  end
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype ~= "terminal" then
+      layout_state.editor_win = win
+      return win
+    end
+  end
+
+  return nil
 end
 
 local function valid_job(job)
@@ -86,7 +110,11 @@ end
 
 local function open_bottom_window(group, id, buf)
   if id == 1 or not valid_win(group.root_win) then
-    vim.cmd("botright split")
+    local editor_win = find_editor_window()
+    if editor_win then
+      vim.api.nvim_set_current_win(editor_win)
+    end
+    vim.cmd("belowright split")
     vim.cmd("resize " .. defaults.bottom_size)
     group.root_win = vim.api.nvim_get_current_win()
   else
@@ -103,6 +131,10 @@ end
 
 local function open_right_window(group, id, buf)
   if id == 1 or not valid_win(group.root_win) then
+    layout_state.editor_win = find_editor_window()
+    if layout_state.editor_win then
+      vim.api.nvim_set_current_win(layout_state.editor_win)
+    end
     vim.cmd("botright vsplit")
     vim.cmd("vertical resize " .. math.floor(vim.o.columns * defaults.right_width_ratio))
     group.root_win = vim.api.nvim_get_current_win()
@@ -114,6 +146,8 @@ local function open_right_window(group, id, buf)
 
   local win = vim.api.nvim_get_current_win()
   vim.api.nvim_win_set_buf(win, buf)
+  -- 右侧主终端占据完整高度，左侧分支新增 bottom split 时不参与高度均衡。
+  vim.wo.winfixheight = true
   vim.cmd("vertical resize " .. math.floor(vim.o.columns * defaults.right_width_ratio))
   return win
 end
