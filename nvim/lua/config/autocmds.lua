@@ -110,7 +110,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWinEnter", "TermEnter", "WinEnter" }, {
+vim.api.nvim_create_autocmd({ "BufWinEnter", "TermEnter", "TermOpen", "WinEnter" }, {
   group = terminal_group,
   callback = function(event)
     if vim.bo[event.buf].buftype ~= "terminal" then
@@ -121,6 +121,9 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "TermEnter", "WinEnter" }, {
     vim.wo.number = false
     vim.wo.relativenumber = false
     vim.wo.signcolumn = "no"
+    -- 终端由自身的网格负责换行；禁用文本缓冲区的 linebreak，避免长输出重绘成重复行。
+    vim.wo.wrap = false
+    vim.wo.linebreak = false
   end,
 })
 
