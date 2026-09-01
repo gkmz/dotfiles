@@ -97,6 +97,10 @@ return {
                 { win = "list", border = "none" },
               },
             },
+            -- 打开文件后自动关闭一次性浮动浏览器；目录仍由 explorer_confirm 负责展开。
+            jump = {
+              close = true,
+            },
             actions = {
               explorer_confirm = function(picker, item, action)
                 if not item then
