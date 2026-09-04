@@ -34,11 +34,25 @@ local ok, err = xpcall(function()
   previous_function.callback()
   assert(vim.api.nvim_win_get_cursor(0)[1] == 3, "[f did not jump to the previous Go function")
 
+  local previous_name = vim.fn.maparg("[M", "n", false, true)
+  local next_name = vim.fn.maparg("]M", "n", false, true)
+  assert(type(previous_name.callback) == "function", "[M does not have a Lua callback")
+  assert(type(next_name.callback) == "function", "]M does not have a Lua callback")
+
+  vim.api.nvim_win_set_cursor(0, { 3, 0 })
+  next_name.callback()
+  local next_name_position = vim.api.nvim_win_get_cursor(0)
+  assert(next_name_position[1] == 6 and next_name_position[2] == 5, "]M did not jump to the next Go function name")
+
+  previous_name.callback()
+  local previous_name_position = vim.api.nvim_win_get_cursor(0)
+  assert(previous_name_position[1] == 3 and previous_name_position[2] == 5, "[M did not jump to the previous Go function name")
+
 end, debug.traceback)
 
 if not ok then
   print(err)
   vim.cmd("cquit 1")
 end
-print("OK: ]f and [f jump between Go functions")
+print("OK: function text objects and name navigation jump between Go functions")
 vim.cmd("qa!")

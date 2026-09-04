@@ -214,3 +214,12 @@ wk.add({
 -- Zen Mode & Misc
 -------------------------------------------------------------------------------
 vim.keymap.set({ "n" }, "<leader>uz", "<Cmd>:ZenMode<CR>", { desc = "Zen Mode" })
+
+-- 使用 Treesitter 直接跳到上一个/下一个函数或方法的名称位置；M 避开 LazyVim 的 [F/]F 映射。
+local treesitter_navigation = require("utils.treesitter_navigation")
+vim.keymap.set("n", "[M", function()
+  treesitter_navigation.jump_function_name(-1)
+end, { desc = "Previous Function Name" })
+vim.keymap.set("n", "]M", function()
+  treesitter_navigation.jump_function_name(1)
+end, { desc = "Next Function Name" })
