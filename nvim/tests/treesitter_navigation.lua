@@ -18,6 +18,9 @@ local ok, err = xpcall(function()
 
   vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
   vim.bo.filetype = "go"
+  vim.wait(100, function()
+    return vim.fn.maparg("]f", "n", false, true).desc == "Next Function Name"
+  end)
 
   local next_function = vim.fn.maparg("]f", "n", false, true)
   assert(next_function.buffer == 1, "]f is not a buffer-local Treesitter mapping")
@@ -25,28 +28,14 @@ local ok, err = xpcall(function()
 
   vim.api.nvim_win_set_cursor(0, { 3, 0 })
   next_function.callback()
-  assert(vim.api.nvim_win_get_cursor(0)[1] == 6, "]f did not jump to the next Go function")
+  assert(vim.api.nvim_win_get_cursor(0)[1] == 6 and vim.api.nvim_win_get_cursor(0)[2] == 5, "]f did not jump to the next Go function name")
 
   local previous_function = vim.fn.maparg("[f", "n", false, true)
   assert(previous_function.buffer == 1, "[f is not a buffer-local Treesitter mapping")
   assert(type(previous_function.callback) == "function", "[f does not have a Lua callback")
 
   previous_function.callback()
-  assert(vim.api.nvim_win_get_cursor(0)[1] == 3, "[f did not jump to the previous Go function")
-
-  local previous_name = vim.fn.maparg("[M", "n", false, true)
-  local next_name = vim.fn.maparg("]M", "n", false, true)
-  assert(type(previous_name.callback) == "function", "[M does not have a Lua callback")
-  assert(type(next_name.callback) == "function", "]M does not have a Lua callback")
-
-  vim.api.nvim_win_set_cursor(0, { 3, 0 })
-  next_name.callback()
-  local next_name_position = vim.api.nvim_win_get_cursor(0)
-  assert(next_name_position[1] == 6 and next_name_position[2] == 5, "]M did not jump to the next Go function name")
-
-  previous_name.callback()
-  local previous_name_position = vim.api.nvim_win_get_cursor(0)
-  assert(previous_name_position[1] == 3 and previous_name_position[2] == 5, "[M did not jump to the previous Go function name")
+  assert(vim.api.nvim_win_get_cursor(0)[1] == 3 and vim.api.nvim_win_get_cursor(0)[2] == 5, "[f did not jump to the previous Go function name")
 
 end, debug.traceback)
 

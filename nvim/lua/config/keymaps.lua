@@ -215,11 +215,32 @@ wk.add({
 -------------------------------------------------------------------------------
 vim.keymap.set({ "n" }, "<leader>uz", "<Cmd>:ZenMode<CR>", { desc = "Zen Mode" })
 
--- 使用 Treesitter 直接跳到上一个/下一个函数或方法的名称位置；M 避开 LazyVim 的 [F/]F 映射。
+-- 使用 Treesitter 直接跳到上一个/下一个函数或方法的名称位置，覆盖 LazyVim 默认的函数行首跳转。
 local treesitter_navigation = require("utils.treesitter_navigation")
-vim.keymap.set("n", "[M", function()
+local function setup_function_name_mappings(bufnr)
+  vim.keymap.set("n", "[f", function()
+    treesitter_navigation.jump_function_name(-1)
+  end, { buffer = bufnr, desc = "Previous Function Name" })
+  vim.keymap.set("n", "]f", function()
+    treesitter_navigation.jump_function_name(1)
+  end, { buffer = bufnr, desc = "Next Function Name" })
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("user_function_name_mappings", { clear = true }),
+  callback = function(event)
+    -- 延迟到 Treesitter textobjects 完成默认映射后再覆盖，避免被插件回写。
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(event.buf) then
+        setup_function_name_mappings(event.buf)
+      end
+    end)
+  end,
+})
+
+vim.keymap.set("n", "[f", function()
   treesitter_navigation.jump_function_name(-1)
 end, { desc = "Previous Function Name" })
-vim.keymap.set("n", "]M", function()
+vim.keymap.set("n", "]f", function()
   treesitter_navigation.jump_function_name(1)
 end, { desc = "Next Function Name" })
