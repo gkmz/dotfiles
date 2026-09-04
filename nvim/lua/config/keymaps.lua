@@ -237,7 +237,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end
       vim.keymap.set("n", "gr", function()
         treesitter_navigation.prepare_reference_lookup()
-        Snacks.picker.lsp_references()
+        -- 让光标位置更新完成后再创建 picker，确保 LSP 请求使用函数名位置。
+        vim.schedule(function()
+          Snacks.picker.lsp_references()
+        end)
       end, { buffer = event.buf, nowait = true, desc = "References" })
     end)
   end,
