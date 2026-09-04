@@ -45,6 +45,9 @@ local ok, err = xpcall(function()
   assert(previous_method_name.desc ~= "Previous Function Name", "[[ should not be a custom function-name mapping")
 
   vim.api.nvim_exec_autocmds("LspAttach", { buffer = 0, modeline = false, data = { client_id = 0 } })
+  vim.wait(100, function()
+    return vim.fn.maparg("gr", "n", false, true).buffer == 1
+  end)
   local references = vim.fn.maparg("gr", "n", false, true)
   assert(references.buffer == 1, "gr is not a buffer-local LSP mapping")
   assert(type(references.callback) == "function", "gr does not have a Lua callback")

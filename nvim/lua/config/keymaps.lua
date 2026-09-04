@@ -230,9 +230,15 @@ local treesitter_navigation = require("utils.treesitter_navigation")
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("user_function_name_navigation", { clear = true }),
   callback = function(event)
-    vim.keymap.set("n", "gr", function()
-      treesitter_navigation.prepare_reference_lookup()
-      Snacks.picker.lsp_references()
-    end, { buffer = event.buf, nowait = true, desc = "References" })
+    -- 延迟到其他 LspAttach 回调完成后再绑定，避免被 LazyVim 的默认 gr 覆盖。
+    vim.schedule(function()
+      if not vim.api.nvim_buf_is_valid(event.buf) then
+        return
+      end
+      vim.keymap.set("n", "gr", function()
+        treesitter_navigation.prepare_reference_lookup()
+        Snacks.picker.lsp_references()
+      end, { buffer = event.buf, nowait = true, desc = "References" })
+    end)
   end,
 })
