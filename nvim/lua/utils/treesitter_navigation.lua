@@ -51,4 +51,32 @@ function M.prepare_reference_lookup()
   end
 end
 
+--- 直接以函数名称节点的位置发起 LSP 引用请求，避免异步 picker 重新读取行首位置。
+function M.request_references()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local position = M.current_function_name_position()
+  local params = vim.lsp.util.make_position_params(0)
+  if position then
+    params.position = { line = position[1] - 1, character = position[2] }
+  end
+
+  vim.lsp.buf_request_all(bufnr, "textDocument/references", params, function(results)
+    local items = {}
+    for _, response in pairs(results or {}) do
+      for _, location in ipairs(response.result or {}) do
+        local item = vim.lsp.util.locations_to_items({ location })[1]
+        if item then
+          items[#items + 1] = item
+        end
+      end
+    end
+    if #items == 0 then
+      vim.notify("No references found", vim.log.levels.INFO)
+      return
+    end
+    vim.fn.setqflist({}, " ", { title = "LSP References", items = items })
+    vim.cmd("copen")
+  end)
+end
+
 return M

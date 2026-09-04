@@ -54,6 +54,19 @@ local ok, err = xpcall(function()
   local references = vim.fn.maparg("gr", "n", false, true)
   assert(references.buffer == 1, "gr is not a buffer-local LSP mapping")
   assert(type(references.callback) == "function", "gr does not have a Lua callback")
+
+  local requested_position
+  local original_request_all = vim.lsp.buf_request_all
+  vim.lsp.buf_request_all = function(_, method, params)
+    assert(method == "textDocument/references", "gr did not send a references request")
+    requested_position = params.position
+    return {}
+  end
+  vim.api.nvim_win_set_cursor(0, { 3, 0 })
+  references.callback()
+  vim.wait(100)
+  vim.lsp.buf_request_all = original_request_all
+  assert(requested_position and requested_position.line == 2 and requested_position.character == 5, "references request did not use the Go function name position")
 end, debug.traceback)
 
 if not ok then
