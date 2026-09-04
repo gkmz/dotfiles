@@ -215,25 +215,24 @@ wk.add({
 -------------------------------------------------------------------------------
 vim.keymap.set({ "n" }, "<leader>uz", "<Cmd>:ZenMode<CR>", { desc = "Zen Mode" })
 
--- Treesitter 函数名跳转：落点在名称节点上，便于直接执行 gr 查看引用。
+-- 打开当前行的完整诊断信息；浮窗内容支持换行和滚动查看。
+vim.keymap.set("n", "<leader>ld", function()
+  vim.diagnostic.open_float(0, {
+    scope = "line",
+    focus = false,
+  })
+end, { desc = "Show Line Diagnostics" })
+
+-- Treesitter 函数名解析：让 gr 在函数行首也能直接查询当前函数引用。
 local treesitter_navigation = require("utils.treesitter_navigation")
 
-vim.keymap.set("n", "]]", function()
-  treesitter_navigation.jump_function_name(1)
-end, { desc = "Next Function Name" })
-vim.keymap.set("n", "[[", function()
-  treesitter_navigation.jump_function_name(-1)
-end, { desc = "Previous Function Name" })
-
--- LSP attach 时 LazyVim 可能注册同名的 buffer-local 引用跳转；重新绑定以确保函数名导航优先。
+-- LSP attach 时 LazyVim 注册 gr；包装它以支持光标位于函数行首的场景。
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("user_function_name_navigation", { clear = true }),
   callback = function(event)
-    vim.keymap.set("n", "]]", function()
-      treesitter_navigation.jump_function_name(1)
-    end, { buffer = event.buf, desc = "Next Function Name" })
-    vim.keymap.set("n", "[[", function()
-      treesitter_navigation.jump_function_name(-1)
-    end, { buffer = event.buf, desc = "Previous Function Name" })
+    vim.keymap.set("n", "gr", function()
+      treesitter_navigation.prepare_reference_lookup()
+      Snacks.picker.lsp_references()
+    end, { buffer = event.buf, nowait = true, desc = "References" })
   end,
 })
