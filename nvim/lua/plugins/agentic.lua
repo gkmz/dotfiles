@@ -22,6 +22,20 @@ local function setup_question_navigation(bufnr)
   end, { buffer = bufnr, desc = "Next Agentic User Question" })
 end
 
+local function setup_input_cancel(bufnr)
+  vim.keymap.set("i", "<Esc>", function()
+    local session = require("agentic.session_registry").current()
+    if session and session.is_generating then
+      -- 与 Codex CLI 保持一致：生成中按 Esc 立即停止，但不关闭会话。
+      require("agentic").stop_generation()
+      return ""
+    end
+
+    -- 没有生成任务时保留 Esc 原本的行为，允许退出插入模式。
+    return vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+  end, { buffer = bufnr, expr = true, desc = "Stop Agentic Generation" })
+end
+
 return {
   {
     "carlos-algms/agentic.nvim",
@@ -32,6 +46,13 @@ return {
         pattern = "AgenticChat",
         callback = function(event)
           setup_question_navigation(event.buf)
+        end,
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "AgenticInput",
+        callback = function(event)
+          setup_input_cancel(event.buf)
         end,
       })
     end,
@@ -56,6 +77,15 @@ return {
         end,
         mode = { "n", "v", "i" },
         desc = "Toggle Agentic Chat",
+      },
+      {
+        "<leader>as",
+        function()
+          -- 中止当前生成或工具执行，但保留会话，方便继续提问。
+          require("agentic").stop_generation()
+        end,
+        mode = { "n", "v", "i" },
+        desc = "Stop Agentic Generation",
       },
       {
         "ga",

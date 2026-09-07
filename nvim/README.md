@@ -185,6 +185,8 @@ Python 格式化流程使用 `ruff_organize_imports`、`ruff_format` 和 `ruff_f
 | 快捷键 | 功能 |
 | --- | --- |
 | `<leader>aa` | 打开/关闭 Agentic |
+| `<leader>as` | 停止当前 Agentic 生成或工具执行（保留会话） |
+| `Esc`（Agentic 输入框） | 停止当前生成或工具执行（与 Codex CLI 一致） |
 | `<leader>an` | 新建 Agentic 会话 |
 | `<leader>ar` | 恢复 Agentic 会话 |
 | `<leader>ad` | 将当前 Buffer 诊断加入 Agentic |
