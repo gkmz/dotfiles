@@ -10,6 +10,32 @@ vim.opt.wrap = true -- Always enable soft wrapping
 vim.opt.linebreak = true -- Wrap at word boundaries
 vim.g.autoformat = false -- Turn off LazyVim's autoformat-on-save
 
+-- 行尾只保留简短诊断，完整内容通过可折行浮窗展示，避免长提示挤出编辑区域。
+vim.diagnostic.config({
+  virtual_text = {
+    spacing = 2,
+    source = "if_many",
+    prefix = "●",
+    format = function(diagnostic)
+      local message = diagnostic.message:gsub("\n", " ")
+      if #message > 80 then
+        return message:sub(1, 77) .. "..."
+      end
+      return message
+    end,
+  },
+  float = {
+    border = "rounded",
+    source = "if_many",
+    focusable = false,
+    close_events = { "BufHidden", "InsertCharPre", "WinLeave" },
+    max_width = 100,
+    max_height = 12,
+  },
+  severity_sort = true,
+  update_in_insert = false,
+})
+
 -- 明确设置 split 的直线和连接字符，避免终端默认字符导致窗口边界断裂或过淡。
 vim.opt.fillchars:append({
   vert = "│",

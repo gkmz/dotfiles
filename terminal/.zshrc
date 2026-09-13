@@ -183,14 +183,14 @@ export PATH="/Users/hank/.comate/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/hank/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/hank/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/Users/hank/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/hank/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/hank/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/hank/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/hank/anaconda3/bin:$PATH"
+        export PATH="/Users/hank/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -204,7 +204,7 @@ fpath+=~/.zfunc; autoload -Uz compinit; compinit
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 eval "$(rbenv init - zsh)"
-alias codex='/Applications/ChatGPT.app/Contents/Resources/codex'
+alias codex='/Users/hank/.local/bin/codex'
 
 # kimi-code
 export PATH="/Users/hank/.kimi-code/bin:$PATH"
@@ -214,3 +214,7 @@ export PATH="/Users/hank/.mavis/bin:$PATH"
 
 # Added by CodeBuddy CN - shell command
 export PATH="/Users/hank/.codebuddy/bin:$PATH"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

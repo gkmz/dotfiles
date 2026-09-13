@@ -86,8 +86,8 @@ return {
               preview = false,
               layout = {
                 position = "float",
-                width = 28,
-                min_width = 28,
+                width = 38,
+                min_width = 38,
                 height = 0.9,
                 row = 1,
                 col = 1,

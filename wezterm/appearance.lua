@@ -1,5 +1,4 @@
 local wezterm = require("wezterm")
-local wallpaper = require("utils/wallpaper")
 local M = {}
 
 --- 配置主题、窗口外观、背景和基础性能参数。
@@ -15,7 +14,7 @@ M.config = function(config)
 	-- 窗口配置
 	-- =========================================
 
-	config.macos_window_background_blur = 10
+	config.macos_window_background_blur = 0
 	config.native_macos_fullscreen_mode = false
 	config.adjust_window_size_when_changing_font_size = false
 	config.debug_key_events = false
@@ -28,15 +27,22 @@ M.config = function(config)
 	config.tab_max_width = 26
 
 	config.background = {
-		-- wallpaper.random_wallpaper(os.getenv("HOME") .. "/.config/wezterm/wallpapers/"),
+		-- 第一层：壁纸
 		{
-			source = {
-				-- Color = "#222436",
-				Color = "#000000",
-			},
+			source = { File = { path = os.getenv("HOME") .. "/.config/wezterm/wallpapers/bg.png" } },
+			height = "Cover",
+			width = "Cover",
+			horizontal_align = "Center",
+			repeat_x = "Repeat",
+			repeat_y = "Repeat",
+			opacity = 0.6,
+		},
+		-- 第二层: 半透明这招，让文字更易读
+		{
+			source = { Color = "#1a1a2e" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.8,
+			opacity = 0.92,
 		},
 	}
 
@@ -68,56 +74,56 @@ end
 -- Support neovim Zen mode
 -- =========================================
 
-wezterm.on("user-var-changed", function(window, pane, name, value)
-	local overrides = window:get_config_overrides() or {}
-
-	if name == "T_SESSION" then
-		local session = value or "default"
-		wezterm.log_info("is session", session)
-		-- 根据 tmux session 名称尝试加载同名壁纸目录，不存在时回退为纯黑背景。
-		local home_dir = os.getenv("HOME") or wezterm.home_dir
-		local wallpaper_dir = home_dir .. "/.config/wezterm/wallpapers/" .. session
-		overrides.background = {
-			wallpaper.random_wallpaper(wallpaper_dir),
-			{
-				source = {
-					Color = "#000000",
-				},
-				width = "100%",
-				height = "100%",
-				opacity = 0.85,
-			},
-		}
-	end
-
-	if name == "ZEN_MODE" then
-		-- zenmod will use wezterm plugin to increase font size when start zenmod
-		local zen_value = value or ""
-		local incremental = zen_value:find("+", 1, true)
-		local number_value = tonumber(zen_value)
-		if number_value == nil then
-			wezterm.log_warn("ignore invalid ZEN_MODE value", zen_value)
-			window:set_config_overrides(overrides)
-			return
-		end
-		if incremental ~= nil then
-			while number_value > 0 do
-				window:perform_action(wezterm.action.IncreaseFontSize, pane)
-				number_value = number_value - 1
-			end
-			overrides.enable_tab_bar = false
-		elseif number_value < 0 then
-			-- reset font size when quit zenmode
-			window:perform_action(wezterm.action.ResetFontSize, pane)
-			overrides.font_size = nil
-			overrides.enable_tab_bar = true
-		else
-			-- if no +fontsize configurated, process as absolute font size
-			overrides.font_size = number_value
-			overrides.enable_tab_bar = false
-		end
-	end
-	window:set_config_overrides(overrides)
-end)
+-- wezterm.on("user-var-changed", function(window, pane, name, value)
+-- 	local overrides = window:get_config_overrides() or {}
+--
+-- 	if name == "T_SESSION" then
+-- 		local session = value or "default"
+-- 		wezterm.log_info("is session", session)
+-- 		-- 根据 tmux session 名称尝试加载同名壁纸目录，不存在时回退为纯黑背景。
+-- 		local home_dir = os.getenv("HOME") or wezterm.home_dir
+-- 		local wallpaper_dir = home_dir .. "/.config/wezterm/wallpapers/" .. session
+-- 		overrides.background = {
+-- 			wallpaper.random_wallpaper(wallpaper_dir),
+-- 			{
+-- 				source = {
+-- 					Color = "#000000",
+-- 				},
+-- 				width = "100%",
+-- 				height = "100%",
+-- 				opacity = 0.85,
+-- 			},
+-- 		}
+-- 	end
+--
+-- 	if name == "ZEN_MODE" then
+-- 		-- zenmod will use wezterm plugin to increase font size when start zenmod
+-- 		local zen_value = value or ""
+-- 		local incremental = zen_value:find("+", 1, true)
+-- 		local number_value = tonumber(zen_value)
+-- 		if number_value == nil then
+-- 			wezterm.log_warn("ignore invalid ZEN_MODE value", zen_value)
+-- 			window:set_config_overrides(overrides)
+-- 			return
+-- 		end
+-- 		if incremental ~= nil then
+-- 			while number_value > 0 do
+-- 				window:perform_action(wezterm.action.IncreaseFontSize, pane)
+-- 				number_value = number_value - 1
+-- 			end
+-- 			overrides.enable_tab_bar = false
+-- 		elseif number_value < 0 then
+-- 			-- reset font size when quit zenmode
+-- 			window:perform_action(wezterm.action.ResetFontSize, pane)
+-- 			overrides.font_size = nil
+-- 			overrides.enable_tab_bar = true
+-- 		else
+-- 			-- if no +fontsize configurated, process as absolute font size
+-- 			overrides.font_size = number_value
+-- 			overrides.enable_tab_bar = false
+-- 		end
+-- 	end
+-- 	window:set_config_overrides(overrides)
+-- end)
 
 return M

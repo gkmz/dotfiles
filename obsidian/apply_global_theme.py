@@ -5,11 +5,11 @@ Obsidian 全局主题应用脚本（面向多 vault）。
 关键流程：
 1) 读取 Obsidian 全局 vault 列表（obsidian.json）
 2) 将统一 CSS snippet 同步到每个 vault 的 .obsidian/snippets
-3) 更新每个 vault 的 app.json：
+3) 更新每个 vault 的 appearance.json：
    - 启用统一 snippet
    - 设置跟随系统色彩模式（自动切换）
    - 设置 Minimal 主题（若本地存在）
-4) 对每个 vault 的 app.json 先做备份，确保可回滚
+4) 对每个 vault 的 appearance.json 先做备份，确保可回滚
 """
 
 from __future__ import annotations
@@ -51,32 +51,38 @@ def apply_to_vault(vault_path: Path, snippet_source: Path) -> tuple[bool, str]:
 
     obsidian_dir = vault_path / ".obsidian"
     snippets_dir = obsidian_dir / "snippets"
-    app_json_path = obsidian_dir / "app.json"
+    appearance_json_path = obsidian_dir / "appearance.json"
     snippet_target = snippets_dir / f"{SNIPPET_NAME}.css"
 
     # 1) 同步 snippet 到目标 vault
     snippets_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(snippet_source, snippet_target)
+    # notebook 可能直接链接到本目录；同一文件时无需重复复制
+    try:
+        same_snippet = snippet_source.samefile(snippet_target)
+    except FileNotFoundError:
+        same_snippet = False
+    if not same_snippet:
+        shutil.copy2(snippet_source, snippet_target)
 
-    # 2) 读取并备份 app.json
-    app_data = read_json(app_json_path)
-    backup_file(app_json_path)
+    # 2) 外观设置由 appearance.json 管理，先备份以便回滚
+    appearance_data = read_json(appearance_json_path)
+    backup_file(appearance_json_path)
 
     # 3) 启用 snippet（避免重复）
-    enabled = app_data.get("enabledCssSnippets", [])
+    enabled = appearance_data.get("enabledCssSnippets", [])
     if not isinstance(enabled, list):
         enabled = []
     if SNIPPET_NAME not in enabled:
         enabled.append(SNIPPET_NAME)
-    app_data["enabledCssSnippets"] = enabled
+    appearance_data["enabledCssSnippets"] = enabled
 
     # 4) 设置自动切换：跟随系统浅/深色
-    app_data["baseColorScheme"] = "adapt-to-system"
+    appearance_data["baseColorScheme"] = "adapt-to-system"
 
     # 5) 设置 Minimal 主题（你当前偏好）
-    app_data["cssTheme"] = "Minimal"
+    appearance_data["cssTheme"] = "Minimal"
 
-    write_json(app_json_path, app_data)
+    write_json(appearance_json_path, appearance_data)
     return True, f"已应用 -> {vault_path}"
 
 
@@ -104,7 +110,10 @@ def main() -> int:
         path_text = meta.get("path") if isinstance(meta, dict) else None
         if not path_text:
             continue
-        ok, msg = apply_to_vault(Path(path_text).expanduser(), snippet_source)
+        try:
+            ok, msg = apply_to_vault(Path(path_text).expanduser(), snippet_source)
+        except (OSError, json.JSONDecodeError) as exc:
+            ok, msg = False, f"跳过：无法更新 {path_text} -> {exc}"
         print(msg)
         if ok:
             success += 1

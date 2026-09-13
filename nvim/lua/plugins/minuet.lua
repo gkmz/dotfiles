@@ -1,7 +1,7 @@
 return {
   {
     "milanglacier/minuet-ai.nvim",
-    event = "InsertEnter",
+    event = "VeryLazy",
     init = function()
       -- 提前注册 provider 切换命令，默认模式下不加载未认证的 Windsurf。
       require("utils.ai_completion").setup()
