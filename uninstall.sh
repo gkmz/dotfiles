@@ -81,7 +81,11 @@ remove_symlink "$HOME/.codex/hooks.json" "codex hooks.json"
 remove_symlink "$HOME/.codex/keybindings.json" "codex keybindings.json"
 remove_symlink "$HOME/.codex/rules/default.rules" "codex default.rules"
 remove_symlink "$HOME/.codex/skills/geekmo-tech-writer" "codex geekmo-tech-writer skill"
-remove_symlink "$HOME/.claude" "claude"
+remove_symlink "$HOME/.claude/settings.json" "claude settings.json"
+remove_symlink "$HOME/.claude/CLAUDE.md" "claude CLAUDE.md"
+remove_symlink "$HOME/.claude/RTK.md" "claude RTK.md"
+# 旧版安装方式：整个 ~/.claude 目录软链接
+[ -L "$HOME/.claude" ] && remove_symlink "$HOME/.claude" "claude"
 
 echo -e "${YELLOW}=== 删除 VSCode 系列 IDE 的软链接 ===${NC}\n"
 

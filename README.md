@@ -81,7 +81,7 @@ pwsh -ExecutionPolicy Bypass -File .\install.ps1
 - `git` - Git 配置（.gitconfig 等）
 - `vim` - Vim 配置（.vimrc）
 - `codex` - Codex 配置（~/.codex 下必要文件）
-- `claude` - Claude Code 配置（~/.claude 软链接）
+- `claude` - Claude Code 配置（~/.claude 下必要文件）
 - `vscode` - VSCode 系列 IDE 配置（包含 Kiro、Cursor、Trae、Antigravity 等衍生 IDE）
 
 ### 验证安装
@@ -181,7 +181,7 @@ Windows 不是所有软件都把配置放在安装目录里，因此 `install.ps
 
 - `config`: `nvim`、`wezterm`、`lazygit`、`lazydocker`、`wireshark`
 - `codex`: `~/.codex/config.toml`、`~/.codex/mcp_config.json`、`~/.codex/rules/default.rules`
-- `claude`: `~/.claude`（目录软链接，仓库中仅跟踪必要配置，运行时文件已忽略）
+- `claude`: `~/.claude/settings.json`、`~/.claude/CLAUDE.md`、`~/.claude/RTK.md`
 - `git`: 使用 `~\.gitconfig` 等软链接
 - `vim`: 使用 `~\_vimrc`
 - `vscode`: 自动识别 VSCode、Cursor、Windsurf、Kiro、Trae、Antigravity 的标准安装 / 便携安装 / Scoop 安装
@@ -229,13 +229,12 @@ vim ~/.gitconfig.local
 
 **Claude 配置**：
 ```bash
-# 同步目录：~/.claude -> <dotfiles>/claude
+# 仅同步必要配置（逐个文件软链接）：
+# ~/.claude/settings.json -> <dotfiles>/claude/settings.json
+# ~/.claude/CLAUDE.md     -> <dotfiles>/codex/AGENTS.md（与 Codex 共用）
+# ~/.claude/RTK.md        -> <dotfiles>/codex/RTK.md
 
-# 默认仅提交：
-# ~/.claude/settings.json
-# ~/.claude/settings-*.json
-
-# 不同步 history/sessions/projects/debug/telemetry 等运行时文件
+# 不同步 history/sessions/projects/plugins 等运行时文件
 ```
 
 ## 🗂️ 目录结构

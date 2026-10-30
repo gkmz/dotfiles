@@ -48,7 +48,7 @@ function Show-Help {
   Write-Host "  git          Git 配置（.gitconfig 等）"
   Write-Host "  vim          Vim 配置（Windows 使用 _vimrc）"
   Write-Host "  codex        Codex 配置（~/.codex 下必要文件）"
-  Write-Host "  claude       Claude Code 配置（~/.claude 软链接）"
+  Write-Host "  claude       Claude Code 配置（~/.claude 下必要文件）"
   Write-Host "  vscode       VSCode 系列 IDE 配置"
   Write-Host ""
   Write-Host "示例:"
@@ -66,7 +66,7 @@ function List-Modules {
   Write-Host "  [ok] git      - Git 配置"
   Write-Host "  [ok] vim      - Vim 配置"
   Write-Host "  [ok] codex    - Codex 配置（~/.codex 下必要文件）"
-  Write-Host "  [ok] claude   - Claude Code 配置（~/.claude 软链接）"
+  Write-Host "  [ok] claude   - Claude Code 配置（~/.claude 下必要文件）"
   Write-Host "  [ok] vscode   - VSCode 系列 IDE 配置"
   Write-Host ""
 }
@@ -222,7 +222,22 @@ function Install-Claude {
   Write-Section "安装 Claude Code 配置"
 
   $userHome = Resolve-UserHome
-  Backup-And-Link -Source (Join-Path $DotfilesDir "claude") -Target (Join-Path $userHome ".claude") -Name "claude"
+  $claudeDir = Join-Path $userHome ".claude"
+  $repoClaudeDir = Join-Path $DotfilesDir "claude"
+
+  # 兼容旧版：旧版把整个 ~/.claude 链接到仓库目录，需先改回普通目录
+  $existingTarget = Get-LinkTarget -Path $claudeDir
+  if ($existingTarget -and ((Resolve-Path -LiteralPath $existingTarget).Path -eq (Resolve-Path -LiteralPath $repoClaudeDir).Path)) {
+    Write-Warn "迁移旧版 ~/.claude 目录软链接，旧运行时数据仍保留在 $repoClaudeDir"
+    Remove-Item -LiteralPath $claudeDir -Force
+  }
+
+  New-Item -ItemType Directory -Path $claudeDir -Force | Out-Null
+
+  Backup-And-Link -Source (Join-Path $repoClaudeDir "settings.json") -Target (Join-Path $claudeDir "settings.json") -Name "claude settings.json"
+  # 全局指令与 Codex 共用同一份 AGENTS.md，RTK.md 供其中的 @RTK.md 引用
+  Backup-And-Link -Source (Join-Path $DotfilesDir "codex\AGENTS.md") -Target (Join-Path $claudeDir "CLAUDE.md") -Name "claude CLAUDE.md"
+  Backup-And-Link -Source (Join-Path $DotfilesDir "codex\RTK.md") -Target (Join-Path $claudeDir "RTK.md") -Name "claude RTK.md"
 }
 
 function Get-PythonCommand {

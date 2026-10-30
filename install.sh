@@ -29,7 +29,7 @@ show_help() {
   echo -e "  git            Git 配置（.gitconfig 等）"
   echo -e "  vim            Vim 配置（.vimrc）"
   echo -e "  codex          Codex 配置（~/.codex 下必要文件）"
-  echo -e "  claude         Claude Code 配置（~/.claude 软链接）"
+  echo -e "  claude         Claude Code 配置（~/.claude 下必要文件）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
   echo -e "  ai-ide         AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  accio          Accio 配置（~/.accio 软链接）"
@@ -55,7 +55,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} git       - Git 配置"
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
   echo -e "  ${GREEN}✓${NC} codex     - Codex 配置（~/.codex 下必要文件）"
-  echo -e "  ${GREEN}✓${NC} claude    - Claude Code 配置（~/.claude 软链接）"
+  echo -e "  ${GREEN}✓${NC} claude    - Claude Code 配置（~/.claude 下必要文件）"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
   echo -e "  ${GREEN}✓${NC} ai-ide    - AI IDE 配置（Kiro, Cursor 等）"
   echo -e "  ${GREEN}✓${NC} accio     - Accio 配置（~/.accio 软链接）"
@@ -200,8 +200,24 @@ install_codex() {
 install_claude() {
   echo -e "${BLUE}=== 安装 Claude Code 配置 ===${NC}\n"
 
-  [ -d "$DOTFILES_DIR/claude" ] && \
-    create_symlink "$DOTFILES_DIR/claude" "$HOME/.claude" "claude"
+  # 兼容旧版：旧版把整个 ~/.claude 链接到仓库目录，需先改回普通目录
+  if [ -L "$HOME/.claude" ] && [ "$(readlink "$HOME/.claude")" = "$DOTFILES_DIR/claude" ]; then
+    echo -e "${YELLOW}迁移旧版 ~/.claude 目录软链接${NC}"
+    rm "$HOME/.claude"
+    echo -e "${YELLOW}  旧运行时数据仍保留在 $DOTFILES_DIR/claude（已被 .gitignore 忽略）${NC}\n"
+  fi
+
+  mkdir -p "$HOME/.claude"
+
+  [ -f "$DOTFILES_DIR/claude/settings.json" ] && \
+    create_symlink "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json" "claude settings.json"
+
+  # 全局指令与 Codex 共用同一份 AGENTS.md，RTK.md 供其中的 @RTK.md 引用
+  [ -f "$DOTFILES_DIR/codex/AGENTS.md" ] && \
+    create_symlink "$DOTFILES_DIR/codex/AGENTS.md" "$HOME/.claude/CLAUDE.md" "claude CLAUDE.md"
+
+  [ -f "$DOTFILES_DIR/codex/RTK.md" ] && \
+    create_symlink "$DOTFILES_DIR/codex/RTK.md" "$HOME/.claude/RTK.md" "claude RTK.md"
 }
 
 # 模块：安装 VSCode 系列 IDE 配置
