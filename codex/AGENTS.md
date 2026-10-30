@@ -1,5 +1,10 @@
 @RTK.md
 
+## Superpowers 启用条件
+
+- 只有用户明确说“启动 superpowers”或同义表达时，才启动 superpowers 相关流程。
+- 未明确启用时，直接执行当前任务，不自动使用 superpowers 技能，也不创建规格、开发计划或 superpowers 专用文档。
+
 ## 开发规范
 
 - 每段关键代码都有明确的中文注释

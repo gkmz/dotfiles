@@ -141,9 +141,25 @@ return {
           local explorer = Snacks.picker.get({ source = "explorer" })[1]
 
           if explorer then
-            -- 关闭前保存当前目录，让 Snacks 恢复目录、光标和滚动位置。
-            explorer.init_opts.cwd = explorer:cwd()
-            explorer:close()
+            local current_win = vim.api.nvim_get_current_win()
+            local explorer_focused = false
+            -- 只有当前焦点已经在 Explorer 浮窗内时才关闭，避免离开后无法重新进入。
+            for _, name in ipairs({ "input", "list", "preview" }) do
+              local win = explorer.layout.wins[name]
+              if win and win:valid() and win.win == current_win then
+                explorer_focused = true
+                break
+              end
+            end
+
+            if explorer_focused then
+              -- 关闭前保存当前目录，让 Snacks 恢复目录、光标和滚动位置。
+              explorer.init_opts.cwd = explorer:cwd()
+              explorer:close()
+            else
+              -- Explorer 仍然存在但失去焦点时，直接显示并进入列表窗口。
+              explorer:focus("list", { show = true })
+            end
             return
           end
 

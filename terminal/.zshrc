@@ -148,7 +148,6 @@ export NODE_HOME=$HOME/.nvm/versions/node/v20.17.0
 export PYENV_ROOT="$HOME/.pyenv"
 export ENV_FOR_DYNACONF=dev
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
-export JAVA_HOME=$HOME/.jenv/versions/openjdk64-21.0.6
 # lazygit 的配置文件目录
 export XDG_CONFIG_HOME="$HOME/.config"
 export HF_ENDPOINT=https://hf-mirror.com
@@ -156,7 +155,7 @@ export MY_SHELL=~/shell/
 export HF_ENDPOINT=https://hf-mirror.com
 
 alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/docs/hank'
-alias ws="cd ~/workspace/.ws"
+alias ws="cd ~/workspace/work/"
 alias mws="cd ~/workspace/mine/"
 alias ows="cd ~/workspace/opensource/"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -169,7 +168,7 @@ alias lg='eza -lh --git'
 alias cat='bat'
 alias comfyui='cd ~/Documents/ComfyUI'
 
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$NODE_HOME/bin:$ANDROID_HOME:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_HOME/build-tools/34.0.0/:$ANDROID_HOME/emulator/:$ANDROID_HOME/emulator/bin64:$ANDROID_HOME/platform-tools:$PYTHON_HOME/bin:$CHROME_DRIVER:$(brew --prefix)/Cellar/imagemagick/7.1.1-44/bin:$M2_HOME/bin:$JAVA_HOME/bin:$HOME/.local/share/nvim/mason/packages/google-java-format:$MY_SHELL
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$NODE_HOME/bin:$ANDROID_HOME:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest/bin/:$ANDROID_HOME/build-tools/34.0.0/:$ANDROID_HOME/emulator/:$ANDROID_HOME/emulator/bin64:$ANDROID_HOME/platform-tools:$PYTHON_HOME/bin:$CHROME_DRIVER:$(brew --prefix)/Cellar/imagemagick/7.1.1-44/bin:$M2_HOME/bin:$HOME/.local/share/nvim/mason/packages/google-java-format:$MY_SHELL
 # Added by Antigravity
 export PATH="/Users/hank/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
@@ -218,3 +217,4 @@ export PATH="/Users/hank/.codebuddy/bin:$PATH"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export SVN_EDITOR=vim

@@ -28,6 +28,7 @@ show_help() {
   echo -e "  terminal       终端配置（.zshrc, .bashrc 等）"
   echo -e "  git            Git 配置（.gitconfig 等）"
   echo -e "  vim            Vim 配置（.vimrc）"
+  echo -e "  jetbrains      JetBrains IDE 配置（.ideavimrc）"
   echo -e "  codex          Codex 配置（~/.codex 下必要文件）"
   echo -e "  claude         Claude Code 配置（~/.claude 下必要文件）"
   echo -e "  vscode         VSCode 系列 IDE 配置"
@@ -54,6 +55,7 @@ list_modules() {
   echo -e "  ${GREEN}✓${NC} terminal  - 终端配置"
   echo -e "  ${GREEN}✓${NC} git       - Git 配置"
   echo -e "  ${GREEN}✓${NC} vim       - Vim 配置"
+  echo -e "  ${GREEN}✓${NC} jetbrains - JetBrains IDE 配置（.ideavimrc）"
   echo -e "  ${GREEN}✓${NC} codex     - Codex 配置（~/.codex 下必要文件）"
   echo -e "  ${GREEN}✓${NC} claude    - Claude Code 配置（~/.claude 下必要文件）"
   echo -e "  ${GREEN}✓${NC} vscode    - VSCode 系列 IDE 配置"
@@ -165,6 +167,14 @@ install_vim() {
   
   [ -f "$DOTFILES_DIR/vim/.vimrc" ] && \
     create_symlink "$DOTFILES_DIR/vim/.vimrc" "$HOME/.vimrc" ".vimrc"
+}
+
+# 模块：安装 JetBrains IDE 的 IdeaVim 配置
+install_jetbrains() {
+  echo -e "${BLUE}=== 安装 JetBrains IDE 配置 ===${NC}\n"
+
+  [ -f "$DOTFILES_DIR/jetbrains/.ideavimrc" ] && \
+    create_symlink "$DOTFILES_DIR/jetbrains/.ideavimrc" "$HOME/.ideavimrc" ".ideavimrc"
 }
 
 # 模块：安装 Codex 配置
@@ -467,6 +477,7 @@ main() {
     install_terminal
     install_git
     install_vim
+    install_jetbrains
     install_codex
     install_claude
     install_vscode
@@ -489,6 +500,7 @@ main() {
         install_terminal
         install_git
         install_vim
+        install_jetbrains
         install_codex
         install_claude
         install_vscode
@@ -512,6 +524,9 @@ main() {
               ;;
             vim)
               install_vim
+              ;;
+            jetbrains)
+              install_jetbrains
               ;;
             codex)
               install_codex

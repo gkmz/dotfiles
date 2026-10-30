@@ -1,16 +1,16 @@
 {
   "accentColor": "",
-  "baseFontSize": 18,
+  "baseFontSize": 16,
   "cssTheme": "Tokyo Night Storm",
   "theme": "obsidian",
   "translucency": false,
   "nativeMenus": true,
-  "monospaceFontFamily": "ComicShannsMono Nerd Font Mono,JetBrainsMono Nerd Font Mono,Lantinghei SC,Hannotate SC",
+  "monospaceFontFamily": "JetBrainsMono Nerd Font Mono,Lantinghei SC,ComicShannsMono Nerd Font Mono,HanziPen SC,Felipa,Hannotate SC",
   "interfaceFontFamily": "Lantinghei SC,Hannotate SC,ComicShannsMono Nerd Font Mono",
-  "textFontFamily": "Lantinghei SC,Hannotate SC,HanziPen SC,LingWai SC,ComicShannsMono Nerd Font Mono,Weibei SC,Yuanti SC,PingFang SC,Songti SC,Wawati SC,Yuppy SC,Xingkai SC,Baoli SC,Noto Sans SC,Heiti SC,Kaiti SC,Libian SC,Felipa",
+  "textFontFamily": "JetBrainsMono Nerd Font Mono,Lantinghei SC,Hannotate SC,CodeNewRoman Nerd Font Mono,HanziPen SC,Monaco,Wawati TC,Apple Chancery,Charm,ComicShannsMono Nerd Font Mono,LingWai SC,Felipa,Weibei SC,Yuanti SC,PingFang SC,Songti SC,Wawati SC,Yuppy SC,Xingkai SC,Baoli SC,Noto Sans SC,Heiti SC,Kaiti SC,Libian SC",
   "showViewHeader": false,
-  "baseFontSizeAction": false,
-  "showRibbon": false,
+  "baseFontSizeAction": true,
+  "showRibbon": true,
   "enabledCssSnippets": [
     "mermaid-compact",
     "knowledge-semantics"

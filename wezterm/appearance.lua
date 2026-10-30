@@ -35,14 +35,14 @@ M.config = function(config)
 			horizontal_align = "Center",
 			repeat_x = "Repeat",
 			repeat_y = "Repeat",
-			opacity = 0.6,
+			opacity = 0.9,
 		},
 		-- 第二层: 半透明这招，让文字更易读
 		{
 			source = { Color = "#1a1a2e" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.92,
+			opacity = 0.96,
 		},
 	}
 

@@ -28,7 +28,8 @@ vim.diagnostic.config({
     border = "rounded",
     source = "if_many",
     focusable = false,
-    close_events = { "BufHidden", "InsertCharPre", "WinLeave" },
+    -- 光标离开当前诊断位置后立即关闭浮窗，避免旧诊断内容持续遮挡编辑区。
+    close_events = { "BufHidden", "CursorMoved", "CursorMovedI", "InsertCharPre", "WinLeave" },
     max_width = 100,
     max_height = 12,
   },

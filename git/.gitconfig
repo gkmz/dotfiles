@@ -114,14 +114,12 @@
 # ============================================
 # 条件包含（根据目录使用不同配置）
 # ============================================
+[includeIf "gitdir:~/workspace/mine/"]
+  path = ~/.git_me
 [includeIf "gitdir:~/workspace/opensource/"]
 	path = ~/.git_os
-[includeIf "gitdir:~/workspace/"]
-	path = ~/.git_me
-[includeIf "gitdir:~/workspace/.ws/"]
+[includeIf "gitdir:~/workspace/work/"]
 	path = ~/.git_wk
-[includeIf "gitdir:~/workspace/mine/blockchain/"]
-	path = ~/.git_cc
 
 # ============================================
 # 本地配置（不提交到 Git）
